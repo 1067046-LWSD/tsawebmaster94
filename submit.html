@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Submit a community resource to help others in your area">
+  <title>Submit Resource - Community Connect</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="container">
+      <div class="logo">
+        <div class="logo-icon">CC</div>
+        Community Connect
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Directory</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="submit.html">Submit Resource</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="hero" style="padding: 3rem 0;">
+    <div class="container">
+      <h1>Submit a Resource</h1>
+      <p>Help us build a stronger community by sharing valuable local resources</p>
+    </div>
+  </section>
+
+  <!-- Submission Form -->
+  <section class="form-section">
+    <div class="container">
+      <div class="form-container">
+        <h2 style="color: #2E7D60; margin-bottom: 1.5rem;">Resource Information</h2>
+        <p style="color: #666; margin-bottom: 2rem;">
+          All submissions are reviewed before being added to the directory. Fields marked with 
+          <span class="required">*</span> are required.
+        </p>
+        
+        <form id="submit-form">
+          <div class="form-group">
+            <label for="name">Resource Name <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              required 
+              placeholder="e.g., Community Food Bank"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category <span class="required">*</span></label>
+            <select id="category" name="category" required>
+              <option value="">Select a category</option>
+              <option value="Food Assistance">Food Assistance</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Education">Education</option>
+              <option value="Employment">Employment</option>
+              <option value="Housing">Housing</option>
+              <option value="Legal">Legal</option>
+              <option value="Community">Community</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description <span class="required">*</span></label>
+            <textarea 
+              id="description" 
+              name="description" 
+              required 
+              placeholder="Provide a brief description of the resource, services offered, hours, and any important details..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Address <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="address" 
+              name="address" 
+              required 
+              placeholder="123 Main Street, Springfield, IL 62701"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone" 
+              placeholder="(555) 123-4567"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="website">Website</label>
+            <input 
+              type="url" 
+              id="website" 
+              name="website" 
+              placeholder="https://example.com"
+            >
+          </div>
+
+          <div style="margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              Submit Resource
+            </button>
+          </div>
+        </form>
+
+        <div style="margin-top: 2rem; padding: 1.5rem; background-color: #F7F7F7; border-radius: 8px;">
+          <h3 style="color: #2E7D60; font-size: 1rem; margin-bottom: 0.5rem;">📋 Submission Guidelines</h3>
+          <ul style="margin-left: 1.5rem; color: #666; font-size: 0.9rem;">
+            <li>Ensure all information is accurate and up-to-date</li>
+            <li>Resources should be free or low-cost community services</li>
+            <li>Commercial businesses will not be approved</li>
+            <li>All submissions are subject to review and verification</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Community Connect. Built for TSA Webmaster Competition.</p>
+      <p>Connecting communities, one resource at a time.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse our comprehensive directory of community resources and services">
+  <title>Resource Directory - Community Connect</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="container">
+      <div class="logo">
+        <div class="logo-icon">CC</div>
+        Community Connect
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Directory</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="submit.html">Submit Resource</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="hero" style="padding: 3rem 0;">
+    <div class="container">
+      <h1>Resource Directory</h1>
+      <p>Explore all available community resources and services</p>
+      <div class="search-container">
+        <input 
+          type="text" 
+          class="search-box" 
+          id="search-input"
+          placeholder="Search by name, category, or description..."
+          aria-label="Search resources"
+        >
+        <span class="search-icon">🔍</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Filters -->
+  <section class="filters">
+    <div class="container">
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-category="All">All Resources</button>
+        <button class="filter-btn" data-category="Food Assistance">Food Assistance</button>
+        <button class="filter-btn" data-category="Healthcare">Healthcare</button>
+        <button class="filter-btn" data-category="Education">Education</button>
+        <button class="filter-btn" data-category="Employment">Employment</button>
+        <button class="filter-btn" data-category="Housing">Housing</button>
+        <button class="filter-btn" data-category="Legal">Legal</button>
+        <button class="filter-btn" data-category="Community">Community</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources Grid -->
+  <section class="resources-section">
+    <div class="container">
+      <div class="resources-grid" id="resources-container">
+        <!-- Resources will be loaded here by JavaScript -->
+        <div class="resource-card">
+          <div style="height: 200px; background: linear-gradient(135deg, #2E7D60 0%, #1e5a44 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
+            Loading resources...
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Community Connect. Built for TSA Webmaster Competition.</p>
+      <p>Connecting communities, one resource at a time.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
