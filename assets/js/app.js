@@ -93,6 +93,16 @@ function setupHomepageSearch() {
 async function loadResources() {
   try {
     const response = await fetch('assets/data/resources.json');
+    if (!response.ok) {
+        // Log a warning if the file is not found (e.g., when running on file://)
+        console.error('Error loading resources. Check if "assets/data/resources.json" exists and if you are running on a web server.');
+        // Display an error message to the user
+        const container = document.getElementById('resources-container');
+        if (container) {
+             container.innerHTML = '<p style="text-align: center; color: red; padding: 2rem;">Error: Could not load resources data. Please ensure the resources.json file is correct and accessible.</p>';
+        }
+        return; 
+    }
     allResources = await response.json();
     
     // Check for search parameter in URL
@@ -101,11 +111,15 @@ async function loadResources() {
     
     // Display resources on directory page
     if (document.getElementById('resources-container')) {
-      setupDirectorySearch();
+      setupDirectorySearch(); // Initialize the search and filter listeners
       setupCategoryFilters();
       
       if (searchTerm) {
-        document.getElementById('search-input').value = searchTerm;
+        // Pre-fill search box and apply search filter from homepage
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.value = searchTerm;
+        }
         displayResources(filterResources(searchTerm, currentFilter));
       } else {
         displayResources(allResources);
@@ -122,7 +136,7 @@ async function loadResources() {
       initializeMap();
     }
   } catch (error) {
-    console.error('Error loading resources:', error);
+    console.error('An unexpected error occurred while processing resources:', error);
   }
 }
 
@@ -237,13 +251,33 @@ function animateCounter(element) {
 // ===================================
 function setupDirectorySearch() {
   const searchInput = document.getElementById('search-input');
-  
+  const searchBtn = document.getElementById('search-btn'); 
+
+  // Function to filter and display resources
+  const runSearch = () => {
+    const searchTerm = searchInput.value.trim();
+    
+    //only need to apply the filter, the filterResources function handles the logic
+    const filtered = filterResources(searchTerm, currentFilter);
+    displayResources(filtered);
+  };
+
   if (searchInput) {
-    searchInput.addEventListener('input', function() {
-      const searchTerm = this.value.trim();
-      const filtered = filterResources(searchTerm, currentFilter);
-      displayResources(filtered);
+    //Live Search
+    searchInput.addEventListener('input', runSearch);
+
+    //Search when pressing 'Enter' key
+    searchInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        // Run search explicitly for instant update
+        runSearch();
+      }
     });
+  }
+
+  //Search when clicking the magnifying glass icon
+  if (searchBtn) {
+    searchBtn.addEventListener('click', runSearch);
   }
 }
 
