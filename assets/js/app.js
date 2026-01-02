@@ -90,6 +90,7 @@ function setupHomepageSearch() {
 // ===================================
 // Load and Display Resources
 // ===================================
+//ai generated
 async function loadResources() {
   try {
     const response = await fetch('assets/data/resources.json');
@@ -143,6 +144,7 @@ async function loadResources() {
 // ===================================
 // Display Resources
 // ===================================
+//ai generated
 function displayResources(resources) {
   const container = document.getElementById('resources-container');
   
