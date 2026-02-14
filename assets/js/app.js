@@ -475,3 +475,54 @@ function showAlert(message, type = 'success') {
     setTimeout(() => alert.remove(), 300);
   }, 5000);
 }
+
+window.selectTier = function(tier, amount) {
+  console.log('selectTier called with:', tier, amount); // Debug log
+  
+  // Update the selected tier and amount display
+  const tierElement = document.getElementById('selected-tier');
+  const amountElement = document.getElementById('selected-amount');
+  
+  console.log('Found elements:', tierElement, amountElement); // Debug log
+  
+  if (tierElement && amountElement) {
+    tierElement.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+    amountElement.textContent = amount;
+    console.log('Updated to:', tierElement.textContent, amountElement.textContent); // Debug log
+  }
+  
+  // Smooth scroll to form
+  const donateForm = document.getElementById('donate-form');
+  if (donateForm) {
+    donateForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+};
+
+// Donation form submission
+document.addEventListener('DOMContentLoaded', function() {
+  const donationForm = document.getElementById('donation-form');
+  if (donationForm) {
+    donationForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const tier = document.getElementById('selected-tier').textContent;
+      const amount = document.getElementById('selected-amount').textContent;
+      const name = document.getElementById('donor-name').value;
+      const email = document.getElementById('donor-email').value;
+      
+      if (tier === 'None' || amount === '0') {
+        alert('Please select a donation tier first!');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      
+      // Show success message
+      alert(`Thank you for your ${tier} tier donation of $${amount}, ${name}! In a production environment, this would redirect to a payment processor like Stripe or PayPal.`);
+      
+      // Reset form
+      donationForm.reset();
+      document.getElementById('selected-tier').textContent = 'None';
+      document.getElementById('selected-amount').textContent = '0';
+    });
+  }
+});
