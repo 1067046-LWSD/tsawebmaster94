@@ -10,6 +10,10 @@ let currentFilter = 'All';
 // Initialize Application
 // ===================================
 document.addEventListener('DOMContentLoaded', function() {
+  setUpPage();
+});
+
+function setUpPage() {
   // Set active nav link
   setActiveNavLink();
   
@@ -25,12 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
   if (document.getElementById('submit-form')) {
     setupFormSubmission();
   }
-  
+   
   // Setup homepage search
   if (document.querySelector('.search-box-home') || document.querySelector('.search-button-home')) {
     setupHomepageSearch();
   }
-});
+}
 
 // ===================================
 // Navigation Functions
@@ -56,6 +60,36 @@ function setupMobileMenu() {
       navLinks.classList.toggle('active');
     });
   }
+}
+
+window.navigation.addEventListener('navigate', (navigateEvent) => {
+  const nextURL = new URL(navigateEvent.destination.url);
+  
+  if (!navigateEvent.canIntercept) return;
+  navigateEvent.intercept({
+    async handler() {
+      const newContent = await getNewContent(nextURL);
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          const main = document.querySelector('main');
+          if (main) main.innerHTML = newContent || "";
+          setUpPage();
+        });
+      } else {
+        main.innerHTML = newContent;
+      }
+      
+
+    },
+  });
+});
+
+async function getNewContent(url) {
+  const page = await fetch(url.href);
+  const data = await page.text();
+  const mainTagContent = data.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
+
+  return mainTagContent ? mainTagContent[1] : "";
 }
 
 // ===================================

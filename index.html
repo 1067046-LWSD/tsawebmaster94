@@ -6,98 +6,108 @@
   <meta name="description" content="Community Connect - Your local resource hub for finding essential community services and support">
   <title>Community Connect - Home</title>
   <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+    crossorigin="" />
 </head>
 <body>
-  <!-- Navigation Bar -->
-  <nav>
-    <div class="container">
-      <div class="logo">
-        <div class="logo-icon">CC</div>
-        Community Connect
+  <main>
+    <!-- Navigation Bar -->
+    <nav>
+      <div class="container">
+        <div class="logo">
+          <div class="logo-icon">CC</div>
+          Community Connect
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="directory.html">Directory</a></li>
+          <li><a href="map.html">Map</a></li>
+          <li><a href="submit.html">Submit Resource</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+        
+        <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
       </div>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="directory.html">Directory</a></li>
-        <li><a href="map.html">Map</a></li>
-        <li><a href="submit.html">Submit Resource</a></li>
-        <li><a href="about.html">About</a></li>
-      </ul>
-      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
-    </div>
-  </nav>
+    </nav>
 
-  <!-- Hero Section -->
-  <section class="hero-home">
-    <div class="hero-video-container">
-      <video class="hero-video" autoplay muted loop playsinline>
-        <source src="assets/videos/community.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="hero-overlay"></div>
-    <div class="container hero-content">
-      <h1 class="hero-title">Connect to Your Community</h1>
-      <p class="hero-subtitle">Find local resources, services, and support in one place</p>
-      <div class="search-container">
-        <input 
-          type="text" 
-          class="search-box" 
-          placeholder="Search for resources, services, or categories..."
-          aria-label="Search resources"
-        >
-        <span class="search-icon">🔍</span>
+    <!-- Hero Section -->
+    <section class="hero-home">
+      <div class="hero-video-container">
+        <video class="hero-video" autoplay muted loop playsinline>
+          <source src="assets/videos/community.mp4" type="video/mp4">
+        </video>
       </div>
-    </div>
-  </section>
-
-  <!-- Quick Filters -->
-  <section class="filters">
-    <div class="container">
-      <div class="filter-buttons">
-        <a href="directory.html?category=Food Assistance" class="filter-btn">Food Assistance</a>
-        <a href="directory.html?category=Healthcare" class="filter-btn">Healthcare</a>
-        <a href="directory.html?category=Education" class="filter-btn">Education</a>
-        <a href="directory.html?category=Employment" class="filter-btn">Employment</a>
-        <a href="directory.html?category=Housing" class="filter-btn">Housing</a>
-        <a href="directory.html?category=Legal" class="filter-btn">Legal</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured Resources -->
-  <section class="resources-section">
-    <div class="container">
-      <h2 class="section-title">Featured Resources</h2>
-      <div class="resources-grid" id="featured-resources">
-        <!-- Featured resources will be loaded here by JavaScript -->
-        <div class="resource-card">
-          <div style="height: 200px; background: linear-gradient(135deg, #2E7D60 0%, #1e5a44 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
-            Loading resources...
-          </div>
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <h1 class="hero-title">Connect to Your Community</h1>
+        <p class="hero-subtitle">Find local resources, services, and support in one place</p>
+        <div class="search-container">
+          <input 
+            type="text" 
+            class="search-box" 
+            placeholder="Search for resources, services, or categories..."
+            aria-label="Search resources"
+          >
+          <span class="search-icon">🔍</span>
         </div>
       </div>
-      <div class="text-center mt-2">
-        <a href="directory.html" class="btn btn-primary">View All Resources</a>
+    </section>
+
+    <!-- Quick Filters -->
+    <section class="filters">
+      <div class="container">
+        <div class="filter-buttons">
+          <a href="directory.html?category=Food Assistance" class="filter-btn">Food Assistance</a>
+          <a href="directory.html?category=Healthcare" class="filter-btn">Healthcare</a>
+          <a href="directory.html?category=Education" class="filter-btn">Education</a>
+          <a href="directory.html?category=Employment" class="filter-btn">Employment</a>
+          <a href="directory.html?category=Housing" class="filter-btn">Housing</a>
+          <a href="directory.html?category=Legal" class="filter-btn">Legal</a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Call to Action -->
-  <section class="resources-section" style="background-color: #F7F7F7;">
-    <div class="container text-center">
-      <h2 class="section-title">Know a Great Community Resource?</h2>
-      <p style="max-width: 600px; margin: 0 auto 2rem;">Help grow our community hub by submitting local resources that can help others. Every contribution makes a difference.</p>
-      <a href="submit.html" class="btn btn-secondary">Submit a Resource</a>
-    </div>
-  </section>
+    <!-- Featured Resources -->
+    <section class="resources-section">
+      <div class="container">
+        <h2 class="section-title">Featured Resources</h2>
+        <div class="resources-grid" id="featured-resources">
+          <!-- Featured resources will be loaded here by JavaScript -->
+          <div class="resource-card">
+            <div style="height: 200px; background: linear-gradient(135deg, #2E7D60 0%, #1e5a44 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
+              Loading resources...
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-2">
+          <a href="directory.html" class="btn btn-primary">View All Resources</a>
+        </div>
+      </div>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p>&copy; 2026 Community Connect.</p>
-      <p>Connecting communities, one resource at a time.</p>
-    </div>
-  </footer>
+    <!-- Call to Action -->
+    <section class="resources-section" style="background-color: #F7F7F7;">
+      <div class="container text-center">
+        <h2 class="section-title">Know a Great Community Resource?</h2>
+        <p style="max-width: 600px; margin: 0 auto 2rem;">Help grow our community hub by submitting local resources that can help others. Every contribution makes a difference.</p>
+        <a href="submit.html" class="btn btn-secondary">Submit a Resource</a>
+      </div>
+    </section>
 
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 Community Connect.</p>
+        <p>Connecting communities, one resource at a time.</p>
+      </div>
+    </footer>
+  </main>
+  <!-- Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+    crossorigin=""></script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>
