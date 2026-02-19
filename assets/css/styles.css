@@ -1440,3 +1440,139 @@ footer a {
     padding: 2rem 1.5rem;
   }
 }
+
+.donation-tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.donation-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 2.5rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  border: 3px solid #e0e0e0;
+  text-align: center;
+  cursor: pointer;
+}
+
+.donation-card:hover {
+  transform: scale(1.08) translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  border-color: var(--primary-green);
+  z-index: 10;
+}
+
+.donation-card.featured {
+  border-color: var(--primary-green);
+  border-width: 3px;
+}
+
+.donation-card.featured:hover {
+  transform: scale(1.08) translateY(-10px);
+}
+
+.popular-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary-green);
+  color: white;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tier-badge {
+  display: inline-block;
+  color: white;
+  padding: 0.6rem 1.8rem;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.donation-card h3 {
+  color: var(--dark-grey);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.price {
+  margin: 1.5rem 0;
+  color: var(--primary-green);
+  font-weight: 700;
+}
+
+.price .currency {
+  font-size: 1.8rem;
+  vertical-align: top;
+  font-weight: 700;
+}
+
+.price .amount {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.price .period {
+  font-size: 1.1rem;
+  color: #666;
+  font-weight: 600;
+}
+
+.tier-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.tier-benefits li {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #eee;
+  color: #555;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.tier-benefits li:last-child {
+  border-bottom: none;
+}
+
+.donation-card .btn {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 968px) {
+  .donation-tiers {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .donation-card:hover {
+    transform: scale(1.02) translateY(-5px);
+  }
+}

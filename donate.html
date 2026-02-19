@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Support our mission and make a difference">
+  <title>Donate Now - Community Connect</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+    crossorigin="" />
+</head>
+<body>
+  <main>
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="container">
+      <div class="logo">
+        <div class="logo-icon">CC</div>
+        Community Connect
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Directory</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="submit.html">Submit Resource</a></li>
+        <li><a href="donate.html">Donate Now</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="hero" style="padding: 3rem 0;">
+    <h1>Donate Now</h1>
+    <p>Support our mission and make a difference</p>
+  </section>
+
+  <!-- Donation Tiers Section -->
+  <section class="resources-section">
+    <div class="container">
+      <h2 class="section-title">Choose Your Support Level</h2>
+      
+      <div class="donation-tiers">
+        <div class="donation-card">
+          <div class="tier-badge" style="background-color: #CD7F32;">Bronze</div>
+          <h3>Community Friend</h3>
+          <div class="price">
+            <span class="currency">$</span>
+            <span class="amount">10</span>
+          </div>
+          <button class="btn btn-outline" onclick="selectTier('bronze', 25); return false;">Select Bronze</button>
+        </div>
+
+        <div class="donation-card featured">
+          <div class="popular-badge">Most Popular</div>
+          <div class="tier-badge" style="background-color: #C0C0C0;">Silver</div>
+          <h3>Community Champion</h3>
+          <div class="price">
+            <span class="currency">$</span>
+            <span class="amount">25</span>
+          </div>
+          <button class="btn btn-primary" onclick="selectTier('silver', 50); return false;">Select Silver</button>
+        </div>
+
+        <div class="donation-card">
+          <div class="tier-badge" style="background-color: #E7C45F;">Gold</div>
+          <h3>Community Leader</h3>
+          <div class="price">
+            <span class="currency">$</span>
+            <span class="amount">50</span>
+          </div>
+          <button class="btn btn-secondary" onclick="selectTier('gold', 100); return false;">Select Gold</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Donation Form -->
+  <section class="form-section" id="donate-form">
+    <div class="container">
+      <div class="form-container">
+        <h2 style="color: #2E7D60; margin-bottom: 1.5rem;">Complete Your Donation</h2>
+        <form id="donation-form">
+          <div class="form-group">
+            <label>Selected Tier: <span id="selected-tier" style="font-weight: 700; color: #2E7D60;">None</span></label>
+            <label>Amount: $<span id="selected-amount" style="font-weight: 700; color: #2E7D60;">0</span></label>
+          </div>
+          
+          <div class="form-group">
+            <label for="donor-name">Full Name <span class="required">*</span></label>
+            <input type="text" id="donor-name" name="donor-name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="donor-email">Email <span class="required">*</span></label>
+            <input type="email" id="donor-email" name="donor-email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="donor-message">Message (Optional)</label>
+            <textarea id="donor-message" name="donor-message" rows="4" 
+              placeholder="Share why you're supporting Community Connect..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Proceed to Payment</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Community Connect.</p>
+      <p>Connecting communities, one resource at a time.</p>
+    </div>
+  </footer>
+  </main>
+  <!-- Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+    crossorigin=""></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
