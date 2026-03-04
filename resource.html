@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Resource details - Community Connect">
+  <title>Resource - Community Connect</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin="" />
+  <style>
+    .resource-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .resource-detail-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: var(--border-radius);
+    }
+    #resource-map {
+      height: 300px;
+      border-radius: var(--border-radius);
+    }
+    .info-block {
+      background: var(--light-grey);
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .info-block h3 {
+      color: var(--primary-green);
+      margin-bottom: 0.75rem;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .info-block ul {
+      padding-left: 1.25rem;
+    }
+    .info-block ul li {
+      margin-bottom: 0.4rem;
+      line-height: 1.5;
+    }
+    .contact-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .contact-row a {
+      color: var(--primary-green);
+      font-weight: 600;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--primary-green);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    .resource-hero-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+    .similar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    @media (max-width: 768px) {
+      .resource-detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- Navigation Bar -->
+    <nav>
+      <div class="container">
+        <div class="logo">
+          <div class="logo-icon">CC</div>
+          Community Connect
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="directory.html">Directory</a></li>
+          <li><a href="map.html">Map</a></li>
+          <li><a href="submit.html">Submit Resource</a></li>
+          <li><a href="donate.html">Donate Now</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="login.html" id="nav-login">Login</a></li>
+          <li><a href="signup.html" id="nav-signup">Sign Up</a></li>
+          <li><a href="profile.html" id="nav-profile" style="display:none;">My Profile</a></li>
+          <li><a href="#" id="nav-logout" style="display:none;">Logout</a></li>
+        </ul>
+        <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+      </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="hero" style="padding: 2.5rem 0;">
+      <div class="container">
+        <div class="resource-hero-header">
+          <h1 id="resource-title">Loading...</h1>
+          <span class="category-badge" id="resource-category"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <section style="padding: 2rem 0;">
+      <div class="container">
+        <a href="directory.html" class="back-link">← Back to Directory</a>
+
+        <!-- Image + Map -->
+        <div class="resource-detail-grid">
+          <img id="resource-image" src="" alt="Resource image" class="resource-detail-image">
+          <div id="resource-map"></div>
+        </div>
+
+        <!-- Description -->
+        <div class="info-block" style="margin-top: 2rem;">
+          <h3>About</h3>
+          <p id="resource-description"></p>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="info-block">
+          <h3>Contact & Location</h3>
+          <div class="contact-row">
+            <span>📍 <span id="resource-address"></span></span>
+            <span>📞 <span id="resource-phone"></span></span>
+            <span>🕐 <span id="resource-hours"></span></span>
+            <span>🌐 <a id="resource-website" href="#" target="_blank" rel="noopener">Visit Website</a></span>
+          </div>
+        </div>
+
+        <!-- Services -->
+        <div class="info-block">
+          <h3>Services Offered</h3>
+          <ul id="resource-services"></ul>
+        </div>
+
+        <!-- Requirements -->
+        <div class="info-block">
+          <h3>Requirements</h3>
+          <ul id="resource-requirements"></ul>
+        </div>
+
+        <!-- Similar Resources -->
+        <div style="margin-top: 2rem;">
+          <h2 class="section-title">Similar Resources</h2>
+          <div class="similar-grid" id="similar-resources"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 Community Connect.</p>
+        <p>Connecting communities, one resource at a time.</p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

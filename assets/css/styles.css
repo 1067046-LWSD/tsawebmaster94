@@ -9,6 +9,7 @@
   --light-grey: #F7F7F7;
   --dark-grey: #333333;
   --white: #FFFFFF;
+  --text-white: #FFFFFF;
   --shadow: rgba(0, 0, 0, 0.1);
   --shadow-hover: rgba(0, 0, 0, 0.15);
   --border-radius: 12px;
@@ -111,15 +112,19 @@ nav .container {
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 2rem;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: nowrap;
 }
 
 .nav-links a {
   color: var(--dark-grey);
   font-weight: 500;
+  font-size: 0.9rem;
   padding: 0.5rem 0;
   border-bottom: 2px solid transparent;
   transition: var(--transition);
+  white-space: nowrap;
 }
 
 .nav-links a:hover,

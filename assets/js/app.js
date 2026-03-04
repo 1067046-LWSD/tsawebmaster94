@@ -16,7 +16,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function setUpPage() {
   // Set active nav link
   setActiveNavLink();
-  
+
+  // Re-init auth UI (nav toggle + signup/login forms) after SPA navigation
+  if (typeof initAuthUI === 'function') initAuthUI();
+
   // Mobile menu toggle
   setupMobileMenu();
   
@@ -29,10 +32,15 @@ function setUpPage() {
   if (document.getElementById('submit-form')) {
     setupFormSubmission();
   }
-   
+
   // Setup homepage search
   if (document.querySelector('.search-box-home') || document.querySelector('.search-button-home')) {
     setupHomepageSearch();
+  }
+
+  // Load single resource page
+  if (window.location.pathname.includes('resource.html') || document.getElementById('resource-title')) {
+    loadSingleResource();
   }
 }
 
@@ -148,6 +156,7 @@ async function loadResources() {
     if (document.getElementById('resources-container')) {
       setupDirectorySearch(); // Initialize the search and filter listeners
       setupCategoryFilters();
+      setupExtraFilters();
       
       if (searchTerm) {
         // Pre-fill search box and apply search filter from homepage
@@ -190,18 +199,17 @@ function displayResources(resources) {
   }
   
   container.innerHTML = resources.map(resource => `
-    <div class="resource-card" data-id="${resource.id}">
+    <div class="resource-card" data-id="${resource.id}" onclick="openResource(${resource.id})" style="cursor:pointer;">
       <img src="${resource.image}" alt="${resource.name}" class="resource-image">
       <div class="resource-content">
         <div class="resource-header">
           <h3>${resource.name}</h3>
           <span class="category-badge">${resource.category}</span>
         </div>
-        <p>${resource.description}</p>
+        <p>${resource.description.substring(0, 120)}...</p>
         <div class="resource-details">
           <span>📍 ${resource.address}</span>
           <span>📞 ${resource.phone}</span>
-          <span>🌐 <a href="${resource.website}" target="_blank" rel="noopener">Visit Website</a></span>
         </div>
       </div>
     </div>
@@ -343,26 +351,49 @@ function setupCategoryFilters() {
 // ===================================
 // Filter Resources Function
 // ===================================
-function filterResources(searchTerm, category) {
+function filterResources(searchTerm = '', category = 'All', cost = 'All', age = 'All') {
   let filtered = allResources;
-  
-  // Filter by category
+
   if (category && category !== 'All') {
-    filtered = filtered.filter(resource => resource.category === category);
+    filtered = filtered.filter(r => r.category === category);
   }
-  
-  // Filter by search term
+
+  if (cost && cost !== 'All') {
+    filtered = filtered.filter(r => r.cost === cost);
+  }
+
+  if (age && age !== 'All') {
+    filtered = filtered.filter(r => r.age_group === age);
+  }
+
   if (searchTerm) {
-    const lowerSearch = searchTerm.toLowerCase();
-    filtered = filtered.filter(resource => 
-      resource.name.toLowerCase().includes(lowerSearch) ||
-      resource.description.toLowerCase().includes(lowerSearch) ||
-      resource.category.toLowerCase().includes(lowerSearch) ||
-      resource.address.toLowerCase().includes(lowerSearch)
+    const lower = searchTerm.toLowerCase();
+    filtered = filtered.filter(r =>
+      r.name.toLowerCase().includes(lower) ||
+      r.description.toLowerCase().includes(lower) ||
+      r.category.toLowerCase().includes(lower) ||
+      r.address.toLowerCase().includes(lower)
     );
   }
-  
+
   return filtered;
+}
+
+function setupExtraFilters() {
+  const costFilter = document.getElementById('cost-filter');
+  const ageFilter = document.getElementById('age-filter');
+
+  if (!costFilter || !ageFilter) return;
+
+  function applyFilters() {
+    const searchTerm = document.getElementById('search-input')?.value.trim() || '';
+    const cost = costFilter.value;
+    const age = ageFilter.value;
+    displayResources(filterResources(searchTerm, currentFilter, cost, age));
+  }
+
+  costFilter.addEventListener('change', applyFilters);
+  ageFilter.addEventListener('change', applyFilters);
 }
 
 // ===================================
@@ -397,24 +428,12 @@ function initializeMap() {
         <span class="category-badge">${resource.category}</span>
         <p style="margin: 0.75rem 0; font-size: 0.9rem; color: #666;">${resource.description.substring(0, 100)}...</p>
         <div style="margin-top: 0.5rem;">
-          <a href="${resource.website}" target="_blank" rel="noopener" style="color: #2E7D60; font-weight: 600; font-size: 0.9rem;">Visit Website →</a>
+          <a href="resource.html?id=${resource.id}" style="color: #2E7D60; font-weight: 600; font-size: 0.9rem;">View Full Details →</a>
         </div>
       </div>
     `;
-    
+
     marker.bindPopup(popupContent, { maxWidth: 300 });
-    
-    // Add click event to scroll to resource card if on directory page
-    marker.on('click', function() {
-      const card = document.querySelector(`[data-id="${resource.id}"]`);
-      if (card) {
-        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        card.style.backgroundColor = '#E7C45F20';
-        setTimeout(() => {
-          card.style.backgroundColor = '';
-        }, 2000);
-      }
-    });
   });
 }
 
@@ -510,6 +529,71 @@ function showAlert(message, type = 'success') {
     alert.style.opacity = '0';
     setTimeout(() => alert.remove(), 300);
   }, 5000);
+}
+
+// ===================================
+// Single Resource Page
+// ===================================
+function openResource(id) {
+  window.location.href = `resource.html?id=${id}`;
+}
+
+async function loadSingleResource() {
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get('id'));
+  if (!id) return;
+
+  try {
+    const response = await fetch('assets/data/resources.json');
+    const resources = await response.json();
+    const resource = resources.find(r => r.id === id);
+    if (!resource) return;
+
+    document.getElementById('resource-title').textContent = resource.name;
+    document.getElementById('resource-category').textContent = resource.category;
+    document.getElementById('resource-description').textContent = resource.description;
+    document.getElementById('resource-address').textContent = resource.address;
+    document.getElementById('resource-phone').textContent = resource.phone;
+    document.getElementById('resource-website').href = resource.website;
+    document.getElementById('resource-image').src = resource.image;
+
+    if (resource.services) {
+      document.getElementById('resource-services').innerHTML =
+        resource.services.map(s => `<li>${s}</li>`).join('');
+    }
+    if (resource.requirements) {
+      document.getElementById('resource-requirements').innerHTML =
+        resource.requirements.map(r => `<li>${r}</li>`).join('');
+    }
+    if (resource.hours) {
+      document.getElementById('resource-hours').textContent = resource.hours;
+    }
+
+    const mapElement = document.getElementById('resource-map');
+    if (mapElement) {
+      const map = L.map('resource-map').setView([resource.lat, resource.lng], 14);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+      L.marker([resource.lat, resource.lng]).addTo(map);
+      setTimeout(() => map.invalidateSize(), 100);
+    }
+
+    const similar = resources
+      .filter(r => r.category === resource.category && r.id !== resource.id)
+      .slice(0, 3);
+    const similarEl = document.getElementById('similar-resources');
+    if (similarEl) {
+      similarEl.innerHTML = similar.map(r => `
+        <div onclick="openResource(${r.id})" class="resource-card" style="cursor:pointer;">
+          <h3>${r.name}</h3>
+          <p>${r.description.substring(0, 80)}...</p>
+        </div>
+      `).join('');
+    }
+  } catch (error) {
+    console.error('Error loading resource:', error);
+  }
 }
 
 window.selectTier = function(tier, amount) {
