@@ -3,233 +3,828 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Profile - Community Connect</title>
+  <title>My Profile — Conduit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
   <style>
-    .profile-wrapper {
-      max-width: 700px;
-      margin: 2rem auto;
-      padding: 0 1rem;
+    /* ── Profile page root ── */
+    .profile-root {
+      background: var(--cream);
+      min-height: 100vh;
     }
 
-    .profile-header-card {
-      background: var(--white);
-      border-radius: var(--border-radius);
-      box-shadow: 0 2px 12px var(--shadow);
-      padding: 2rem;
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .avatar-wrapper {
+    /* ── Banner ── */
+    .profile-banner {
+      background: linear-gradient(160deg, var(--forest) 0%, #1d4a34 60%, #2e6348 100%);
+      padding: 5rem 0 7rem;
       position: relative;
-      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .profile-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(212,168,83,0.08) 0%, transparent 60%),
+        url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M40 0 C40 0 20 15 20 40 C20 58 29 72 40 72 C51 72 60 58 60 40 C60 15 40 0 40 0Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .profile-banner-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* Avatar ring system */
+    .avatar-ring-wrap {
+      position: relative;
+      width: 136px;
+      height: 136px;
+      margin-bottom: 1.75rem;
+    }
+
+    .avatar-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(212, 168, 83, 0.25);
+      animation: ringPulse 3s ease-in-out infinite;
+    }
+
+    .avatar-ring:nth-child(1) { inset: -12px; animation-delay: 0s; }
+    .avatar-ring:nth-child(2) { inset: -22px; animation-delay: 0.6s; border-color: rgba(212,168,83,0.14); }
+    .avatar-ring:nth-child(3) { inset: -34px; animation-delay: 1.2s; border-color: rgba(212,168,83,0.07); }
+
+    @keyframes ringPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.02); }
     }
 
     #profile-avatar {
-      width: 100px;
-      height: 100px;
+      width: 136px;
+      height: 136px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid var(--primary-green);
-      cursor: pointer;
+      border: 3px solid var(--gold);
       display: block;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
     }
 
-    .avatar-edit-hint {
+    #profile-avatar:hover {
+      transform: scale(1.04);
+      box-shadow: 0 12px 50px rgba(0,0,0,0.5);
+    }
+
+    .avatar-edit-badge {
       position: absolute;
-      bottom: 0;
-      right: 0;
-      background: var(--primary-green);
-      color: white;
+      bottom: 4px;
+      right: 4px;
+      width: 30px;
+      height: 30px;
+      background: var(--gold);
+      color: var(--forest);
       border-radius: 50%;
-      width: 28px;
-      height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.75rem;
-      cursor: pointer;
+      font-weight: 700;
       pointer-events: none;
+      border: 2.5px solid var(--forest);
+      z-index: 3;
     }
 
-    #avatar-input {
-      display: none;
+    #avatar-input { display: none; }
+
+    .profile-banner-name {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      animation: bannerIn 0.6s ease both;
     }
 
-    .profile-info h2 {
-      margin-bottom: 0.25rem;
-      color: var(--dark-grey);
-    }
-
-    .profile-info .email-tag {
-      color: #888;
+    .profile-banner-email {
+      color: rgba(255,255,255,0.55);
       font-size: 0.95rem;
+      font-family: var(--font-body);
+      animation: bannerIn 0.6s 0.1s ease both;
     }
 
-    .section-card {
+    .profile-banner-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(212,168,83,0.15);
+      border: 1px solid rgba(212,168,83,0.35);
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 0.35rem 0.9rem;
+      border-radius: 100px;
+      margin-top: 1rem;
+      animation: bannerIn 0.6s 0.2s ease both;
+    }
+
+    .profile-banner-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    @keyframes bannerIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Content area ── */
+    .profile-content {
+      max-width: 800px;
+      margin: -3.5rem auto 0;
+      padding: 0 1.5rem 6rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ── Passport (community) card ── */
+    .passport-card {
+      background: var(--forest);
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      align-items: stretch;
+      box-shadow: 0 20px 60px rgba(26,58,42,0.35);
+      margin-bottom: 1.25rem;
+      animation: cardIn 0.55s 0.15s ease both;
+      position: relative;
+    }
+
+    .passport-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--terracotta), var(--gold));
+    }
+
+    .passport-left {
+      background: rgba(0,0,0,0.22);
+      width: 110px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .passport-emblem {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), #e8c46a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--forest);
+      margin-bottom: 0.75rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .passport-left-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+    }
+
+    .passport-right {
+      flex: 1;
+      padding: 2rem 2rem 2rem 2.25rem;
+      position: relative;
+    }
+
+    .passport-eyebrow {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .passport-community-name {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 0.6rem;
+    }
+
+    .passport-desc {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.88rem;
+      font-family: var(--font-body);
+      margin-bottom: 1.25rem;
+    }
+
+    .passport-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.8);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+    }
+
+    .passport-status-dot {
+      width: 6px;
+      height: 6px;
+      background: #5de89b;
+      border-radius: 50%;
+    }
+
+    .passport-deco {
+      position: absolute;
+      right: 1.5rem;
+      bottom: 1rem;
+      opacity: 0.06;
+      width: 90px;
+    }
+
+    .passport-deco svg { width: 90px; height: auto; }
+
+    .no-community-card {
       background: var(--white);
-      border-radius: var(--border-radius);
-      box-shadow: 0 2px 12px var(--shadow);
-      padding: 1.5rem 2rem;
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(26,58,42,0.07);
+      margin-bottom: 1.25rem;
+      animation: cardIn 0.55s 0.15s ease both;
+    }
+
+    .no-community-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--cream);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      color: var(--stone);
+    }
+
+    .no-community-card h3 {
+      font-family: var(--font-display);
+      color: var(--forest);
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .no-community-card p {
+      color: var(--stone);
+      font-size: 0.9rem;
       margin-bottom: 1.5rem;
     }
 
-    .section-card h3 {
-      color: var(--primary-green);
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 1rem;
-    }
-
-    .community-card {
-      background: linear-gradient(135deg, var(--primary-green), #1e5a44);
-      color: white;
-      border-radius: var(--border-radius);
-      padding: 1.5rem;
-      font-size: 1.25rem;
-      font-weight: 700;
-      text-align: center;
-      letter-spacing: 0.02em;
-    }
-
-    .survey-grid {
+    /* ── Stat row ── */
+    .stat-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
+      margin-bottom: 1.25rem;
+      animation: cardIn 0.55s 0.25s ease both;
     }
 
-    .survey-item {
-      background: var(--light-grey);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
+    .stat-tile {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+      box-shadow: 0 2px 16px rgba(26,58,42,0.06);
     }
 
-    .survey-item label {
-      font-size: 0.75rem;
+    .stat-tile-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .stat-tile-value {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--forest);
+      display: block;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-tile-label {
+      font-size: 0.72rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #888;
+      letter-spacing: 0.08em;
+      color: var(--stone);
+    }
+
+    /* ── Survey answers ── */
+    .survey-answers-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2rem 2rem 1.75rem;
+      box-shadow: 0 2px 20px rgba(26,58,42,0.06);
+      margin-bottom: 1.25rem;
+      animation: cardIn 0.55s 0.35s ease both;
+    }
+
+    .section-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--stone);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-eyebrow::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--sand);
+    }
+
+    .answer-tiles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.9rem;
+    }
+
+    .answer-tile {
+      background: var(--cream);
+      border-radius: 14px;
+      padding: 1.1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: transform 0.2s;
+    }
+
+    .answer-tile:hover { transform: translateY(-2px); }
+
+    .answer-tile-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--forest);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+
+    .answer-tile-body {}
+
+    .answer-tile-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--stone);
       display: block;
       margin-bottom: 0.2rem;
     }
 
-    .survey-item span {
+    .answer-tile-value {
+      font-family: var(--font-display);
+      font-size: 1rem;
       font-weight: 600;
-      color: var(--dark-grey);
+      color: var(--forest);
+    }
+
+    /* ── No survey yet ── */
+    .no-survey-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      text-align: center;
+      box-shadow: 0 2px 20px rgba(26,58,42,0.06);
+      margin-bottom: 1.25rem;
+      animation: cardIn 0.55s 0.35s ease both;
+    }
+
+    .no-survey-card p {
+      color: var(--stone);
+      font-family: var(--font-body);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Saved resources ── */
+    .saved-resources-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2rem 2rem 1.75rem;
+      box-shadow: 0 2px 20px rgba(26,58,42,0.06);
+      margin-bottom: 1.25rem;
+      animation: cardIn 0.55s 0.45s ease both;
+    }
+
+    .saved-resources-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .saved-resource-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--cream);
+      border-radius: 14px;
+      padding: 0.85rem 1rem;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1.5px solid transparent;
+    }
+
+    .saved-resource-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(26,58,42,0.1);
+      border-color: rgba(26,58,42,0.15);
+    }
+
+    .saved-resource-chip-icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .saved-resource-chip-name {
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--forest);
+      display: block;
+      line-height: 1.3;
+    }
+
+    .saved-resource-chip-cat {
+      font-size: 0.68rem;
+      color: var(--stone);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .saved-resources-browse {
+      display: block;
+      text-align: center;
+      margin-top: 1.25rem;
+      color: var(--forest);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    @media (max-width: 540px) {
+      .saved-resources-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Actions ── */
+    .profile-actions {
+      display: flex;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+      animation: cardIn 0.55s 0.45s ease both;
+    }
+
+    .profile-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.6rem;
+      border-radius: 100px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+    }
+
+    .profile-action-btn--primary {
+      background: var(--forest);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(26,58,42,0.22);
+    }
+
+    .profile-action-btn--primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(26,58,42,0.3);
+      color: var(--white);
+    }
+
+    .profile-action-btn--ghost {
+      background: transparent;
+      color: var(--forest);
+      border: 1.5px solid rgba(26,58,42,0.35);
+    }
+
+    .profile-action-btn--ghost:hover {
+      background: var(--forest);
+      color: var(--white);
+      border-color: var(--forest);
+      transform: translateY(-2px);
+    }
+
+    .profile-action-btn--danger {
+      background: transparent;
+      color: #c0392b;
+      border: 1.5px solid rgba(192,57,43,0.3);
+    }
+
+    .profile-action-btn--danger:hover {
+      background: #c0392b;
+      color: var(--white);
+      border-color: #c0392b;
+      transform: translateY(-2px);
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 600px) {
-      .profile-header-card {
-        flex-direction: column;
-        text-align: center;
-      }
-      .survey-grid {
-        grid-template-columns: 1fr;
-      }
+      .passport-card { flex-direction: column; }
+      .passport-left { width: auto; flex-direction: row; padding: 1.25rem 1.5rem; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .passport-emblem { width: 48px; height: 48px; font-size: 1.3rem; margin-bottom: 0; margin-right: 0.75rem; }
+      .answer-tiles { grid-template-columns: 1fr; }
+      .stat-row { grid-template-columns: 1fr; }
+      .passport-deco { display: none; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <!-- Navigation Bar -->
-    <nav>
-      <div class="container">
-        <div class="logo">
-          <div class="logo-icon">CC</div>
-          Community Connect
+<main>
+
+  <!-- ===== NAV ===== -->
+  <nav id="main-nav" class="nav--scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text"><span class="nav-c-word"><span class="nav-c-mark"></span>on<em>duit</em></span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Directory</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
+      </ul>
+      <div class="nav-auth">
+        <a href="login.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
+        <div class="nav-profile-corner" id="nav-profile-corner" style="display:none;">
+          <a href="profile.html" class="nav-avatar-link">
+            <img src="" alt="My Profile" class="nav-avatar-thumb" id="nav-avatar-thumb">
+          </a>
+          <a href="#" class="nav-logout-link" id="nav-logout">Log out</a>
         </div>
-        <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="directory.html">Directory</a></li>
-          <li><a href="map.html">Map</a></li>
-          <li><a href="submit.html">Submit Resource</a></li>
-          <li><a href="donate.html">Donate Now</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="login.html" id="nav-login">Login</a></li>
-          <li><a href="signup.html" id="nav-signup">Sign Up</a></li>
-          <li><a href="profile.html" id="nav-profile" style="display:none;">My Profile</a></li>
-          <li><a href="#" id="nav-logout" style="display:none;">Logout</a></li>
-        </ul>
-        <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
       </div>
-    </nav>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
 
-    <!-- Hero -->
-    <section class="hero" style="padding: 2.5rem 0;">
-      <div class="container">
-        <h1>My Profile</h1>
-        <p>Your community match and account info.</p>
+  <!-- ===== PROFILE BANNER ===== -->
+  <section class="profile-banner">
+    <div class="profile-banner-inner">
+      <div class="avatar-ring-wrap">
+        <div class="avatar-ring"></div>
+        <div class="avatar-ring"></div>
+        <div class="avatar-ring"></div>
+        <img id="profile-avatar"
+          src="https://ui-avatars.com/api/?name=User&background=2E7D60&color=fff&size=136"
+          alt="Profile picture">
+        <div class="avatar-edit-badge">✎</div>
+        <input type="file" id="avatar-input" accept="image/*">
       </div>
-    </section>
+      <h1 class="profile-banner-name" id="profile-name">Loading…</h1>
+      <p class="profile-banner-email" id="profile-email"></p>
+      <div class="profile-banner-badge">Community Member</div>
+    </div>
+  </section>
 
-    <!-- Profile Content -->
-    <section>
-      <div class="profile-wrapper">
+  <!-- ===== PROFILE CONTENT ===== -->
+  <div class="profile-content">
 
-        <!-- Avatar + Name + Email -->
-        <div class="profile-header-card">
-          <div class="avatar-wrapper">
-            <img id="profile-avatar"
-              src="https://ui-avatars.com/api/?name=User&background=2E7D60&color=fff&size=100"
-              alt="Profile picture">
-            <div class="avatar-edit-hint">✎</div>
-            <input type="file" id="avatar-input" accept="image/*">
+    <!-- Community passport card — populated by auth.js -->
+    <div id="profile-community-box"></div>
+
+    <!-- Stat row -->
+    <div class="stat-row" id="profile-stat-row" style="display:none;">
+      <div class="stat-tile">
+        <span class="stat-tile-icon">🏘️</span>
+        <span class="stat-tile-value">1</span>
+        <span class="stat-tile-label">Community</span>
+      </div>
+      <div class="stat-tile">
+        <span class="stat-tile-icon">📋</span>
+        <span class="stat-tile-value" id="stat-answers">4</span>
+        <span class="stat-tile-label">Answers Given</span>
+      </div>
+      <div class="stat-tile">
+        <span class="stat-tile-icon">🗺️</span>
+        <span class="stat-tile-value" id="stat-city-short">—</span>
+        <span class="stat-tile-label">Your City</span>
+      </div>
+    </div>
+
+    <!-- Survey answers card -->
+    <div class="survey-answers-card" id="profile-survey" style="display:none;">
+      <div class="section-eyebrow">Survey Answers</div>
+      <div class="answer-tiles">
+        <div class="answer-tile">
+          <div class="answer-tile-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <path d="M12 2L8 7H4l3 3-1.5 5L12 13l6.5 2L17 10l3-3h-4L12 2z"/>
+            </svg>
           </div>
-          <div class="profile-info">
-            <h2 id="profile-name">Loading...</h2>
-            <p class="email-tag" id="profile-email"></p>
+          <div class="answer-tile-body">
+            <span class="answer-tile-label">Interest</span>
+            <span class="answer-tile-value" id="profile-interest"></span>
           </div>
         </div>
-
-        <!-- Community Box -->
-        <div class="section-card">
-          <h3>Your Community</h3>
-          <div id="profile-community-box"></div>
-        </div>
-
-        <!-- Survey Responses -->
-        <div class="section-card" id="profile-survey" style="display:none;">
-          <h3>Survey Responses</h3>
-          <div class="survey-grid">
-            <div class="survey-item">
-              <label>Interest</label>
-              <span id="profile-interest"></span>
-            </div>
-            <div class="survey-item">
-              <label>Involvement</label>
-              <span id="profile-involvement"></span>
-            </div>
-            <div class="survey-item">
-              <label>Age Range</label>
-              <span id="profile-age"></span>
-            </div>
+        <div class="answer-tile">
+          <div class="answer-tile-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+            </svg>
           </div>
-          <p style="margin-top: 1rem;">
-            <a href="survey.html" class="btn btn-secondary">Retake Survey</a>
-          </p>
+          <div class="answer-tile-body">
+            <span class="answer-tile-label">Involvement</span>
+            <span class="answer-tile-value" id="profile-involvement"></span>
+          </div>
         </div>
-
-        <!-- No survey yet -->
-        <div id="profile-no-survey" style="text-align:center; padding: 1rem;">
-          <a href="survey.html" class="btn btn-primary">Take the Survey</a>
+        <div class="answer-tile">
+          <div class="answer-tile-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <rect x="3" y="4" width="18" height="16" rx="2"/>
+              <path d="M8 2v4M16 2v4M3 10h18"/>
+            </svg>
+          </div>
+          <div class="answer-tile-body">
+            <span class="answer-tile-label">Age Range</span>
+            <span class="answer-tile-value" id="profile-age"></span>
+          </div>
         </div>
-
+        <div class="answer-tile">
+          <div class="answer-tile-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <path d="M12 2C8.7 2 6 4.7 6 8c0 5 6 13 6 13s6-8 6-13c0-3.3-2.7-6-6-6z"/>
+              <circle cx="12" cy="8" r="2"/>
+            </svg>
+          </div>
+          <div class="answer-tile-body">
+            <span class="answer-tile-label">City</span>
+            <span class="answer-tile-value" id="profile-city"></span>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer>
-      <div class="container">
-        <p>&copy; 2026 Community Connect.</p>
-        <p>Connecting communities, one resource at a time.</p>
+    <!-- Saved resources -->
+    <div class="saved-resources-card" id="profile-saved-resources" style="display:none;">
+      <div class="section-eyebrow">My Resources</div>
+      <div class="saved-resources-grid"></div>
+      <a href="directory.html" class="saved-resources-browse">Browse all resources →</a>
+    </div>
+
+    <!-- No survey yet -->
+    <div id="profile-no-survey" class="no-survey-card" style="display:none;">
+      <p>Complete the survey to get matched with your community.</p>
+      <a href="survey.html" class="profile-action-btn profile-action-btn--primary">Take the Survey →</a>
+    </div>
+
+    <!-- Actions -->
+    <div class="profile-actions" id="profile-survey-actions" style="display:none;">
+      <a href="directory.html" class="profile-action-btn profile-action-btn--primary">Browse Resources</a>
+      <a href="survey.html" class="profile-action-btn profile-action-btn--ghost">Retake Survey</a>
+      <a href="#" class="profile-action-btn profile-action-btn--danger" id="profile-logout-btn">Sign Out</a>
+    </div>
+
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo"><em>Conduit</em></a>
+          <p class="footer-tagline">The channel between you<br>and what you need.</p>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Navigate</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="directory.html">Directory</a></li>
+            <li><a href="map.html">Resource Map</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Get Involved</h4>
+          <ul class="footer-links">
+            <li><a href="submit.html">Submit a Resource</a></li>
+            <li><a href="donate.html">Donate</a></li>
+            <li><a href="signup.html">Create Account</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="directory.html?category=Food Assistance">Food Assistance</a></li>
+            <li><a href="directory.html?category=Healthcare">Healthcare</a></li>
+            <li><a href="directory.html?category=Education">Education</a></li>
+            <li><a href="directory.html?category=Housing">Housing</a></li>
+          </ul>
+        </div>
       </div>
-    </footer>
-  </main>
+      <div class="footer-bottom">
+        <p>© 2026 Conduit. Built with care for communities around the US.</p>
+      </div>
+    </div>
+  </footer>
 
-  <script src="assets/js/auth.js"></script>
+</main>
+
+<script src="assets/js/auth.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Show stat row + actions when survey section is visible
+    const surveySection = document.getElementById('profile-survey');
+    const statRow = document.getElementById('profile-stat-row');
+    const actions = document.getElementById('profile-survey-actions');
+
+    if (surveySection) {
+      const observer = new MutationObserver(() => {
+        if (surveySection.style.display !== 'none') {
+          if (statRow) statRow.style.display = 'grid';
+          if (actions) actions.style.display = 'flex';
+        }
+      });
+      observer.observe(surveySection, { attributes: true, attributeFilter: ['style'] });
+    }
+
+    // Profile logout btn
+    const logoutBtn = document.getElementById('profile-logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        logoutUser();
+      });
+    }
+  });
+</script>
 </body>
 </html>

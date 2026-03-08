@@ -1,15 +1,52 @@
 // ===================================
-// Community Connect - Main JavaScript
+// Conduit - Main JavaScript
 // ===================================
 
 // Global state
 let allResources = [];
 let currentFilter = 'All';
+let _parallaxScrollHandler = null;
+
+// ===================================
+// Page Loader
+// ===================================
+function spinLogo() {
+  const logo = document.querySelector('.logo-mark');
+  if (!logo) return;
+  logo.classList.add('logo-mark--spin');
+  logo.addEventListener('animationend', () => logo.classList.remove('logo-mark--spin'), { once: true });
+}
+
+function initLoader() {
+  if (document.getElementById('page-loader')) return;
+  const loader = document.createElement('div');
+  loader.id = 'page-loader';
+  loader.innerHTML = `
+    <div class="loader-inner">
+      <svg class="loader-ring" viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="33"/>
+      </svg>
+      <span class="loader-c"></span>
+    </div>`;
+  document.body.appendChild(loader);
+}
+
+function showLoader() {
+  const loader = document.getElementById('page-loader');
+  if (loader) loader.classList.add('is-visible');
+}
+
+function hideLoader() {
+  const loader = document.getElementById('page-loader');
+  if (loader) loader.classList.remove('is-visible');
+}
 
 // ===================================
 // Initialize Application
 // ===================================
 document.addEventListener('DOMContentLoaded', function() {
+  initLoader();
+  spinLogo();
   setUpPage();
 });
 
@@ -20,14 +57,25 @@ function setUpPage() {
   // Re-init auth UI (nav toggle + signup/login forms) after SPA navigation
   if (typeof initAuthUI === 'function') initAuthUI();
 
+  // Update dynamic location display
+  if (typeof updateLocationDisplay === 'function') updateLocationDisplay();
+
   // Mobile menu toggle
   setupMobileMenu();
-  
+
+  // Scroll reveal for all pages
+  initScrollReveal();
+
+  // Homepage-specific effects (parallax, nav transparency)
+  if (document.querySelector('.hero-home')) {
+    initHomepageEffects();
+  }
+
   // Load resources for directory, map, and homepage
   if (document.getElementById('resources-container') || document.getElementById('map') || document.getElementById('featured-resources')) {
     loadResources();
   }
-  
+
   // Setup form submission
   if (document.getElementById('submit-form')) {
     setupFormSubmission();
@@ -41,6 +89,62 @@ function setUpPage() {
   // Load single resource page
   if (window.location.pathname.includes('resource.html') || document.getElementById('resource-title')) {
     loadSingleResource();
+  }
+}
+
+// ===================================
+// Scroll Reveal (runs on every page/navigation)
+// ===================================
+function initScrollReveal() {
+  const sections = document.querySelectorAll('.reveal-section, .reveal-block');
+  if (!sections.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        entry.target.classList.add('block-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+
+  sections.forEach(el => observer.observe(el));
+}
+
+// ===================================
+// Homepage Effects (parallax + transparent nav)
+// ===================================
+function initHomepageEffects() {
+  const nav = document.getElementById('main-nav');
+  const heroSection = document.querySelector('.hero-home');
+
+  if (nav && heroSection) {
+    const navObserver = new IntersectionObserver(
+      ([entry]) => nav.classList.toggle('nav--scrolled', !entry.isIntersecting),
+      { threshold: 0.05 }
+    );
+    navObserver.observe(heroSection);
+  }
+
+  // Parallax video — remove old listener first to avoid stacking
+  if (_parallaxScrollHandler) {
+    window.removeEventListener('scroll', _parallaxScrollHandler);
+    _parallaxScrollHandler = null;
+  }
+  const videoContainer = document.querySelector('.hero-video-container');
+  if (videoContainer) {
+    let rafPending = false;
+    _parallaxScrollHandler = () => {
+      if (!rafPending) {
+        rafPending = true;
+        requestAnimationFrame(() => {
+          videoContainer.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+          rafPending = false;
+        });
+      }
+    };
+    window.addEventListener('scroll', _parallaxScrollHandler, { passive: true });
   }
 }
 
@@ -62,32 +166,44 @@ function setActiveNavLink() {
 function setupMobileMenu() {
   const menuToggle = document.querySelector('.mobile-menu-toggle');
   const navLinks = document.querySelector('.nav-links');
-  
+
   if (menuToggle && navLinks) {
     menuToggle.addEventListener('click', function() {
       navLinks.classList.toggle('active');
+    });
+    // Close menu when a nav link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => navLinks.classList.remove('active'));
     });
   }
 }
 
 window.navigation.addEventListener('navigate', (navigateEvent) => {
   const nextURL = new URL(navigateEvent.destination.url);
-  
+
+  // survey.html must do a full page load so survey.js executes normally
+  if (nextURL.pathname.includes('survey.html')) return;
+
   if (!navigateEvent.canIntercept) return;
   navigateEvent.intercept({
     async handler() {
+      showLoader();
       const newContent = await getNewContent(nextURL);
       if (document.startViewTransition) {
         document.startViewTransition(() => {
           const main = document.querySelector('main');
           if (main) main.innerHTML = newContent || "";
+          window.scrollTo({ top: 0, behavior: 'instant' });
           setUpPage();
+          hideLoader();
         });
       } else {
-        main.innerHTML = newContent;
+        const main = document.querySelector('main');
+        if (main) main.innerHTML = newContent;
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        setUpPage();
+        hideLoader();
       }
-      
-
     },
   });
 });
@@ -148,17 +264,22 @@ async function loadResources() {
     }
     allResources = await response.json();
     
-    // Check for search parameter in URL
+    // Check for search/category parameters in URL
     const urlParams = new URLSearchParams(window.location.search);
     const searchTerm = urlParams.get('search');
-    
+    const categoryParam = urlParams.get('category');
+
     // Display resources on directory page
     if (document.getElementById('resources-container')) {
       setupDirectorySearch(); // Initialize the search and filter listeners
       setupCategoryFilters();
       setupExtraFilters();
-      
-      if (searchTerm) {
+
+      if (categoryParam) {
+        // Simulate clicking the matching filter button
+        const targetBtn = document.querySelector(`.filter-btn[data-category="${categoryParam}"]`);
+        if (targetBtn) targetBtn.click();
+      } else if (searchTerm) {
         // Pre-fill search box and apply search filter from homepage
         const searchInput = document.getElementById('search-input');
         if (searchInput) {
@@ -227,7 +348,7 @@ function displayFeaturedResources() {
   const featuredResources = allResources.filter(r => r.featured).slice(0, 3);
   
   container.innerHTML = featuredResources.map(resource => `
-    <div class="featured-card">
+    <div class="featured-card" onclick="openResource(${resource.id})" style="cursor:pointer;">
       <img src="${resource.image}" alt="${resource.name}">
       <div class="featured-card-content">
         <div class="resource-header">
@@ -238,7 +359,6 @@ function displayFeaturedResources() {
         <div class="resource-details">
           <span>📍 ${resource.address}</span>
           <span>📞 ${resource.phone}</span>
-          <span>🌐 <a href="${resource.website}" target="_blank" rel="noopener">Visit Website</a></span>
         </div>
       </div>
     </div>

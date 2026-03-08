@@ -4,41 +4,47 @@
   <!-- Meta & Page Info -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up - Community Connect</title>
+  <title>Sign Up - Conduit</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
   <main>
-    <!-- Navigation Bar -->
-    <nav>
-      <div class="container">
-        <div class="logo">
-          <div class="logo-icon">CC</div>
-          Community Connect
-        </div>
+    <!-- Navigation -->
+    <nav id="main-nav" class="nav--scrolled">
+      <div class="nav-inner">
+        <a href="index.html" class="logo">
+          <div class="logo-mark"></div>
+          <span class="logo-text">Con<em>duit</em></span>
+        </a>
         <ul class="nav-links">
-          <!-- Navigation Links -->
           <li><a href="index.html">Home</a></li>
           <li><a href="directory.html">Directory</a></li>
           <li><a href="map.html">Map</a></li>
-          <li><a href="submit.html">Submit Resource</a></li>
-          <li><a href="donate.html">Donate Now</a></li>
+          <li><a href="donate.html">Donate</a></li>
           <li><a href="about.html">About</a></li>
-          <li><a href="login.html" id="nav-login">Login</a></li>
-          <li><a href="signup.html" id="nav-signup">Sign Up</a></li>
-          <li><a href="profile.html" id="nav-profile" style="display:none;">My Profile</a></li>
-          <li><a href="#" id="nav-logout" style="display:none;">Logout</a></li>
+          <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
         </ul>
-        <!-- Mobile Menu Toggle -->
-        <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="nav-auth">
+          <a href="login.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
+          <div class="nav-profile-corner" id="nav-profile-corner" style="display:none;">
+            <a href="profile.html" class="nav-avatar-link">
+              <img src="" alt="My Profile" class="nav-avatar-thumb" id="nav-avatar-thumb">
+            </a>
+            <a href="#" class="nav-logout-link" id="nav-logout">Log out</a>
+          </div>
+        </div>
+        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </nav>
 
-    <!-- Page Header / Hero Section -->
-    <section class="hero" style="padding: 3rem 0;">
+    <!-- Page Hero -->
+    <section class="page-hero">
       <div class="container">
+        <p class="page-hero-eyebrow"><a href="index.html">Home</a> <span>/</span> Sign Up</p>
         <h1>Create Your Account</h1>
-        <p>Sign up to take the survey and get matched with a community.</p>
+        <p class="hero-sub">Sign up to take the survey and get matched with community resources near you.</p>
       </div>
     </section>
 
@@ -85,7 +91,7 @@
     <!-- Footer Section -->
     <footer>
       <div class="container">
-        <p>&copy; 2026 Community Connect.</p>
+        <p>&copy; 2026 Conduit.</p>
         <p>Connecting communities, one resource at a time.</p>
       </div>
     </footer>

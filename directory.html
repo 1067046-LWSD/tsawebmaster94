@@ -4,58 +4,74 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Browse our comprehensive directory of community resources and services">
-  <title>Resource Directory - Community Connect</title>
+  <title>Resource Directory — Conduit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400;1,9..144,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin="" />
 </head>
 <body>
-  <main>
-  <!-- Navigation Bar -->
-  <nav>
-    <div class="container">
-      <div class="logo">
-        <div class="logo-icon">CC</div>
-        Community Connect
-      </div>
+<main>
+
+  <!-- ===== NAV ===== -->
+  <nav id="main-nav" class="nav--scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text"><span class="nav-c-word"><span class="nav-c-mark"></span>on<em>duit</em></span></span>
+      </a>
+
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="directory.html">Directory</a></li>
         <li><a href="map.html">Map</a></li>
-        <li><a href="submit.html">Submit Resource</a></li>
-        <li><a href="donate.html">Donate Now</a></li>
+        <li><a href="donate.html">Donate</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="login.html" id="nav-login">Login</a></li>
-        <li><a href="signup.html" id="nav-signup">Sign Up</a></li>
-        <li><a href="profile.html" id="nav-profile" style="display:none;">My Profile</a></li>
-        <li><a href="#" id="nav-logout" style="display:none;">Logout</a></li>
+        <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
       </ul>
-      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+
+      <div class="nav-auth">
+        <a href="login.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
+        <div class="nav-profile-corner" id="nav-profile-corner" style="display:none;">
+          <a href="profile.html" class="nav-avatar-link">
+            <img src="" alt="My Profile" class="nav-avatar-thumb" id="nav-avatar-thumb">
+          </a>
+          <a href="#" class="nav-logout-link" id="nav-logout">Log out</a>
+        </div>
+      </div>
+
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
-  <!-- Page Header -->
-  <section class="hero" style="padding: 3rem 0;">
+  <!-- ===== PAGE HERO ===== -->
+  <section class="page-hero">
     <div class="container">
+      <p class="page-hero-eyebrow">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        Directory
+      </p>
       <h1>Resource Directory</h1>
-      <p>Explore all available community resources and services</p>
-      <!-- Search Bar -- ai generated -->
+      <p class="hero-sub">Explore all available community resources and services across Springfield.</p>
       <div class="search-container">
-        <input 
-          type="text" 
-          class="search-box" 
+        <input
+          type="text"
+          class="search-box"
           id="search-input"
-          placeholder="Search by name, category, or description..."
+          placeholder="Search by name, category, or description…"
           aria-label="Search resources"
         >
-        <span class="search-icon" id="search-btn" style="cursor: pointer;" title="Click to search">🔍</span>
+        <button class="search-icon" id="search-btn" aria-label="Search">🔍</button>
       </div>
     </div>
   </section>
 
-  <!-- Category Filters -->
+  <!-- ===== FILTERS ===== -->
   <section class="filters">
     <div class="container">
       <div class="filter-buttons">
@@ -68,19 +84,20 @@
         <button class="filter-btn" data-category="Legal">Legal</button>
         <button class="filter-btn" data-category="Community">Community</button>
       </div>
-      <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
-        <div>
-          <label for="cost-filter" style="font-weight: 600; margin-right: 0.5rem;">Cost:</label>
-          <select id="cost-filter" style="padding: 0.4rem 0.75rem; border-radius: 8px; border: 1px solid #ccc; font-size: 0.9rem;">
+
+      <div class="filter-extras">
+        <div class="filter-select-group">
+          <label class="filter-select-label" for="cost-filter">Cost</label>
+          <select id="cost-filter" class="filter-select">
             <option value="All">All</option>
             <option value="Free">Free</option>
             <option value="Low">Low Cost</option>
             <option value="Paid">Paid</option>
           </select>
         </div>
-        <div>
-          <label for="age-filter" style="font-weight: 600; margin-right: 0.5rem;">Age Group:</label>
-          <select id="age-filter" style="padding: 0.4rem 0.75rem; border-radius: 8px; border: 1px solid #ccc; font-size: 0.9rem;">
+        <div class="filter-select-group">
+          <label class="filter-select-label" for="age-filter">Age Group</label>
+          <select id="age-filter" class="filter-select">
             <option value="All">All Ages</option>
             <option value="Teens">Teens</option>
             <option value="Adults">Adults</option>
@@ -91,33 +108,75 @@
     </div>
   </section>
 
-  <!-- Resources Grid -->
+  <!-- ===== RESOURCES GRID ===== -->
   <section class="resources-section">
     <div class="container">
       <div class="resources-grid" id="resources-container">
-        <!-- Resources will be loaded here by JavaScript -->
+        <!-- JS injects resource cards here -->
         <div class="resource-card">
-          <div style="height: 200px; background: linear-gradient(135deg, #2E7D60 0%, #1e5a44 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
-            Loading resources...
+          <div style="height:200px; background:linear-gradient(135deg, var(--forest) 0%, var(--forest-mid) 100%); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.7); font-family:var(--font-body); font-size:0.95rem;">
+            Loading resources…
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
     <div class="container">
-      <p>&copy; 2026 Community Connect.</p>
-      <p>Connecting communities, one resource at a time.</p>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo"><em>Conduit</em></a>
+          <p class="footer-tagline">The channel between you<br>and what you need.</p>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Navigate</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="directory.html">Directory</a></li>
+            <li><a href="map.html">Resource Map</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Get Involved</h4>
+          <ul class="footer-links">
+            <li><a href="submit.html">Submit a Resource</a></li>
+            <li><a href="donate.html">Donate</a></li>
+            <li><a href="signup.html">Create Account</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="directory.html?category=Food Assistance">Food Assistance</a></li>
+            <li><a href="directory.html?category=Healthcare">Healthcare</a></li>
+            <li><a href="directory.html?category=Education">Education</a></li>
+            <li><a href="directory.html?category=Housing">Housing</a></li>
+            <li><a href="directory.html?category=Employment">Employment</a></li>
+            <li><a href="directory.html?category=Legal">Legal Aid</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Conduit. Built with care for communities around the US.</p>
+      </div>
     </div>
   </footer>
-  </main>
-  <!-- Leaflet JavaScript -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
-    crossorigin=""></script>
-  <script src="assets/js/auth.js"></script>
-  <script src="assets/js/app.js"></script>
+
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => document.querySelector('.nav-links')?.classList.remove('active'));
+  });
+})();
+</script>
 </body>
-</html
+</html>

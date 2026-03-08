@@ -3,84 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Learn about Community Connect and how we're helping communities connect with essential resources">
-  <title>About - Community Connect</title>
+  <meta name="description" content="Learn about Conduit and how we're helping communities connect with essential resources">
+  <title>About — Conduit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400;1,9..144,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin="" />
 </head>
-<main>
 <body>
-  <!-- Navigation Bar -->
-  <nav>
-    <div class="container">
-      <div class="logo">
-        <div class="logo-icon">CC</div>
-        Community Connect
-      </div>
+<main>
+
+  <!-- ===== NAV ===== -->
+  <nav id="main-nav" class="nav--scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text"><span class="nav-c-word"><span class="nav-c-mark"></span>on<em>duit</em></span></span>
+      </a>
+
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="directory.html">Directory</a></li>
         <li><a href="map.html">Map</a></li>
-        <li><a href="submit.html">Submit Resource</a></li>
-        <li><a href="donate.html">Donate Now</a></li>
+        <li><a href="donate.html">Donate</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="login.html" id="nav-login">Login</a></li>
-        <li><a href="signup.html" id="nav-signup">Sign Up</a></li>
-        <li><a href="profile.html" id="nav-profile" style="display:none;">My Profile</a></li>
-        <li><a href="#" id="nav-logout" style="display:none;">Logout</a></li>
+        <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
       </ul>
-      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+
+      <div class="nav-auth">
+        <a href="login.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
+        <div class="nav-profile-corner" id="nav-profile-corner" style="display:none;">
+          <a href="profile.html" class="nav-avatar-link">
+            <img src="" alt="My Profile" class="nav-avatar-thumb" id="nav-avatar-thumb">
+          </a>
+          <a href="#" class="nav-logout-link" id="nav-logout">Log out</a>
+        </div>
+      </div>
+
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
-  <!-- Page Header -->
-  <section class="hero" style="padding: 3rem 0;">
+  <!-- ===== PAGE HERO ===== -->
+  <section class="page-hero">
     <div class="container">
-      <h1>About Community Connect</h1>
-      <p>Building stronger communities through accessible information</p>
+      <p class="page-hero-eyebrow">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        About
+      </p>
+      <h1>About Conduit</h1>
+      <p class="hero-sub">Building stronger communities through accessible, centralized information about local resources and services.</p>
     </div>
   </section>
 
-  <!-- About Content -->
+  <!-- ===== ABOUT CONTENT ===== -->
   <section class="about-section">
     <div class="container">
       <div class="about-content">
+
         <h2>Our Purpose</h2>
         <p>
-          Community Connect was created to address a critical need in our communities: accessible, 
-          centralized information about local resources and services. Many residents struggle to find 
+          Conduit was created to address a critical need in our communities: accessible,
+          centralized information about local resources and services. Many residents struggle to find
           help when they need it most, simply because they don't know where to look.
         </p>
         <p>
-          Our mission is to bridge this information gap by providing a comprehensive, easy-to-use 
-          platform where anyone can discover community resources including food assistance, healthcare, 
+          Our mission is to bridge this information gap by providing a comprehensive, easy-to-use
+          platform where anyone can discover community resources including food assistance, healthcare,
           education, employment services, housing support, and legal aid.
         </p>
 
-        <h2>Research & Development Process</h2>
+        <h2>Research &amp; Development Process</h2>
         <p>
-          The development of Community Connect was guided by extensive research into community needs 
+          The development of Conduit was guided by extensive research into community needs
           and best practices for resource hubs:
         </p>
         <ul>
-          <li><strong>Community Surveys:</strong> We analyzed feedback from community members about 
+          <li><strong>Community Surveys:</strong> We analyzed feedback from community members about
           challenges in finding local resources</li>
-          <li><strong>Nonprofit Partnerships:</strong> Collaborated with local organizations to 
+          <li><strong>Nonprofit Partnerships:</strong> Collaborated with local organizations to
           understand the most critical services needed</li>
-          <li><strong>User Experience Research:</strong> Studied successful civic platforms to 
+          <li><strong>User Experience Research:</strong> Studied successful civic platforms to
           identify key features and design patterns</li>
-          <li><strong>Accessibility Studies:</strong> Reviewed WCAG guidelines and inclusive design 
+          <li><strong>Accessibility Studies:</strong> Reviewed WCAG guidelines and inclusive design
           principles to ensure our platform serves all users</li>
-          <li><strong>Geographic Analysis:</strong> Mapped resource distribution to identify 
+          <li><strong>Geographic Analysis:</strong> Mapped resource distribution to identify
           service gaps in the community</li>
         </ul>
 
         <h2>Web Technologies Used</h2>
         <p>
-          Community Connect is built using modern, accessible web technologies to ensure reliability, 
+          Conduit is built using modern, accessible web technologies to ensure reliability,
           performance, and ease of use:
         </p>
         <div class="tech-list">
@@ -92,24 +110,24 @@
           <div class="tech-item">LocalStorage API</div>
         </div>
         <p style="margin-top: 1.5rem;">
-          <strong>Why Vanilla JavaScript?</strong> We chose to build without frameworks to ensure 
-          maximum performance, minimal load times, and a lightweight footprint. This approach makes 
+          <strong>Why Vanilla JavaScript?</strong> We chose to build without frameworks to ensure
+          maximum performance, minimal load times, and a lightweight footprint. This approach makes
           the platform accessible even on slower internet connections.
         </p>
 
         <h2>Key Features</h2>
         <ul>
-          <li><strong>Searchable Directory:</strong> Live search and filtering to quickly find 
+          <li><strong>Searchable Directory:</strong> Live search and filtering to quickly find
           relevant resources</li>
-          <li><strong>Interactive Map:</strong> Visual representation of resource locations using 
+          <li><strong>Interactive Map:</strong> Visual representation of resource locations using
           OpenStreetMap integration</li>
-          <li><strong>Category Filtering:</strong> Browse resources by type including food, 
+          <li><strong>Category Filtering:</strong> Browse resources by type including food,
           healthcare, education, and more</li>
-          <li><strong>Community Submissions:</strong> Allow residents to contribute new resources 
+          <li><strong>Community Submissions:</strong> Allow residents to contribute new resources
           through a validated form</li>
-          <li><strong>Responsive Design:</strong> Optimized for all devices from mobile phones to 
+          <li><strong>Responsive Design:</strong> Optimized for all devices from mobile phones to
           desktop computers</li>
-          <li><strong>Client-Side Storage:</strong> Submissions stored locally for immediate 
+          <li><strong>Client-Side Storage:</strong> Submissions stored locally for immediate
           confirmation and future review</li>
         </ul>
 
@@ -118,22 +136,17 @@
           We believe everyone deserves equal access to community information. Our platform includes:
         </p>
         <ul>
-          <li><strong>Semantic HTML:</strong> Proper heading hierarchy and ARIA labels for screen 
-          readers</li>
+          <li><strong>Semantic HTML:</strong> Proper heading hierarchy and ARIA labels for screen readers</li>
           <li><strong>Keyboard Navigation:</strong> Full functionality without requiring a mouse</li>
           <li><strong>Color Contrast:</strong> WCAG AA compliant color combinations for readability</li>
-          <li><strong>Responsive Typography:</strong> Text scales appropriately across all device 
-          sizes</li>
+          <li><strong>Responsive Typography:</strong> Text scales appropriately across all device sizes</li>
           <li><strong>Focus Indicators:</strong> Clear visual feedback for interactive elements</li>
           <li><strong>Alt Text:</strong> Descriptive text for all images and icons</li>
-          <li><strong>Mobile-First Design:</strong> Optimized for the devices most commonly used 
-          by community members</li>
+          <li><strong>Mobile-First Design:</strong> Optimized for the devices most commonly used by community members</li>
         </ul>
 
         <h2>Future Enhancements</h2>
-        <p>
-          As Community Connect grows, we plan to add:
-        </p>
+        <p>As Conduit grows, we plan to add:</p>
         <ul>
           <li>Multilingual support for non-English speakers</li>
           <li>User accounts for saving favorite resources</li>
@@ -145,35 +158,79 @@
 
         <h2>TSA Webmaster Competition</h2>
         <p>
-          This project was developed for the Technology Student Association (TSA) Webmaster 
-          competition, which challenges students to create websites that address real-world 
-          community needs. Community Connect represents our commitment to using technology 
+          This project was developed for the Technology Student Association (TSA) Webmaster
+          competition, which challenges students to create websites that address real-world
+          community needs. Conduit represents our commitment to using technology
           as a force for social good.
         </p>
 
-        <div style="margin-top: 3rem; padding: 2rem; background-color: #F7F7F7; border-radius: 12px; text-align: center;">
-          <h3 style="color: #2E7D60; margin-bottom: 1rem;">Get Involved</h3>
-          <p style="margin-bottom: 1.5rem;">Help us improve Community Connect by submitting resources 
-          or providing feedback.</p>
-          <a href="submit.html" class="btn btn-primary">Submit a Resource</a>
+        <!-- CTA Box -->
+        <div class="about-cta-box">
+          <h3>Get Involved</h3>
+          <p>Help us improve Conduit by submitting resources or providing feedback.</p>
+          <a href="submit.html" class="btn-cta btn-cta--primary">
+            <span>Submit a Resource</span>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12H19M13 6L19 12L13 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
     <div class="container">
-      <p>&copy; 2026 Community Connect.</p>
-      <p>Connecting communities, one resource at a time.</p>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo"><em>Conduit</em></a>
+          <p class="footer-tagline">The channel between you<br>and what you need.</p>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Navigate</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="directory.html">Directory</a></li>
+            <li><a href="map.html">Resource Map</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Get Involved</h4>
+          <ul class="footer-links">
+            <li><a href="submit.html">Submit a Resource</a></li>
+            <li><a href="donate.html">Donate</a></li>
+            <li><a href="signup.html">Create Account</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="directory.html?category=Food Assistance">Food Assistance</a></li>
+            <li><a href="directory.html?category=Healthcare">Healthcare</a></li>
+            <li><a href="directory.html?category=Education">Education</a></li>
+            <li><a href="directory.html?category=Housing">Housing</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Conduit. Built with care for communities around the US.</p>
+      </div>
     </div>
   </footer>
-  </main>
-  <!-- Leaflet JavaScript -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
-    crossorigin=""></script>
-  <script src="assets/js/auth.js"></script>
-  <script src="assets/js/app.js"></script>
+
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => document.querySelector('.nav-links')?.classList.remove('active'));
+  });
+})();
+</script>
 </body>
 </html>

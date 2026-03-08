@@ -4,66 +4,81 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Submit a community resource to help others in your area">
-  <title>Submit Resource - Community Connect</title>
+  <title>Submit a Resource — Conduit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400;1,9..144,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin="" />
 </head>
 <body>
-  <main>
-  <!-- Navigation Bar -->
-  <nav>
-    <div class="container">
-      <div class="logo">
-        <div class="logo-icon">CC</div>
-        Community Connect
-      </div>
+<main>
+
+  <!-- ===== NAV ===== -->
+  <nav id="main-nav" class="nav--scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text"><span class="nav-c-word"><span class="nav-c-mark"></span>on<em>duit</em></span></span>
+      </a>
+
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="directory.html">Directory</a></li>
         <li><a href="map.html">Map</a></li>
-        <li><a href="submit.html">Submit Resource</a></li>
-        <li><a href="donate.html">Donate Now</a></li>
+        <li><a href="donate.html">Donate</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="login.html" id="nav-login">Login</a></li>
-        <li><a href="signup.html" id="nav-signup">Sign Up</a></li>
-        <li><a href="profile.html" id="nav-profile" style="display:none;">My Profile</a></li>
-        <li><a href="#" id="nav-logout" style="display:none;">Logout</a></li>
+        <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
       </ul>
-      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+
+      <div class="nav-auth">
+        <a href="login.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
+        <div class="nav-profile-corner" id="nav-profile-corner" style="display:none;">
+          <a href="profile.html" class="nav-avatar-link">
+            <img src="" alt="My Profile" class="nav-avatar-thumb" id="nav-avatar-thumb">
+          </a>
+          <a href="#" class="nav-logout-link" id="nav-logout">Log out</a>
+        </div>
+      </div>
+
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
-  <!-- Page Header -->
-  <section class="hero" style="padding: 3rem 0;">
+  <!-- ===== PAGE HERO ===== -->
+  <section class="page-hero">
     <div class="container">
+      <p class="page-hero-eyebrow">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        Submit
+      </p>
       <h1>Submit a Resource</h1>
-      <p>Help us build a stronger community by sharing valuable local resources</p>
+      <p class="hero-sub">Help us build a stronger community by sharing valuable local resources with your neighbors.</p>
     </div>
   </section>
 
-  <!-- Submission Form -->
+  <!-- ===== FORM ===== -->
   <section class="form-section">
     <div class="container">
       <div class="form-container">
-        <h2 style="color: #2E7D60; margin-bottom: 1.5rem;">Resource Information</h2>
-        <p style="color: #666; margin-bottom: 2rem;">
-          All submissions are reviewed before being added to the directory. Fields marked with 
-          <span class="required">*</span> are required.
-        </p>
-        
+
+        <div style="margin-bottom:2rem;">
+          <p class="section-eyebrow">Resource Information</p>
+          <h2 style="color:var(--forest); font-size:1.75rem; margin-bottom:0.5rem;">Tell us about this resource</h2>
+          <p style="color:var(--stone); font-size:0.9rem; margin:0;">
+            All submissions are reviewed before being added to the directory. Fields marked
+            <span class="required">*</span> are required.
+          </p>
+        </div>
+
         <form id="submit-form">
           <div class="form-group">
             <label for="name">Resource Name <span class="required">*</span></label>
-            <input 
-              type="text" 
-              id="name" 
-              name="name" 
-              required 
-              placeholder="e.g., Community Food Bank"
-            >
+            <input type="text" id="name" name="name" required placeholder="e.g., Community Food Bank">
           </div>
 
           <div class="form-group">
@@ -83,88 +98,103 @@
 
           <div class="form-group">
             <label for="description">Description <span class="required">*</span></label>
-            <textarea 
-              id="description" 
-              name="description" 
-              required 
-              placeholder="Provide a brief description of the resource, services offered, hours, and any important details..."
-            ></textarea>
+            <textarea id="description" name="description" required
+              placeholder="Provide a brief description of the resource, services offered, hours, and any important details…"></textarea>
           </div>
 
           <div class="form-group">
             <label for="address">Address <span class="required">*</span></label>
-            <input 
-              type="text" 
-              id="address" 
-              name="address" 
-              required 
-              placeholder="123 Main Street, Springfield, IL 62701"
-            >
+            <input type="text" id="address" name="address" required placeholder="123 Main Street, Springfield, IL 62701">
           </div>
 
           <div class="form-group">
             <label for="phone">Phone Number</label>
-            <input 
-              type="tel" 
-              id="phone" 
-              name="phone" 
-              placeholder="(555) 123-4567"
-            >
+            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
           </div>
 
           <div class="form-group">
             <label for="email">Email Address</label>
-              <input 
-              type="email" 
-              id="email" 
-              name="email" 
-              placeholder="user@example.com"
-            >
+            <input type="email" id="email" name="email" placeholder="contact@example.com">
           </div>
-          
+
           <div class="form-group">
             <label for="website">Website</label>
-            <input 
-              type="url" 
-              id="website" 
-              name="website" 
-              placeholder="https://example.com"
-            >
+            <input type="url" id="website" name="website" placeholder="https://example.com">
           </div>
 
-          <div style="margin-top: 2rem;">
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
-              Submit Resource
-            </button>
+          <!-- Submission guidelines -->
+          <div style="margin:1.5rem 0; padding:1.25rem 1.5rem; background:var(--cream); border:1px solid var(--sand); border-radius:14px;">
+            <p style="font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--terracotta); margin-bottom:0.65rem;">Submission Guidelines</p>
+            <ul style="margin-left:1.25rem; color:var(--stone); font-size:0.875rem; display:flex; flex-direction:column; gap:0.35rem;">
+              <li>Ensure all information is accurate and up-to-date</li>
+              <li>Resources should be free or low-cost community services</li>
+              <li>Commercial businesses will not be approved</li>
+              <li>All submissions are subject to review and verification</li>
+            </ul>
           </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%; padding:1rem; font-size:1rem;">
+            Submit Resource
+          </button>
         </form>
 
-        <div style="margin-top: 2rem; padding: 1.5rem; background-color: #F7F7F7; border-radius: 8px;">
-          <h3 style="color: #2E7D60; font-size: 1rem; margin-bottom: 0.5rem;">📋 Submission Guidelines</h3>
-          <ul style="margin-left: 1.5rem; color: #666; font-size: 0.9rem;">
-            <li>Ensure all information is accurate and up-to-date</li>
-            <li>Resources should be free or low-cost community services</li>
-            <li>Commercial businesses will not be approved</li>
-            <li>All submissions are subject to review and verification</li>
-          </ul>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
     <div class="container">
-      <p>&copy; 2026 Community Connect. </p>
-      <p>Connecting communities, one resource at a time.</p>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo"><em>Conduit</em></a>
+          <p class="footer-tagline">The channel between you<br>and what you need.</p>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Navigate</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="directory.html">Directory</a></li>
+            <li><a href="map.html">Resource Map</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Get Involved</h4>
+          <ul class="footer-links">
+            <li><a href="submit.html">Submit a Resource</a></li>
+            <li><a href="donate.html">Donate</a></li>
+            <li><a href="signup.html">Create Account</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="directory.html?category=Food Assistance">Food Assistance</a></li>
+            <li><a href="directory.html?category=Healthcare">Healthcare</a></li>
+            <li><a href="directory.html?category=Education">Education</a></li>
+            <li><a href="directory.html?category=Housing">Housing</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Conduit. Built with care for communities around the US.</p>
+      </div>
     </div>
   </footer>
-  </main>
-  <!-- Leaflet JavaScript -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
-    crossorigin=""></script>
-  <script src="assets/js/auth.js"></script>
-  <script src="assets/js/app.js"></script>
+
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => document.querySelector('.nav-links')?.classList.remove('active'));
+  });
+})();
+</script>
 </body>
 </html>

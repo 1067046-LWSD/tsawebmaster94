@@ -3,131 +3,225 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Support our mission and make a difference">
-  <title>Donate Now - Community Connect</title>
+  <meta name="description" content="Support our mission and make a difference in Springfield">
+  <title>Donate — Conduit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400;1,9..144,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin="" />
 </head>
 <body>
-  <main>
-  <!-- Navigation Bar -->
-  <nav>
-    <div class="container">
-      <div class="logo">
-        <div class="logo-icon">CC</div>
-        Community Connect
-      </div>
+<main>
+
+  <!-- ===== NAV ===== -->
+  <nav id="main-nav" class="nav--scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text"><span class="nav-c-word"><span class="nav-c-mark"></span>on<em>duit</em></span></span>
+      </a>
+
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="directory.html">Directory</a></li>
         <li><a href="map.html">Map</a></li>
-        <li><a href="submit.html">Submit Resource</a></li>
-        <li><a href="donate.html">Donate Now</a></li>
+        <li><a href="donate.html">Donate</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="login.html" id="nav-login">Login</a></li>
-        <li><a href="signup.html" id="nav-signup">Sign Up</a></li>
-        <li><a href="profile.html" id="nav-profile" style="display:none;">My Profile</a></li>
-        <li><a href="#" id="nav-logout" style="display:none;">Logout</a></li>
+        <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
       </ul>
-      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+
+      <div class="nav-auth">
+        <a href="login.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
+        <div class="nav-profile-corner" id="nav-profile-corner" style="display:none;">
+          <a href="profile.html" class="nav-avatar-link">
+            <img src="" alt="My Profile" class="nav-avatar-thumb" id="nav-avatar-thumb">
+          </a>
+          <a href="#" class="nav-logout-link" id="nav-logout">Log out</a>
+        </div>
+      </div>
+
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
-  <!-- Page Header -->
-  <section class="hero" style="padding: 3rem 0;">
-    <h1>Donate Now</h1>
-    <p>Support our mission and make a difference</p>
+  <!-- ===== PAGE HERO ===== -->
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-eyebrow">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        Donate
+      </p>
+      <h1>Support Our Mission</h1>
+      <p class="hero-sub">Your generosity keeps Conduit running and growing — helping more families find the support they need.</p>
+    </div>
   </section>
 
-  <!-- Donation Tiers Section -->
+  <!-- ===== DONATION TIERS ===== -->
   <section class="resources-section">
     <div class="container">
-      <h2 class="section-title">Choose Your Support Level</h2>
-      
+      <div class="section-header">
+        <p class="section-eyebrow">Choose your level</p>
+        <h2 class="section-title">Choose Your Support Level</h2>
+      </div>
+
       <div class="donation-tiers">
+        <!-- Bronze -->
         <div class="donation-card">
-          <div class="tier-badge" style="background-color: #CD7F32;">Bronze</div>
+          <div class="tier-badge" style="background:linear-gradient(135deg,#c9863a,#b5722a);">Bronze</div>
           <h3>Community Friend</h3>
           <div class="price">
             <span class="currency">$</span>
             <span class="amount">10</span>
           </div>
-          <button class="btn btn-outline" onclick="selectTier('bronze', 25); return false;">Select Bronze</button>
+          <ul class="tier-benefits">
+            <li>✓ Support platform maintenance</li>
+            <li>✓ Help keep resources current</li>
+            <li>✓ Digital thank-you badge</li>
+          </ul>
+          <button class="btn btn-outline" onclick="selectTier('bronze', 10); return false;">Select Bronze</button>
         </div>
 
+        <!-- Silver -->
         <div class="donation-card featured">
           <div class="popular-badge">Most Popular</div>
-          <div class="tier-badge" style="background-color: #C0C0C0;">Silver</div>
+          <div class="tier-badge" style="background:linear-gradient(135deg,#8a9aac,#6e808f);">Silver</div>
           <h3>Community Champion</h3>
           <div class="price">
             <span class="currency">$</span>
             <span class="amount">25</span>
           </div>
-          <button class="btn btn-primary" onclick="selectTier('silver', 50); return false;">Select Silver</button>
+          <ul class="tier-benefits">
+            <li>✓ Everything in Bronze</li>
+            <li>✓ Fund new resource additions</li>
+            <li>✓ Named in our donor list</li>
+          </ul>
+          <button class="btn btn-primary" onclick="selectTier('silver', 25); return false;">Select Silver</button>
         </div>
 
+        <!-- Gold -->
         <div class="donation-card">
-          <div class="tier-badge" style="background-color: #E7C45F;">Gold</div>
+          <div class="tier-badge" style="background:linear-gradient(135deg,var(--gold),#b8892a);">Gold</div>
           <h3>Community Leader</h3>
           <div class="price">
             <span class="currency">$</span>
             <span class="amount">50</span>
           </div>
-          <button class="btn btn-secondary" onclick="selectTier('gold', 100); return false;">Select Gold</button>
+          <ul class="tier-benefits">
+            <li>✓ Everything in Silver</li>
+            <li>✓ Priority resource submissions</li>
+            <li>✓ Featured supporter spotlight</li>
+          </ul>
+          <button class="btn btn-secondary" onclick="selectTier('gold', 50); return false;">Select Gold</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Donation Form -->
+  <!-- ===== DONATION FORM ===== -->
   <section class="form-section" id="donate-form">
     <div class="container">
       <div class="form-container">
-        <h2 style="color: #2E7D60; margin-bottom: 1.5rem;">Complete Your Donation</h2>
+
+        <div style="margin-bottom:2rem;">
+          <p class="section-eyebrow">Complete your donation</p>
+          <h2 style="color:var(--forest); font-size:1.75rem; margin-bottom:0;">Your Contribution</h2>
+        </div>
+
+        <!-- Selected tier display -->
+        <div class="selected-tier-display">
+          <label>
+            Tier:
+            <span id="selected-tier">None selected</span>
+          </label>
+          <label>
+            Amount:
+            $<span id="selected-amount">0</span>
+          </label>
+        </div>
+
         <form id="donation-form">
           <div class="form-group">
-            <label>Selected Tier: <span id="selected-tier" style="font-weight: 700; color: #2E7D60;">None</span></label>
-            <label>Amount: $<span id="selected-amount" style="font-weight: 700; color: #2E7D60;">0</span></label>
-          </div>
-          
-          <div class="form-group">
             <label for="donor-name">Full Name <span class="required">*</span></label>
-            <input type="text" id="donor-name" name="donor-name" required>
+            <input type="text" id="donor-name" name="donor-name" required placeholder="Your name">
           </div>
 
           <div class="form-group">
             <label for="donor-email">Email <span class="required">*</span></label>
-            <input type="email" id="donor-email" name="donor-email" required>
+            <input type="email" id="donor-email" name="donor-email" required placeholder="your@email.com">
           </div>
 
           <div class="form-group">
-            <label for="donor-message">Message (Optional)</label>
-            <textarea id="donor-message" name="donor-message" rows="4" 
-              placeholder="Share why you're supporting Community Connect..."></textarea>
+            <label for="donor-message">Message <span style="color:var(--stone); font-weight:400;">(optional)</span></label>
+            <textarea id="donor-message" name="donor-message" rows="4"
+              placeholder="Share why you're supporting Conduit…"></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary" style="width: 100%;">Proceed to Payment</button>
+          <button type="submit" class="btn btn-primary" style="width:100%; padding:1rem; font-size:1rem;">
+            Proceed to Payment
+          </button>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
     <div class="container">
-      <p>&copy; 2026 Community Connect.</p>
-      <p>Connecting communities, one resource at a time.</p>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo"><em>Conduit</em></a>
+          <p class="footer-tagline">The channel between you<br>and what you need.</p>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Navigate</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="directory.html">Directory</a></li>
+            <li><a href="map.html">Resource Map</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Get Involved</h4>
+          <ul class="footer-links">
+            <li><a href="submit.html">Submit a Resource</a></li>
+            <li><a href="donate.html">Donate</a></li>
+            <li><a href="signup.html">Create Account</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="directory.html?category=Food Assistance">Food Assistance</a></li>
+            <li><a href="directory.html?category=Healthcare">Healthcare</a></li>
+            <li><a href="directory.html?category=Education">Education</a></li>
+            <li><a href="directory.html?category=Housing">Housing</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Conduit. Built with care for communities around the US.</p>
+      </div>
     </div>
   </footer>
-  </main>
-  <!-- Leaflet JavaScript -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
-    crossorigin=""></script>
-  <script src="assets/js/auth.js"></script>
-  <script src="assets/js/app.js"></script>
+
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => document.querySelector('.nav-links')?.classList.remove('active'));
+  });
+})();
+</script>
 </body>
 </html>
