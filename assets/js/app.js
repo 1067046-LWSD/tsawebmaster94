@@ -5,6 +5,7 @@
 // Global state
 let allResources = [];
 let currentFilter = 'All';
+let currentSort = 'featured';
 let _parallaxScrollHandler = null;
 
 // ===================================
@@ -79,7 +80,16 @@ function setUpPage() {
   // Setup form submission
   if (document.getElementById('submit-form')) {
     setupFormSubmission();
+    initCharacterCount();
   }
+
+  // Marquee testimonials (homepage)
+  if (document.querySelector('.marquee-track')) {
+    initMarquee();
+  }
+
+  // Back-to-top button (global)
+  initBackToTop();
 
   // Setup homepage search
   if (document.querySelector('.search-box-home') || document.querySelector('.search-button-home')) {
@@ -170,10 +180,14 @@ function setupMobileMenu() {
   if (menuToggle && navLinks) {
     menuToggle.addEventListener('click', function() {
       navLinks.classList.toggle('active');
+      menuToggle.classList.toggle('is-open');
     });
     // Close menu when a nav link is clicked
     navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => navLinks.classList.remove('active'));
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        menuToggle.classList.remove('is-open');
+      });
     });
   }
 }
@@ -186,23 +200,35 @@ window.navigation.addEventListener('navigate', (navigateEvent) => {
 
   if (!navigateEvent.canIntercept) return;
   navigateEvent.intercept({
+    scroll: 'manual',
     async handler() {
       showLoader();
-      const newContent = await getNewContent(nextURL);
+      const { mainHTML, headStyles } = await getNewContent(nextURL);
+
+      // Swap page-specific <style> tags from <head>
+      document.querySelectorAll('style[data-page-style]').forEach(el => el.remove());
+      headStyles.forEach(css => {
+        const style = document.createElement('style');
+        style.setAttribute('data-page-style', '');
+        style.textContent = css;
+        document.head.appendChild(style);
+      });
+
       if (document.startViewTransition) {
-        document.startViewTransition(() => {
+        const transition = document.startViewTransition(() => {
           const main = document.querySelector('main');
-          if (main) main.innerHTML = newContent || "";
-          window.scrollTo({ top: 0, behavior: 'instant' });
+          if (main) main.innerHTML = mainHTML || "";
           setUpPage();
           hideLoader();
         });
+        await transition.ready;
+        window.scrollTo({ top: 0, behavior: 'instant' });
       } else {
         const main = document.querySelector('main');
-        if (main) main.innerHTML = newContent;
-        window.scrollTo({ top: 0, behavior: 'instant' });
+        if (main) main.innerHTML = mainHTML;
         setUpPage();
         hideLoader();
+        window.scrollTo({ top: 0, behavior: 'instant' });
       }
     },
   });
@@ -211,9 +237,17 @@ window.navigation.addEventListener('navigate', (navigateEvent) => {
 async function getNewContent(url) {
   const page = await fetch(url.href);
   const data = await page.text();
-  const mainTagContent = data.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
 
-  return mainTagContent ? mainTagContent[1] : "";
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(data, 'text/html');
+
+  const mainEl = doc.querySelector('main');
+  const mainHTML = mainEl ? mainEl.innerHTML : "";
+
+  // Extract all <style> blocks from the fetched page's <head>
+  const headStyles = [...doc.querySelectorAll('head style')].map(s => s.textContent);
+
+  return { mainHTML, headStyles };
 }
 
 // ===================================
@@ -274,6 +308,7 @@ async function loadResources() {
       setupDirectorySearch(); // Initialize the search and filter listeners
       setupCategoryFilters();
       setupExtraFilters();
+      setupSort();
 
       if (categoryParam) {
         // Simulate clicking the matching filter button
@@ -306,35 +341,109 @@ async function loadResources() {
 }
 
 // ===================================
-// Display Resources
+// Sort Helpers
 // ===================================
-//ai generated
-function displayResources(resources) {
-  const container = document.getElementById('resources-container');
-  
-  if (!container) return;
-  
-  if (resources.length === 0) {
-    container.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">No resources found. Try adjusting your search or filters.</p>';
+function applySort(resources) {
+  if (currentSort === 'az') return [...resources].sort((a, b) => a.name.localeCompare(b.name));
+  if (currentSort === 'za') return [...resources].sort((a, b) => b.name.localeCompare(a.name));
+  // 'featured' — featured resources first, then original order
+  return [...resources].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+}
+
+// ===================================
+// Saved Resources (Bookmarks)
+// ===================================
+function getSavedResources() {
+  return JSON.parse(localStorage.getItem('savedResources') || '[]');
+}
+
+window.toggleSave = function(id, btn) {
+  const user = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+  if (!user) {
+    window.location.href = 'login.html';
     return;
   }
-  
-  container.innerHTML = resources.map(resource => `
-    <div class="resource-card" data-id="${resource.id}" onclick="openResource(${resource.id})" style="cursor:pointer;">
-      <img src="${resource.image}" alt="${resource.name}" class="resource-image">
-      <div class="resource-content">
-        <div class="resource-header">
-          <h3>${resource.name}</h3>
-          <span class="category-badge">${resource.category}</span>
+  const saved = getSavedResources();
+  const idx = saved.indexOf(id);
+  if (idx === -1) {
+    saved.push(id);
+    btn.classList.add('is-saved');
+    btn.setAttribute('aria-label', 'Unsave resource');
+    btn.querySelector('svg').setAttribute('fill', 'currentColor');
+  } else {
+    saved.splice(idx, 1);
+    btn.classList.remove('is-saved');
+    btn.setAttribute('aria-label', 'Save resource');
+    btn.querySelector('svg').setAttribute('fill', 'none');
+  }
+  localStorage.setItem('savedResources', JSON.stringify(saved));
+};
+
+// ===================================
+// Display Resources
+// ===================================
+function displayResources(resources) {
+  const container = document.getElementById('resources-container');
+  if (!container) return;
+
+  // Update result count display
+  const countEl = document.getElementById('results-count');
+  if (countEl) {
+    if (resources.length === allResources.length) {
+      countEl.innerHTML = `<strong>${resources.length}</strong> resources available`;
+    } else {
+      countEl.innerHTML = `Showing <strong>${resources.length}</strong> of <strong>${allResources.length}</strong> resources`;
+    }
+  }
+
+  if (resources.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"/>
+            <path d="M16.5 16.5L21 21"/>
+            <path d="M8 11h6M11 8v6" stroke-width="1.5"/>
+          </svg>
         </div>
-        <p>${resource.description.substring(0, 120)}...</p>
-        <div class="resource-details">
-          <span>📍 ${resource.address}</span>
-          <span>📞 ${resource.phone}</span>
+        <h3>No resources found</h3>
+        <p>Try broadening your search or clearing some filters. There's always something here to help.</p>
+        <button class="btn btn-primary" onclick="document.getElementById('search-input').value=''; currentFilter='All'; document.querySelector('.filter-btn[data-category=All]').click();">Clear all filters</button>
+      </div>`;
+    return;
+  }
+
+  const sorted = applySort(resources);
+  const saved = getSavedResources();
+
+  container.innerHTML = sorted.map(resource => {
+    const isSaved = saved.includes(resource.id);
+    const costClass = resource.cost === 'Free' ? 'free' : '';
+    const costLabel = resource.cost || '';
+    return `
+      <div class="resource-card" data-id="${resource.id}">
+        <div class="resource-img-wrap" onclick="openResource(${resource.id})">
+          <img src="${resource.image}" alt="${resource.name}" class="resource-image" loading="lazy">
+          ${costLabel ? `<span class="cost-badge ${costClass}">${costLabel}</span>` : ''}
+          <button class="bookmark-btn ${isSaved ? 'is-saved' : ''}"
+            aria-label="${isSaved ? 'Unsave resource' : 'Save resource'}"
+            onclick="event.stopPropagation(); toggleSave(${resource.id}, this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </button>
         </div>
-      </div>
-    </div>
-  `).join('');
+        <div class="resource-content" onclick="openResource(${resource.id})" style="cursor:pointer;">
+          <div class="resource-header">
+            <h3>${resource.name}</h3>
+            <span class="category-badge">${resource.category}</span>
+          </div>
+          <p>${resource.description.substring(0, 120)}…</p>
+          <div class="resource-details">
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="vertical-align:middle;margin-right:4px"><path d="M12 2C8.7 2 6 4.7 6 8c0 5 6 13 6 13s6-8 6-13c0-3.3-2.7-6-6-6z"/><circle cx="12" cy="8" r="2"/></svg>${resource.address}</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="vertical-align:middle;margin-right:4px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.59 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg>${resource.phone}</span>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
 }
 
 // ===================================
@@ -357,8 +466,8 @@ function displayFeaturedResources() {
         </div>
         <p>${resource.description}</p>
         <div class="resource-details">
-          <span>📍 ${resource.address}</span>
-          <span>📞 ${resource.phone}</span>
+          <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="vertical-align:middle;margin-right:4px"><path d="M12 2C8.7 2 6 4.7 6 8c0 5 6 13 6 13s6-8 6-13c0-3.3-2.7-6-6-6z"/><circle cx="12" cy="8" r="2"/></svg>${resource.address}</span>
+          <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="vertical-align:middle;margin-right:4px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.59 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg>${resource.phone}</span>
         </div>
       </div>
     </div>
@@ -514,6 +623,70 @@ function setupExtraFilters() {
 
   costFilter.addEventListener('change', applyFilters);
   ageFilter.addEventListener('change', applyFilters);
+}
+
+// ===================================
+// Sort Dropdown
+// ===================================
+function setupSort() {
+  const sortSelect = document.getElementById('sort-select');
+  if (!sortSelect) return;
+  sortSelect.value = currentSort;
+  sortSelect.addEventListener('change', function() {
+    currentSort = this.value;
+    const searchTerm = document.getElementById('search-input')?.value.trim() || '';
+    const cost = document.getElementById('cost-filter')?.value || 'All';
+    const age = document.getElementById('age-filter')?.value || 'All';
+    displayResources(filterResources(searchTerm, currentFilter, cost, age));
+  });
+}
+
+// ===================================
+// ===================================
+// Marquee — duplicate cards for seamless loop
+// ===================================
+function initMarquee() {
+  document.querySelectorAll('.marquee-track').forEach(track => {
+    if (!track.dataset.duped) {
+      track.innerHTML += track.innerHTML;
+      track.dataset.duped = 'true';
+    }
+  });
+}
+
+// ===================================
+// Back-to-Top Button
+// ===================================
+function initBackToTop() {
+  // Only create once — button persists across SPA navigations
+  if (document.getElementById('back-to-top')) return;
+  const btn = document.createElement('button');
+  btn.id = 'back-to-top';
+  btn.className = 'back-to-top';
+  btn.setAttribute('aria-label', 'Back to top');
+  btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12L12 5L19 12"/></svg>`;
+  document.body.appendChild(btn);
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('is-visible', window.scrollY > 400);
+  }, { passive: true });
+}
+
+// ===================================
+// Description Character Count
+// ===================================
+function initCharacterCount() {
+  const textarea = document.getElementById('description');
+  const counter = document.getElementById('desc-counter');
+  if (!textarea || !counter) return;
+  const max = 600;
+  function update() {
+    const len = textarea.value.length;
+    counter.textContent = `${len} / ${max} characters`;
+    counter.classList.toggle('over-limit', len > max);
+  }
+  textarea.addEventListener('input', update);
+  update();
 }
 
 // ===================================
@@ -687,6 +860,55 @@ async function loadSingleResource() {
     }
     if (resource.hours) {
       document.getElementById('resource-hours').textContent = resource.hours;
+    }
+
+    // Save + Share buttons
+    const actionContainer = document.getElementById('resource-actions');
+    if (actionContainer) {
+      const saved = getSavedResources();
+      const isSaved = saved.includes(resource.id);
+      actionContainer.innerHTML = `
+        <button class="btn-save ${isSaved ? 'is-saved' : ''}" id="save-btn" aria-label="${isSaved ? 'Unsave' : 'Save'} resource">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          ${isSaved ? 'Saved' : 'Save'}
+        </button>
+        <button class="btn-share" id="share-btn" aria-label="Share resource">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>`;
+
+      document.getElementById('save-btn').addEventListener('click', function() {
+        const user = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+        if (!user) { window.location.href = 'login.html'; return; }
+        const s = getSavedResources();
+        const i = s.indexOf(resource.id);
+        if (i === -1) {
+          s.push(resource.id);
+          this.classList.add('is-saved');
+          this.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Saved`;
+        } else {
+          s.splice(i, 1);
+          this.classList.remove('is-saved');
+          this.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Save`;
+        }
+        localStorage.setItem('savedResources', JSON.stringify(s));
+      });
+
+      document.getElementById('share-btn').addEventListener('click', async function() {
+        const shareData = {
+          title: resource.name,
+          text: resource.description.substring(0, 120) + '…',
+          url: window.location.href
+        };
+        if (navigator.share) {
+          try { await navigator.share(shareData); } catch (_) {}
+        } else {
+          await navigator.clipboard.writeText(window.location.href);
+          const orig = this.innerHTML;
+          this.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+          setTimeout(() => { this.innerHTML = orig; }, 2000);
+        }
+      });
     }
 
     const mapElement = document.getElementById('resource-map');
