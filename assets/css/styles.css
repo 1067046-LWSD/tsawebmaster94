@@ -1683,8 +1683,48 @@ footer a { color: var(--gold); }
   font-family: var(--font-body);
 }
 
+.leaflet-popup.resource-popup .leaflet-popup-content-wrapper {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.leaflet-popup.resource-popup .leaflet-popup-content {
+  margin: 0;
+}
+
+.leaflet-popup.resource-popup .leaflet-popup-tip {
+  background: #fff;
+}
+
 .popup-content h3 { color: var(--forest); margin-bottom: 0.5rem; }
 .popup-content .category-badge { margin-bottom: 0.5rem; }
+.popup-content--map {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: visible;
+}
+
+.popup-resource-image {
+  display: block;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 14px 14px 0 0;
+  margin-bottom: 0;
+}
+
+.popup-text-panel {
+  background: #fff;
+  border-radius: 0 0 14px 14px;
+  padding: 1rem;
+  box-shadow: 0 8px 30px rgba(26,58,42,0.14);
+}
+
+.popup-content--map:not(.popup-content--with-image) .popup-text-panel {
+  border-radius: 14px;
+}
 
 /* ============================================================
    ABOUT PAGE

@@ -716,17 +716,27 @@ function initializeMap() {
     
     // Create popup content
     const popupContent = `
-      <div class="popup-content" style="min-width: 200px;">
-        <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">${resource.name}</h3>
-        <span class="category-badge">${resource.category}</span>
-        <p style="margin: 0.75rem 0; font-size: 0.9rem; color: #666;">${resource.description.substring(0, 100)}...</p>
-        <div style="margin-top: 0.5rem;">
-          <a href="resource.html?id=${resource.id}" style="color: #2E7D60; font-weight: 600; font-size: 0.9rem;">View Full Details →</a>
+        <div class="popup-content popup-content--map${resource.image ? ' popup-content--with-image' : ''}" style="min-width: 220px;">
+          ${resource.image ? `
+            <img
+              src="${resource.image}"
+              alt="${resource.name}"
+              class="popup-resource-image"
+              loading="lazy"
+            >
+          ` : ''}
+          <div class="popup-text-panel">
+            <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">${resource.name}</h3>
+            <span class="category-badge">${resource.category}</span>
+            <p style="margin: 0.75rem 0; font-size: 0.9rem; color: #666;">${resource.description.substring(0, 100)}...</p>
+            <div style="margin-top: 0.5rem;">
+              <a href="resource.html?id=${resource.id}" style="color: #2E7D60; font-weight: 600; font-size: 0.9rem;">View Full Details →</a>
+            </div>
+          </div>
         </div>
-      </div>
     `;
 
-    marker.bindPopup(popupContent, { maxWidth: 300 });
+    marker.bindPopup(popupContent, { maxWidth: 340, className: 'resource-popup' });
   });
 }
 
