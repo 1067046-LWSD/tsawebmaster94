@@ -693,47 +693,142 @@ function initCharacterCount() {
 // Map Functionality
 // ===================================
 function initializeMap() {
-  // Initialize Leaflet map centered on Springfield, IL
-  const map = L.map('map').setView([39.7817, -89.6501], 13);
-  
-  // Add OpenStreetMap tiles
+  const user = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+  const isLoggedIn = !!user;
+
+  // Category → marker color
+  const CATEGORY_COLORS = {
+    'Food Assistance': '#156b3a',
+    'Healthcare':      '#b83232',
+    'Education':       '#1a55a0',
+    'Employment':      '#b84510',
+    'Housing':         '#7c4daa',
+    'Legal':           '#2e7d60',
+    'Community':       '#2e7d60',
+  };
+
+  // City quick-zoom targets
+  const CITIES = {
+    nyc:         { label: 'New York City', lat: 40.7128,  lng: -74.0060,  zoom: 12 },
+    la:          { label: 'Los Angeles',   lat: 34.0522,  lng: -118.2437, zoom: 12 },
+    seattle:     { label: 'Seattle',       lat: 47.6062,  lng: -122.3321, zoom: 12 },
+    springfield: { label: 'Springfield',   lat: 39.7817,  lng: -89.6501,  zoom: 13 },
+  };
+
+  // Logged-out → show whole US; logged-in → Springfield until geolocation resolves
+  const startView = isLoggedIn
+    ? { lat: 39.7817, lng: -89.6501, zoom: 13 }
+    : { lat: 39.5,    lng: -98.35,   zoom: 4  };
+
+  const map = L.map('map', { zoomControl: false }).setView([startView.lat, startView.lng], startView.zoom);
+
+  // Move zoom controls to top-right
+  L.control.zoom({ position: 'topright' }).addTo(map);
+
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19
   }).addTo(map);
-  
-  // Custom icon for markers
-  const customIcon = L.divIcon({
-    className: 'custom-marker',
-    html: '<div style="background-color: #2E7D60; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>',
-    iconSize: [30, 30],
-    iconAnchor: [15, 15]
-  });
-  
-  // Add markers for each resource
+
+  // Hero subtitle
+  const heroSub = document.getElementById('map-hero-sub');
+  if (heroSub) {
+    heroSub.textContent = isLoggedIn
+      ? 'Centered on your location — click any marker to explore.'
+      : 'Choose a city to explore, or click any marker for details.';
+  }
+
+  // Status badge helper
+  const statusBadge = document.getElementById('map-status-badge');
+  const statusText  = document.getElementById('map-status-text');
+  function setStatus(text, show = true) {
+    if (!statusBadge || !statusText) return;
+    statusText.textContent = text;
+    statusBadge.style.display = show ? 'inline-flex' : 'none';
+  }
+
+  // Resource count badge
+  const countEl = document.getElementById('map-resource-count');
+  if (countEl) countEl.textContent = `${allResources.length} resources on map`;
+
+  // Locate button (works for all users)
+  const locateBtn = document.getElementById('map-locate-btn');
+  function flyToUserLocation() {
+    if (!navigator.geolocation) return;
+    if (locateBtn) { locateBtn.classList.add('is-loading'); locateBtn.disabled = true; }
+    setStatus('Detecting location…');
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        map.flyTo([pos.coords.latitude, pos.coords.longitude], 13, { animate: true, duration: 1.5 });
+        setStatus('Near your location');
+        if (locateBtn) { locateBtn.classList.remove('is-loading'); locateBtn.disabled = false; }
+        if (heroSub) heroSub.textContent = 'Showing resources near your location.';
+      },
+      () => {
+        setStatus('Location unavailable', false);
+        if (locateBtn) { locateBtn.classList.remove('is-loading'); locateBtn.disabled = false; }
+      },
+      { timeout: 8000 }
+    );
+  }
+  if (locateBtn) locateBtn.addEventListener('click', flyToUserLocation);
+
+  // Auto-geolocate for logged-in users
+  if (isLoggedIn) flyToUserLocation();
+
+  // City buttons (always wired, shown for logged-out)
+  const cityBtnsEl = document.getElementById('map-city-btns');
+  if (cityBtnsEl) {
+    cityBtnsEl.style.display = isLoggedIn ? 'none' : 'flex';
+    cityBtnsEl.querySelectorAll('[data-city]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const c = CITIES[btn.dataset.city];
+        if (!c) return;
+        map.flyTo([c.lat, c.lng], c.zoom, { animate: true, duration: 1.2 });
+        cityBtnsEl.querySelectorAll('[data-city]').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        setStatus(c.label);
+        if (heroSub) heroSub.textContent = `Exploring resources in ${c.label}.`;
+      });
+    });
+  }
+
+  // Colored markers per category
+  function makeIcon(color) {
+    return L.divIcon({
+      className: '',
+      html: `<div style="
+        background:${color};
+        width:28px; height:28px;
+        border-radius:50% 50% 50% 0;
+        transform:rotate(-45deg);
+        border:3px solid white;
+        box-shadow:0 3px 8px rgba(0,0,0,0.35);
+      "></div>`,
+      iconSize:   [28, 28],
+      iconAnchor: [14, 28],
+      popupAnchor:[0, -28]
+    });
+  }
+
+  // Add markers for all resources
   allResources.forEach(resource => {
-    const marker = L.marker([resource.lat, resource.lng], { icon: customIcon }).addTo(map);
-    
-    // Create popup content
+    const color = CATEGORY_COLORS[resource.category] || '#2e7d60';
+    const marker = L.marker([resource.lat, resource.lng], { icon: makeIcon(color) }).addTo(map);
+
     const popupContent = `
-        <div class="popup-content popup-content--map${resource.image ? ' popup-content--with-image' : ''}" style="min-width: 220px;">
-          ${resource.image ? `
-            <img
-              src="${resource.image}"
-              alt="${resource.name}"
-              class="popup-resource-image"
-              loading="lazy"
-            >
-          ` : ''}
-          <div class="popup-text-panel">
-            <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">${resource.name}</h3>
-            <span class="category-badge">${resource.category}</span>
-            <p style="margin: 0.75rem 0; font-size: 0.9rem; color: #666;">${resource.description.substring(0, 100)}...</p>
-            <div style="margin-top: 0.5rem;">
-              <a href="resource.html?id=${resource.id}" style="color: #2E7D60; font-weight: 600; font-size: 0.9rem;">View Full Details →</a>
-            </div>
-          </div>
+      <div class="popup-content popup-content--map${resource.image ? ' popup-content--with-image' : ''}" style="min-width:230px;">
+        ${resource.image ? `<img src="${resource.image}" alt="${resource.name}" class="popup-resource-image" loading="lazy">` : ''}
+        <div class="popup-text-panel">
+          <h3 style="margin:0 0 0.45rem;font-size:1rem;font-family:'Fraunces',serif;font-weight:700;color:#1a2e1f;">${resource.name}</h3>
+          <span class="category-badge" style="background:${color}18;color:${color};border:1px solid ${color}40;">${resource.category}</span>
+          <p style="margin:0.65rem 0 0.5rem;font-size:0.855rem;color:#555;line-height:1.5;">${resource.description.substring(0, 110)}…</p>
+          <a href="resource.html?id=${resource.id}" style="display:inline-flex;align-items:center;gap:0.3rem;color:${color};font-weight:700;font-size:0.845rem;text-decoration:none;">
+            View Details
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M13 6L19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
+      </div>
     `;
 
     marker.bindPopup(popupContent, { maxWidth: 340, className: 'resource-popup' });

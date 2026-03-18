@@ -3531,3 +3531,206 @@ footer a { color: var(--gold); }
 .cta-mini-stub--lg { width: 80%; }
 .cta-mini-stub--md { width: 58%; }
 .cta-mini-stub--sm { width: 40%; }
+
+/* ===================================
+   Directory — fix gap between filters and resources
+   =================================== */
+.resources-section {
+  padding-top: 2rem !important;
+}
+
+/* ===================================
+   Map — City Jump Buttons
+   =================================== */
+.map-city-btns {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1.1rem;
+  background: var(--white);
+  border: 1px solid var(--sand);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(26,58,42,0.07);
+}
+
+.map-city-btns-label {
+  font-family: var(--font-body);
+  font-size: 0.77rem;
+  font-weight: 700;
+  color: var(--stone);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-right: 0.2rem;
+  white-space: nowrap;
+}
+
+.map-city-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.42rem 1rem;
+  border-radius: 100px;
+  border: 1.5px solid var(--sand);
+  background: var(--cream);
+  color: var(--forest);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.map-city-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+.map-city-btn:hover {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--white);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(26,58,42,0.18);
+}
+.map-city-btn.is-active {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--white);
+  box-shadow: 0 4px 14px rgba(26,58,42,0.22);
+}
+
+/* ===================================
+   Map — Toolbar
+   =================================== */
+.map-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.85rem;
+}
+
+.map-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.map-stats-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.38rem 0.85rem;
+  background: var(--forest);
+  color: var(--cream);
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.map-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  background: var(--cream);
+  border: 1px solid var(--sand);
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--forest);
+}
+
+.map-locate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.42rem 1rem;
+  border-radius: 100px;
+  border: 1.5px solid var(--forest);
+  background: transparent;
+  color: var(--forest);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+.map-locate-btn:hover {
+  background: var(--forest);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+.map-locate-btn.is-loading {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* ===================================
+   Map — Wrap + Legend overlay
+   =================================== */
+.map-wrap {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(26,58,42,0.14), 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.map-wrap #map {
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.map-legend {
+  position: absolute;
+  bottom: 1.1rem;
+  left: 1.1rem;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.14);
+  min-width: 140px;
+}
+
+.map-legend-title {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--stone);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 0.55rem;
+}
+
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.32rem;
+}
+.map-legend-item:last-child { margin-bottom: 0; }
+
+.map-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .map-city-btns { padding: 0.7rem; gap: 0.4rem; }
+  .map-city-btns-label { width: 100%; }
+  .map-city-btn { font-size: 0.78rem; padding: 0.38rem 0.8rem; }
+  .map-toolbar { gap: 0.5rem; }
+  .map-legend { bottom: 0.75rem; left: 0.75rem; padding: 0.6rem 0.8rem; }
+}
