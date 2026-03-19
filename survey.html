@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="assets/images/C_logo_clean_gold.svg">
   <title>Community Survey — Conduit</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -341,9 +342,11 @@
       .recs-grid { grid-template-columns: 1fr; }
     }
   </style>
+<script>(function(){var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}());</script>
 </head>
 <body>
-<main>
+<a href="#main-content" class="skip-to-content">Skip to content</a>
+<main id="main-content">
 
   <!-- ===== NAV ===== -->
   <nav id="main-nav" class="nav--scrolled">
@@ -356,7 +359,8 @@
         <li><a href="directory.html">Directory</a></li>
         <li><a href="map.html">Map</a></li>
         <li><a href="donate.html">Donate</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="articles.html">Articles</a></li>
+          <li><a href="about.html">About</a></li>
         <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
       </ul>
       <div class="nav-auth">
@@ -605,7 +609,7 @@
                 <path d="M2 27H30" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </div>
-            New York City
+            New York City, NY
           </button>
 
           <button class="choice-card" data-field="city" data-value="Los Angeles" data-step="3">
@@ -665,7 +669,18 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Conduit. Built with care for communities around the US.</p>
+        <p>© 2026 Conduit. All Rights Reserved.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Facebook">
+            <img src="assets/images/fb.svg" alt="Facebook">
+          </a>
+          <a href="https://instagram.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="assets/images/ig.svg" alt="Instagram">
+          </a>
+          <a href="https://x.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="X">
+            <img src="assets/images/x.svg" alt="X">
+          </a>
+        </div>
       </div>
     </div>
   </footer>

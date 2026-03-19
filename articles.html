@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="assets/images/C_logo_clean_gold.svg">
+  <title>Articles — Conduit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400;1,9..144,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style data-page-style>
+    /* ─── Article Cards ───────────────────────────── */
+    .articles-body {
+      background: var(--cream);
+      padding: 3rem 0 6rem;
+    }
+
+    .articles-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .art-filter-btn {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.45rem 1.1rem;
+      border-radius: 100px;
+      border: 1px solid var(--sand);
+      background: var(--white);
+      color: var(--stone);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .art-filter-btn:hover {
+      border-color: var(--forest);
+      color: var(--forest);
+    }
+
+    .art-filter-btn.active {
+      background: var(--forest);
+      border-color: var(--forest);
+      color: var(--white);
+    }
+
+    /* Featured article — full width */
+    .art-featured {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 32px rgba(26,58,42,0.07);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .art-featured:hover {
+      box-shadow: 0 12px 48px rgba(26,58,42,0.12);
+      transform: translateY(-2px);
+    }
+
+    .art-featured-img {
+      background-size: cover;
+      background-position: center;
+      min-height: 340px;
+    }
+
+    .art-featured-body {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .art-category-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .art-featured-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.85rem;
+    }
+
+    .art-featured-excerpt {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--stone);
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+    }
+
+    .art-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: var(--stone);
+    }
+
+    .art-meta-dot { opacity: 0.35; }
+
+    /* Grid of regular cards */
+    .art-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .art-card {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 20px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 16px rgba(26,58,42,0.05);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .art-card:hover {
+      box-shadow: 0 10px 40px rgba(26,58,42,0.1);
+      transform: translateY(-3px);
+    }
+
+    .art-card-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--sand);
+      flex-shrink: 0;
+    }
+
+    .art-card-body {
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .art-card-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 0.6rem;
+    }
+
+    .art-card-excerpt {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      color: var(--stone);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      flex: 1;
+    }
+
+    .art-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--mist);
+      margin-top: auto;
+    }
+
+    .art-card-footer .art-meta { font-size: 0.72rem; }
+
+    .art-read-more {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--forest);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: gap 0.2s;
+    }
+
+    .art-card:hover .art-read-more { gap: 0.6rem; }
+
+    /* Category color map */
+    .badge--food       { background: #fff3e0; color: #e65100; }
+    .badge--housing    { background: #e8f5e9; color: #2e7d32; }
+    .badge--healthcare { background: #e3f2fd; color: #1565c0; }
+    .badge--employment { background: #fce4ec; color: #c62828; }
+    .badge--legal      { background: #f3e5f5; color: #6a1b9a; }
+    .badge--education  { background: #e0f7fa; color: #00695c; }
+    .badge--community  { background: rgba(26,58,42,0.07); color: var(--forest); }
+
+    [data-theme="dark"] .badge--food       { background: rgba(230,81,0,0.2);    color: #ffb74d; }
+    [data-theme="dark"] .badge--housing    { background: rgba(46,125,50,0.2);   color: #81c784; }
+    [data-theme="dark"] .badge--healthcare { background: rgba(21,101,192,0.2);  color: #64b5f6; }
+    [data-theme="dark"] .badge--employment { background: rgba(198,40,40,0.2);   color: #ef9a9a; }
+    [data-theme="dark"] .badge--legal      { background: rgba(106,27,154,0.2);  color: #ce93d8; }
+    [data-theme="dark"] .badge--education  { background: rgba(0,105,92,0.2);    color: #80cbc4; }
+    [data-theme="dark"] .badge--community  { background: rgba(58,112,85,0.2);   color: #7dd3a8; }
+
+    .art-empty {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--stone);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 900px) {
+      .art-featured { grid-template-columns: 1fr; }
+      .art-featured-img { min-height: 220px; }
+      .art-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 580px) {
+      .art-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .art-featured-img { min-height: 180px; }
+      .art-featured-body { padding: 1.5rem; }
+      .articles-filter-bar { gap: 0.35rem; }
+      .art-filter-btn { font-size: 0.75rem; padding: 0.4rem 0.85rem; }
+    }
+  </style>
+<script>(function(){var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}());</script>
+</head>
+<body>
+<a href="#main-content" class="skip-to-content">Skip to content</a>
+<main id="main-content">
+
+  <!-- ── Nav ──────────────────────────────────────── -->
+  <nav id="main-nav" class="nav--scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text"><span class="nav-c-word"><span class="nav-c-mark"></span>on<em>duit</em></span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Directory</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="articles.html">Articles</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
+      </ul>
+      <div class="nav-auth">
+        <a href="login.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
+        <div class="nav-profile-corner" id="nav-profile-corner" style="display:none;">
+          <a href="profile.html" class="nav-avatar-link">
+            <img src="" alt="My Profile" class="nav-avatar-thumb" id="nav-avatar-thumb">
+          </a>
+          <a href="#" class="nav-logout-link" id="nav-logout">Log out</a>
+        </div>
+      </div>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Hero ─────────────────────────────────────── -->
+  <section class="fancy-hero fancy-hero--articles">
+    <svg class="fancy-hero-watermark" aria-hidden="true" viewBox="0 0 200 200" fill="none">
+      <rect x="20" y="30" width="160" height="20" rx="4" stroke="white" stroke-width="2"/>
+      <rect x="20" y="68" width="120" height="14" rx="3" stroke="white" stroke-width="1.5"/>
+      <rect x="20" y="98" width="140" height="14" rx="3" stroke="white" stroke-width="1.5"/>
+      <rect x="20" y="128" width="100" height="14" rx="3" stroke="white" stroke-width="1.5"/>
+      <rect x="20" y="158" width="120" height="14" rx="3" stroke="white" stroke-width="1.5"/>
+    </svg>
+
+    <div class="fancy-hero-inner">
+      <p class="fancy-hero-breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        Articles
+      </p>
+      <p class="fancy-hero-eyebrow">Community Blog</p>
+      <h1 class="fancy-hero-title">News &amp;<br><em>Insights.</em></h1>
+      <p class="fancy-hero-sub">Guides, spotlights, and in-depth looks at the programs and resources that matter most to your community.</p>
+
+      <div class="fancy-hero-stats">
+        <div class="fancy-hero-stat">
+          <span class="fancy-hero-stat-num">10</span>
+          <span class="fancy-hero-stat-label">Articles</span>
+        </div>
+        <div class="fancy-hero-stat">
+          <span class="fancy-hero-stat-num">6</span>
+          <span class="fancy-hero-stat-label">Topics</span>
+        </div>
+        <div class="fancy-hero-stat">
+          <span class="fancy-hero-stat-num">Free</span>
+          <span class="fancy-hero-stat-label">Always</span>
+        </div>
+      </div>
+    </div>
+
+    <svg class="fancy-hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wave-fill" d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60 Z"/>
+    </svg>
+  </section>
+
+  <!-- ── Articles Body ─────────────────────────────── -->
+  <div class="articles-body">
+    <div class="container">
+
+      <!-- Filter bar -->
+      <div class="articles-filter-bar" id="art-filter-bar">
+        <button class="art-filter-btn active" data-cat="All">All</button>
+        <button class="art-filter-btn" data-cat="Food Assistance">Food Assistance</button>
+        <button class="art-filter-btn" data-cat="Housing">Housing</button>
+        <button class="art-filter-btn" data-cat="Healthcare">Healthcare</button>
+        <button class="art-filter-btn" data-cat="Employment">Employment</button>
+        <button class="art-filter-btn" data-cat="Legal Aid">Legal Aid</button>
+        <button class="art-filter-btn" data-cat="Education">Education</button>
+        <button class="art-filter-btn" data-cat="Community">Community</button>
+      </div>
+
+      <!-- Featured article slot -->
+      <div id="art-featured-slot"></div>
+
+      <!-- Articles grid -->
+      <div class="art-grid" id="art-grid"></div>
+
+    </div>
+  </div>
+
+  <!-- ── Footer ───────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo"><em>Conduit</em></a>
+          <p class="footer-tagline">The channel between you<br>and what you need.</p>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Navigate</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="directory.html">Directory</a></li>
+            <li><a href="map.html">Resource Map</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Get Involved</h4>
+          <ul class="footer-links">
+            <li><a href="submit.html">Submit a Resource</a></li>
+            <li><a href="donate.html">Donate</a></li>
+            <li><a href="signup.html">Create Account</a></li>
+            <li><a href="login.html">Sign In</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="directory.html?category=Food Assistance">Food Assistance</a></li>
+            <li><a href="directory.html?category=Healthcare">Healthcare</a></li>
+            <li><a href="directory.html?category=Education">Education</a></li>
+            <li><a href="directory.html?category=Housing">Housing</a></li>
+            <li><a href="directory.html?category=Employment">Employment</a></li>
+            <li><a href="directory.html?category=Legal">Legal Aid</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Conduit. All Rights Reserved.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Facebook">
+            <img src="assets/images/fb.svg" alt="Facebook">
+          </a>
+          <a href="https://instagram.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="assets/images/ig.svg" alt="Instagram">
+          </a>
+          <a href="https://x.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="X">
+            <img src="assets/images/x.svg" alt="X">
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</main>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

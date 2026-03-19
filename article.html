@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="assets/images/C_logo_clean_gold.svg">
+  <title>Article — Conduit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400;1,9..144,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    .article-page { background: var(--cream); }
+
+    /* Hero */
+    .article-hero {
+      position: relative;
+      height: 460px;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--forest);
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .article-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.65) 100%);
+    }
+
+    .article-hero-inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: 2.5rem var(--container-pad);
+      max-width: calc(760px + 2 * var(--container-pad, 2rem));
+      margin: 0 auto;
+    }
+
+    .article-hero-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(255,255,255,0.7);
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+
+    .article-hero-back:hover { color: white; }
+
+    .article-hero-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .article-hero-nav-sep {
+      color: rgba(255,255,255,0.25);
+      font-size: 0.7rem;
+    }
+
+    .article-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      margin-bottom: 0.85rem;
+    }
+
+    .article-hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      max-width: 680px;
+    }
+
+    .article-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: rgba(255,255,255,0.65);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+    }
+
+    /* Article body */
+    .article-layout {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3.5rem var(--container-pad, 2rem) 6rem;
+    }
+
+    .article-content {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 24px;
+      padding: 3rem 3.5rem;
+      box-shadow: 0 4px 32px rgba(26,58,42,0.07);
+      margin-bottom: 2rem;
+    }
+
+    .article-content p {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+      margin-bottom: 1.4rem;
+    }
+
+    .article-content p:last-child { margin-bottom: 0; }
+
+    .article-content strong { color: var(--forest); font-weight: 700; }
+
+    .article-content a {
+      color: var(--forest);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .article-content a:hover { color: var(--terracotta); }
+
+    [data-theme="dark"] .article-content strong { color: #7dd3a8; }
+    [data-theme="dark"] .article-content a       { color: #7dd3a8; }
+    [data-theme="dark"] .article-content a:hover { color: var(--gold); }
+
+    /* Related articles */
+    .article-related-heading {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+
+    .art-related-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .art-related-card {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    .art-related-card:hover {
+      box-shadow: 0 8px 32px rgba(26,58,42,0.1);
+      transform: translateY(-2px);
+    }
+
+    .art-related-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--sand);
+    }
+
+    .art-related-body { padding: 1.1rem; }
+
+    .art-related-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+    }
+
+    .art-related-meta {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      color: var(--stone);
+    }
+
+    /* Category badge colors */
+    .badge--food       { background: #fff3e0; color: #e65100; }
+    .badge--housing    { background: #e8f5e9; color: #2e7d32; }
+    .badge--healthcare { background: #e3f2fd; color: #1565c0; }
+    .badge--employment { background: #fce4ec; color: #c62828; }
+    .badge--legal      { background: #f3e5f5; color: #6a1b9a; }
+    .badge--education  { background: #e0f7fa; color: #00695c; }
+    .badge--community  { background: rgba(26,58,42,0.1); color: #1a3a2a; }
+
+    @media (max-width: 640px) {
+      .article-hero { height: 320px; }
+      .article-content { padding: 1.75rem; }
+      .art-related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+<script>(function(){var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}());</script>
+</head>
+<body class="article-page">
+<a href="#main-content" class="skip-to-content">Skip to content</a>
+<main id="main-content">
+
+  <!-- ── Nav ──────────────────────────────────────── -->
+  <nav id="main-nav" class="nav--scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text"><span class="nav-c-word"><span class="nav-c-mark"></span>on<em>duit</em></span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Directory</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="articles.html">Articles</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
+      </ul>
+      <div class="nav-auth">
+        <a href="login.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
+        <div class="nav-profile-corner" id="nav-profile-corner" style="display:none;">
+          <a href="profile.html" class="nav-avatar-link">
+            <img src="" alt="My Profile" class="nav-avatar-thumb" id="nav-avatar-thumb">
+          </a>
+          <a href="#" class="nav-logout-link" id="nav-logout">Log out</a>
+        </div>
+      </div>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Article Hero ──────────────────────────────── -->
+  <div class="article-hero" id="article-hero">
+    <div class="article-hero-inner">
+      <div class="article-hero-nav">
+        <a href="articles.html" class="article-hero-back">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          All Articles
+        </a>
+        <span class="article-hero-nav-sep" id="article-back-sep" style="display:none;">|</span>
+        <a href="#" class="article-hero-back" id="article-back-resource" style="display:none;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          <span id="article-back-resource-name">Back to Resource</span>
+        </a>
+      </div>
+      <div id="article-hero-badge" class="article-hero-badge badge--community">Community</div>
+      <h1 class="article-hero-title" id="article-hero-title">Loading…</h1>
+      <div class="article-hero-meta">
+        <span id="article-hero-author">Conduit Staff</span>
+        <span class="art-meta-dot">·</span>
+        <span id="article-hero-date">—</span>
+        <span class="art-meta-dot">·</span>
+        <span id="article-hero-read">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Article Body ──────────────────────────────── -->
+  <div class="article-layout">
+    <div class="article-content" id="article-body">
+      <p>Loading article…</p>
+    </div>
+
+    <div id="article-related-section" style="display:none;">
+      <h2 class="article-related-heading">More Articles</h2>
+      <div class="art-related-grid" id="article-related-grid"></div>
+    </div>
+  </div>
+
+  <!-- ── Footer ───────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo"><em>Conduit</em></a>
+          <p class="footer-tagline">The channel between you<br>and what you need.</p>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Navigate</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="directory.html">Directory</a></li>
+            <li><a href="map.html">Resource Map</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Get Involved</h4>
+          <ul class="footer-links">
+            <li><a href="submit.html">Submit a Resource</a></li>
+            <li><a href="donate.html">Donate</a></li>
+            <li><a href="signup.html">Create Account</a></li>
+            <li><a href="login.html">Sign In</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="directory.html?category=Food Assistance">Food Assistance</a></li>
+            <li><a href="directory.html?category=Healthcare">Healthcare</a></li>
+            <li><a href="directory.html?category=Education">Education</a></li>
+            <li><a href="directory.html?category=Housing">Housing</a></li>
+            <li><a href="directory.html?category=Employment">Employment</a></li>
+            <li><a href="directory.html?category=Legal">Legal Aid</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Conduit. All Rights Reserved.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Facebook">
+            <img src="assets/images/fb.svg" alt="Facebook">
+          </a>
+          <a href="https://instagram.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="assets/images/ig.svg" alt="Instagram">
+          </a>
+          <a href="https://x.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="X">
+            <img src="assets/images/x.svg" alt="X">
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</main>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get('id'), 10);
+
+  // Back-to-resource link
+  const rid   = params.get('rid');
+  const rname = params.get('rname');
+  if (rid && rname) {
+    const backBtn  = document.getElementById('article-back-resource');
+    const backName = document.getElementById('article-back-resource-name');
+    const backSep  = document.getElementById('article-back-sep');
+    if (backBtn) {
+      backBtn.href = `resource.html?id=${rid}`;
+      backName.textContent = decodeURIComponent(rname);
+      backBtn.style.display = '';
+      backSep.style.display = '';
+    }
+  }
+
+  const BADGE_CLASS = {
+    'Food Assistance': 'badge--food',
+    'Housing':         'badge--housing',
+    'Healthcare':      'badge--healthcare',
+    'Employment':      'badge--employment',
+    'Legal Aid':       'badge--legal',
+    'Education':       'badge--education',
+    'Community':       'badge--community'
+  };
+
+  fetch('assets/data/articles.json')
+    .then(r => r.json())
+    .then(articles => {
+      const article = articles.find(a => a.id === id);
+      if (!article) {
+        document.getElementById('article-hero-title').textContent = 'Article not found.';
+        document.getElementById('article-body').innerHTML = '<p>Sorry, we couldn\'t find that article. <a href="articles.html">Browse all articles →</a></p>';
+        return;
+      }
+
+      // Update page title
+      document.title = article.title + ' — Conduit';
+
+      // Hero
+      const hero = document.getElementById('article-hero');
+      hero.style.backgroundImage = `url('${article.image}')`;
+      const badge = document.getElementById('article-hero-badge');
+      badge.textContent = article.category;
+      badge.className = 'article-hero-badge ' + (BADGE_CLASS[article.category] || 'badge--community');
+      document.getElementById('article-hero-title').textContent = article.title;
+      document.getElementById('article-hero-author').textContent = article.author;
+      document.getElementById('article-hero-date').textContent = article.date;
+      document.getElementById('article-hero-read').textContent = article.readTime;
+
+      // Body
+      document.getElementById('article-body').innerHTML = article.content;
+
+      // Related articles (same category, different id — up to 2)
+      const related = articles.filter(a => a.id !== id && a.category === article.category).slice(0, 2);
+      const fallback = articles.filter(a => a.id !== id && a.category !== article.category).slice(0, 2 - related.length);
+      const shown = [...related, ...fallback].slice(0, 2);
+
+      if (shown.length > 0) {
+        const relSection = document.getElementById('article-related-section');
+        const relGrid = document.getElementById('article-related-grid');
+        relSection.style.display = '';
+        relGrid.innerHTML = shown.map(r => `
+          <a href="article.html?id=${r.id}" class="art-related-card">
+            <div class="art-related-img" style="background-image:url('${r.image}')"></div>
+            <div class="art-related-body">
+              <p class="art-related-title">${r.title}</p>
+              <span class="art-related-meta">${r.category} · ${r.readTime}</span>
+            </div>
+          </a>`).join('');
+      }
+    })
+    .catch(() => {
+      document.getElementById('article-body').innerHTML = '<p>Unable to load article. <a href="articles.html">← Back to articles</a></p>';
+    });
+})();
+</script>
+</body>
+</html>

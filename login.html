@@ -4,11 +4,14 @@
   <!-- Meta & Page Info -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="assets/images/C_logo_clean_gold.svg">
   <title>Login - Conduit</title>
   <link rel="stylesheet" href="assets/css/styles.css">
+<script>(function(){var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}());</script>
 </head>
 <body>
-  <main>
+<a href="#main-content" class="skip-to-content">Skip to content</a>
+  <main id="main-content">
     <!-- Navigation -->
     <nav id="main-nav" class="nav--scrolled">
       <div class="nav-inner">
@@ -20,10 +23,11 @@
           <li><a href="directory.html">Directory</a></li>
           <li><a href="map.html">Map</a></li>
           <li><a href="donate.html">Donate</a></li>
+          <li><a href="articles.html">Articles</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
         </ul>
-        <div class="nav-auth">
+      <div class="nav-auth">
           <a href="login.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
           <div class="nav-profile-corner" id="nav-profile-corner" style="display:none;">
             <a href="profile.html" class="nav-avatar-link">
@@ -48,38 +52,85 @@
     </section>
 
     <!-- Login Form Section -->
-    <section>
+    <section style="padding: 4rem 0 6rem;">
       <div class="container">
-        <form id="login-form" class="card" style="max-width: 500px; margin: 0 auto;">
+        <form id="login-form" class="card" style="max-width: 480px; margin: 0 auto;">
           <!-- Email Input -->
           <div class="form-group">
             <label for="email">Email</label>
-            <input id="email" name="email" type="email" required>
+            <input id="email" name="email" type="email" required autocomplete="email">
           </div>
 
           <!-- Password Input -->
           <div class="form-group">
             <label for="password">Password</label>
-            <input id="password" name="password" type="password" required>
+            <input id="password" name="password" type="password" required autocomplete="current-password">
           </div>
 
           <!-- Login Message Display -->
           <p id="login-message" style="margin-top: 0.5rem;"></p>
 
           <!-- Submit Button -->
-          <button type="submit" class="btn btn-primary">Log In</button>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Log In</button>
 
           <!-- Signup Link -->
-          <p style="margin-top: 1rem;">Don't have an account? <a href="signup.html">Create an account</a></p>
+          <p style="margin-top: 1.25rem; text-align: center;">Don't have an account? <a href="signup.html">Create an account</a></p>
         </form>
       </div>
     </section>
 
     <!-- Footer Section -->
-    <footer>
+    <footer class="site-footer">
       <div class="container">
-        <p>&copy; 2026 Conduit.</p>
-        <p>Connecting communities, one resource at a time.</p>
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="index.html" class="footer-logo"><em>Conduit</em></a>
+            <p class="footer-tagline">The channel between you<br>and what you need.</p>
+          </div>
+          <div class="footer-nav-group">
+            <h4 class="footer-heading">Navigate</h4>
+            <ul class="footer-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="directory.html">Directory</a></li>
+              <li><a href="map.html">Resource Map</a></li>
+              <li><a href="about.html">About Us</a></li>
+            </ul>
+          </div>
+          <div class="footer-nav-group">
+            <h4 class="footer-heading">Get Involved</h4>
+            <ul class="footer-links">
+              <li><a href="submit.html">Submit a Resource</a></li>
+              <li><a href="donate.html">Donate</a></li>
+              <li><a href="signup.html">Create Account</a></li>
+              <li><a href="login.html">Sign In</a></li>
+            </ul>
+          </div>
+          <div class="footer-nav-group">
+            <h4 class="footer-heading">Categories</h4>
+            <ul class="footer-links">
+              <li><a href="directory.html?category=Food Assistance">Food Assistance</a></li>
+              <li><a href="directory.html?category=Healthcare">Healthcare</a></li>
+              <li><a href="directory.html?category=Education">Education</a></li>
+              <li><a href="directory.html?category=Housing">Housing</a></li>
+              <li><a href="directory.html?category=Employment">Employment</a></li>
+              <li><a href="directory.html?category=Legal">Legal Aid</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 Conduit. All Rights Reserved.</p>
+          <div class="footer-socials">
+            <a href="https://facebook.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Facebook">
+              <img src="assets/images/fb.svg" alt="Facebook">
+            </a>
+            <a href="https://instagram.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+              <img src="assets/images/ig.svg" alt="Instagram">
+            </a>
+            <a href="https://x.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="X">
+              <img src="assets/images/x.svg" alt="X">
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
   </main>

@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="assets/images/C_logo_clean_gold.svg">
   <meta name="description" content="Conduit — Your local resource hub for finding essential community services and support in Springfield, IL">
+  <meta property="og:title" content="Conduit — Your Community Resource Hub">
+  <meta property="og:description" content="Find local food assistance, housing, healthcare, legal aid, and more. Conduit connects your community with the services you need.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=1200&h=630&fit=crop">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Conduit — Your Community Resource Hub">
+  <meta name="twitter:description" content="Find local food assistance, housing, healthcare, and more. Conduit connects communities with essential services.">
   <title>Conduit — Home</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,9 +20,11 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin="" />
+<script>(function(){var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}());</script>
 </head>
 <body>
-<main>
+<a href="#main-content" class="skip-to-content">Skip to content</a>
+<main id="main-content">
 
   <!-- ===== NAVIGATION ===== -->
   <nav id="main-nav">
@@ -28,10 +38,10 @@
         <li><a href="directory.html">Directory</a></li>
         <li><a href="map.html">Map</a></li>
         <li><a href="donate.html">Donate</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="articles.html">Articles</a></li>
+          <li><a href="about.html">About</a></li>
         <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
       </ul>
-
       <div class="nav-auth">
         <a href="login.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
         <div class="nav-profile-corner" id="nav-profile-corner" style="display:none;">
@@ -102,7 +112,7 @@
   <section class="stats-section reveal-section">
     <div class="stats-inner">
       <div class="stat-item">
-        <div class="stat-number" data-target="150">150+</div>
+        <div class="stat-number" data-target="110">110+</div>
         <div class="stat-label">Resources Listed</div>
       </div>
       <div class="stat-item">
@@ -325,6 +335,23 @@
     </div>
   </section>
 
+  <!-- ===== RECENTLY VIEWED (shown via JS if present) ===== -->
+  <section id="recently-viewed-section" class="recently-viewed-section reveal-section" style="display:none;">
+    <div class="container">
+      <div class="section-header section-header--split">
+        <div>
+          <p class="section-eyebrow">Pick up where you left off</p>
+          <h2 class="section-title-serif">Recently<br><em>Viewed</em></h2>
+        </div>
+        <a href="directory.html" class="view-all-link">
+          All resources
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 12H19M13 6L19 12L13 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="rv-grid" id="rv-grid"></div>
+    </div>
+  </section>
+
   <!-- ===== TESTIMONIALS ===== -->
   <section class="testimonials-section reveal-section">
 
@@ -475,7 +502,7 @@
             </div>
             <p class="t-quote">"The tutoring and after-school programs on Conduit have been a lifeline for my kids. Both are getting better grades and my daughter just made honor roll for the first time."</p>
             <div class="t-author">
-              <img class="t-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face" alt="Angela C.">
+              <img class="t-avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face" alt="Angela C.">
               <div><span class="t-author-name">Angela C.</span><span class="t-city t-city--spr">Springfield</span></div>
             </div>
           </div>
@@ -629,7 +656,18 @@
       </div>
 
       <div class="footer-bottom">
-        <p>© 2026 Conduit. Built with care for communities around the US.</p>
+        <p>© 2026 Conduit. All Rights Reserved.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Facebook">
+            <img src="assets/images/fb.svg" alt="Facebook">
+          </a>
+          <a href="https://instagram.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="assets/images/ig.svg" alt="Instagram">
+          </a>
+          <a href="https://x.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="X">
+            <img src="assets/images/x.svg" alt="X">
+          </a>
+        </div>
       </div>
     </div>
   </footer>

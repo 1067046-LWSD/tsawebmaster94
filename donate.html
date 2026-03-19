@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="assets/images/C_logo_clean_gold.svg">
   <meta name="description" content="Support Conduit — help more families across the US find the resources they need.">
   <title>Donate — Conduit</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +17,7 @@
 
     /* ---- Hero ---- */
     .donate-hero {
-      background: var(--forest);
+      background: #051a0d;
       position: relative;
       padding: 10rem 0 8rem;
       overflow: hidden;
@@ -27,8 +28,8 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 70% 60% at 80% 20%, rgba(212,168,83,0.10) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 50% at 10% 80%, rgba(58,112,85,0.35) 0%, transparent 55%);
+        radial-gradient(ellipse 70% 60% at 80% 20%, rgba(30,180,80,0.22) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 10% 80%, rgba(10,140,55,0.35) 0%, transparent 55%);
     }
 
     /* grain */
@@ -64,26 +65,14 @@
     }
 
     .donate-hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+      display: block;
       font-family: var(--font-body);
       font-size: 0.78rem;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 1.5rem;
-    }
-
-    .donate-hero-eyebrow::before,
-    .donate-hero-eyebrow::after {
-      content: '';
-      display: block;
-      width: 28px;
-      height: 1px;
-      background: var(--gold);
-      opacity: 0.5;
+      margin-bottom: 1.2rem;
     }
 
     .donate-hero-title {
@@ -144,17 +133,21 @@
       display: block;
       width: 100%;
       height: 80px;
-      background: var(--forest);
+      background: #051a0d;
     }
 
     .donate-wave-fill {
       fill: var(--cream);
     }
 
+    [data-theme="dark"] .donate-wave {
+      background: #051a0d;
+    }
+
     /* ---- Impact strip ---- */
     .donate-impact {
       background: var(--cream);
-      padding: 5rem 2rem;
+      padding: 5rem 2rem 2.5rem;
     }
 
     .donate-impact-inner {
@@ -221,7 +214,7 @@
     .impact-tile:hover::before { transform: scaleX(1); }
 
     .impact-tile--10 { --accent-color: var(--moss); }
-    .impact-tile--25 { --accent-color: var(--forest-mid); }
+    .impact-tile--25 { --accent-color: #3b82f6; }
     .impact-tile--50 { --accent-color: var(--terracotta); }
     .impact-tile--100 { --accent-color: var(--gold); }
 
@@ -583,9 +576,11 @@
       .impact-grid { grid-template-columns: 1fr; }
     }
   </style>
+<script>(function(){var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}());</script>
 </head>
 <body>
-<main>
+<a href="#main-content" class="skip-to-content">Skip to content</a>
+<main id="main-content">
 
   <!-- ===== NAV ===== -->
   <nav id="main-nav" class="nav--scrolled">
@@ -598,7 +593,8 @@
         <li><a href="directory.html">Directory</a></li>
         <li><a href="map.html">Map</a></li>
         <li><a href="donate.html">Donate</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="articles.html">Articles</a></li>
+          <li><a href="about.html">About</a></li>
         <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
       </ul>
       <div class="nav-auth">
@@ -658,7 +654,7 @@
       </div>
       <div class="impact-grid">
 
-        <div class="impact-tile impact-tile--10">
+        <div class="impact-tile impact-tile--10" data-tier="10" onclick="selectTier('supporter','10')" style="cursor:pointer;" tabindex="0" role="button" aria-label="Select $10 donation">
           <div class="impact-amount">$10</div>
           <svg class="impact-icon" viewBox="0 0 48 48" fill="none">
             <path d="M24 4L44 14V24C44 34 35 42 24 44C13 42 4 34 4 24V14L24 4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
@@ -668,7 +664,7 @@
           <span class="impact-label">Platform upkeep</span>
         </div>
 
-        <div class="impact-tile impact-tile--25">
+        <div class="impact-tile impact-tile--25" data-tier="25" onclick="selectTier('community','25')" style="cursor:pointer;" tabindex="0" role="button" aria-label="Select $25 donation">
           <div class="impact-amount">$25</div>
           <svg class="impact-icon" viewBox="0 0 48 48" fill="none">
             <path d="M12 36L8 40V12C8 10 10 8 12 8H36C38 8 40 10 40 12V28C40 30 38 32 36 32H18L12 36Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
@@ -678,7 +674,7 @@
           <span class="impact-label">New resources</span>
         </div>
 
-        <div class="impact-tile impact-tile--50">
+        <div class="impact-tile impact-tile--50" data-tier="50" onclick="selectTier('champion','50')" style="cursor:pointer;" tabindex="0" role="button" aria-label="Select $50 donation">
           <div class="impact-amount">$50</div>
           <svg class="impact-icon" viewBox="0 0 48 48" fill="none">
             <circle cx="24" cy="18" r="8" stroke="currentColor" stroke-width="1.8"/>
@@ -689,7 +685,7 @@
           <span class="impact-label">Community outreach</span>
         </div>
 
-        <div class="impact-tile impact-tile--100">
+        <div class="impact-tile impact-tile--100" data-tier="100" onclick="selectTier('partner','100')" style="cursor:pointer;" tabindex="0" role="button" aria-label="Select $100 donation">
           <div class="impact-amount">$100</div>
           <svg class="impact-icon" viewBox="0 0 48 48" fill="none">
             <path d="M24 6L28 18H41L30 26L34 38L24 30L14 38L18 26L7 18H20L24 6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
@@ -699,6 +695,10 @@
         </div>
 
       </div>
+
+      <!-- ===== IMPACT PREVIEW ===== -->
+      <div id="donation-impact-preview" style="max-width:1100px;margin:0 auto;padding:0 2rem;"></div>
+
     </div>
   </section>
 
@@ -712,12 +712,6 @@
 
       <div class="donate-card-body">
 
-        <!-- Frequency -->
-        <div class="freq-toggle" role="group" aria-label="Donation frequency">
-          <button class="freq-btn active" data-freq="once">One-time</button>
-          <button class="freq-btn" data-freq="monthly">Monthly</button>
-        </div>
-
         <!-- Amount presets -->
         <label class="amount-label">Choose an amount</label>
         <div class="amount-grid">
@@ -725,20 +719,6 @@
           <button class="amount-btn active" data-amount="25">$25<span>Resources</span></button>
           <button class="amount-btn" data-amount="50">$50<span>Outreach</span></button>
           <button class="amount-btn" data-amount="100">$100<span>Sponsor</span></button>
-        </div>
-
-        <!-- Custom amount -->
-        <div class="custom-amount-wrap">
-          <span class="custom-amount-prefix">$</span>
-          <input
-            type="number"
-            id="custom-amount"
-            class="custom-amount-input"
-            placeholder="Custom amount"
-            min="1"
-            step="1"
-            aria-label="Custom donation amount"
-          >
         </div>
 
         <!-- Summary -->
@@ -819,7 +799,18 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Conduit. Built with care for communities around the US.</p>
+        <p>© 2026 Conduit. All Rights Reserved.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Facebook">
+            <img src="assets/images/fb.svg" alt="Facebook">
+          </a>
+          <a href="https://instagram.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="assets/images/ig.svg" alt="Instagram">
+          </a>
+          <a href="https://x.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="X">
+            <img src="assets/images/x.svg" alt="X">
+          </a>
+        </div>
       </div>
     </div>
   </footer>
@@ -829,109 +820,32 @@
 <script src="assets/js/auth.js"></script>
 <script src="assets/js/app.js"></script>
 
-<!-- Stripe.js -->
-<script src="https://js.stripe.com/v3/"></script>
-
 <script>
 (function() {
-  // =====================================================
-  // STRIPE CONFIGURATION
-  // Replace these with your real Stripe Payment Links.
-  // Create them at: https://dashboard.stripe.com/payment-links
-  //
-  // For the "custom amount" flow, create a product with
-  // "Customer chooses price" enabled, then paste that link below.
-  // =====================================================
   const STRIPE_LINKS = {
-    once: {
-      10:     'https://buy.stripe.com/YOUR_LINK_10_ONCE',
-      25:     'https://buy.stripe.com/YOUR_LINK_25_ONCE',
-      50:     'https://buy.stripe.com/YOUR_LINK_50_ONCE',
-      100:    'https://buy.stripe.com/YOUR_LINK_100_ONCE',
-      custom: 'https://buy.stripe.com/YOUR_LINK_CUSTOM_ONCE', // "customer sets price"
-    },
-    monthly: {
-      10:     'https://buy.stripe.com/YOUR_LINK_10_MONTHLY',
-      25:     'https://buy.stripe.com/YOUR_LINK_25_MONTHLY',
-      50:     'https://buy.stripe.com/YOUR_LINK_50_MONTHLY',
-      100:    'https://buy.stripe.com/YOUR_LINK_100_MONTHLY',
-      custom: 'https://buy.stripe.com/YOUR_LINK_CUSTOM_MONTHLY',
-    }
+    10:  'https://buy.stripe.com/test_4gM6oAeYvfKb9IH1M53ks00',
+    25:  'https://buy.stripe.com/test_7sY8wIaIf0Ph6wv3Ud3ks01',
+    50:  'https://buy.stripe.com/test_8x2eV68A741t087cqJ3ks02',
+    100: 'https://buy.stripe.com/test_00waEQ6rZapR9IHeyR3ks03'
   };
 
   let selectedAmount = 25;
-  let selectedFreq = 'once';
-  let isCustom = false;
 
-  // --- Amount buttons ---
   const amountBtns = document.querySelectorAll('.amount-btn');
-  const customInput = document.getElementById('custom-amount');
   const summaryEl  = document.getElementById('summary-amount');
-  const freqLabel  = document.getElementById('freq-label');
-
-  function updateSummary() {
-    const display = isCustom && customInput.value
-      ? '$' + parseFloat(customInput.value).toFixed(0)
-      : '$' + selectedAmount;
-    summaryEl.textContent = display;
-  }
 
   amountBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       amountBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       selectedAmount = parseInt(btn.dataset.amount);
-      isCustom = false;
-      customInput.value = '';
-      customInput.classList.remove('active');
-      updateSummary();
+      summaryEl.textContent = '$' + selectedAmount;
     });
   });
 
-  customInput.addEventListener('input', () => {
-    if (customInput.value) {
-      amountBtns.forEach(b => b.classList.remove('active'));
-      customInput.classList.add('active');
-      isCustom = true;
-    } else {
-      isCustom = false;
-      // re-select $25 as default
-      document.querySelector('.amount-btn[data-amount="25"]').classList.add('active');
-      selectedAmount = 25;
-      customInput.classList.remove('active');
-    }
-    updateSummary();
-  });
-
-  // --- Frequency buttons ---
-  const freqBtns = document.querySelectorAll('.freq-btn');
-  freqBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      freqBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      selectedFreq = btn.dataset.freq;
-      freqLabel.textContent = selectedFreq === 'monthly' ? 'Monthly recurring' : 'One-time donation';
-    });
-  });
-
-  // --- Checkout ---
   document.getElementById('checkout-btn').addEventListener('click', () => {
-    const amount = isCustom ? parseInt(customInput.value) : selectedAmount;
-    if (!amount || amount < 1) {
-      customInput.focus();
-      return;
-    }
-
-    const links = STRIPE_LINKS[selectedFreq];
-    let url = links[amount] || links.custom;
-
-    // For custom amounts on a "customer chooses price" link,
-    // Stripe supports ?prefilled_amount=CENTS
-    if (!links[amount] && amount) {
-      url = links.custom + '?prefilled_amount=' + (amount * 100);
-    }
-
-    window.location.href = url;
+    const url = STRIPE_LINKS[selectedAmount];
+    if (url) window.open(url, '_blank', 'noopener');
   });
 })();
 </script>

@@ -23,8 +23,50 @@ function setCurrentUser(id) {
 
 function logoutUser() {
   localStorage.removeItem("currentUserId");
+  localStorage.removeItem("theme");
+  document.documentElement.removeAttribute("data-theme");
   window.location.href = "index.html";
 }
+
+// ===================================
+//          Dark Mode
+// ===================================
+function applyTheme() {
+  const user = getCurrentUser();
+  const isDark = user ? user.darkMode === true : localStorage.getItem('theme') === 'dark';
+  if (isDark) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.removeItem('theme');
+  }
+}
+
+window.toggleDarkMode = function() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const newVal = !isDark;
+
+  if (newVal) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.removeItem('theme');
+  }
+
+  // Persist to user object if logged in
+  const userId = localStorage.getItem('currentUserId');
+  if (userId) {
+    const users = getUsers();
+    const idx = users.findIndex(u => u.id === userId);
+    if (idx !== -1) { users[idx].darkMode = newVal; saveUsers(users); }
+  }
+
+  // Sync profile toggle
+  const dmToggle = document.getElementById('dm-toggle');
+  if (dmToggle) dmToggle.classList.toggle('is-on', newVal);
+};
 
 function requireAuth() {
   const user = getCurrentUser();
@@ -79,6 +121,7 @@ function updateLocationDisplay() {
 }
 
 function initAuthUI() {
+  applyTheme();
   updateNavAuthLinks();
   updateLocationDisplay();
   const logoutLink = document.getElementById("nav-logout");
@@ -88,140 +131,197 @@ function initAuthUI() {
       logoutUser();
     });
   }
+
+  if (!document.getElementById("theme-fab")) {
+    const fab = document.createElement("button");
+    fab.id = "theme-fab";
+    fab.setAttribute("aria-label", "Toggle dark mode");
+    fab.innerHTML = `
+      <svg class="theme-icon theme-icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="theme-icon theme-icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+    fab.addEventListener("click", () => toggleDarkMode());
+    document.body.appendChild(fab);
+  }
   initSignupForm();
   initLoginForm();
   initProfilePage();
 }
 
 function initProfilePage() {
-  if (!document.getElementById("profile-name")) return;
+  // Only run on profile page
+  const communityBox = document.getElementById("profile-community-box");
+  if (!communityBox) return;
 
-  const user = requireAuth();
-  if (!user) return;
+  const user = getCurrentUser();
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
 
-  // Profile picture
-  const avatar = document.getElementById("profile-avatar");
+  // ── Member since (derived from user.id timestamp) ──
+  let memberSince = "Recently";
+  try {
+    const ts = parseInt((user.id || "").replace("u_", ""), 10);
+    if (!isNaN(ts)) {
+      memberSince = new Date(ts).toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    }
+  } catch (e) { /* ignore */ }
+
+  // ── Hero: name / email / avatar ───────────────────
+  const nameEl  = document.getElementById("profile-name");
+  const emailEl = document.getElementById("profile-email");
+  const avatarEl = document.getElementById("profile-avatar");
+
+  if (nameEl)  nameEl.textContent  = user.name  || "User";
+  if (emailEl) emailEl.textContent = user.email || "";
+
+  const avatarSrc = user.avatar ||
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || "User")}&background=1a3a2a&color=fff&size=256`;
+  if (avatarEl) avatarEl.src = avatarSrc;
+
+  // ── Hero pills ────────────────────────────────────
+  const sinceText   = document.getElementById("profile-since-text");
+  const commText    = document.getElementById("profile-community-pill-text");
+  const cityPill    = document.getElementById("profile-city-pill");
+  const cityText    = document.getElementById("profile-city-pill-text");
+
+  if (sinceText)  sinceText.textContent = "Member since " + memberSince;
+  if (commText)   commText.textContent  = user.community || "No community yet";
+  if (cityPill && cityText && user.survey && user.survey.city) {
+    cityPill.style.display = "";
+    cityText.textContent = user.survey.city;
+  }
+
+  // ── Avatar click-to-upload ────────────────────────
   const avatarInput = document.getElementById("avatar-input");
-  if (avatar && avatarInput) {
-    avatar.src = user.avatar ||
-      `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'User')}&background=2E7D60&color=fff&size=136`;
-    avatar.addEventListener("click", () => avatarInput.click());
+  if (avatarEl && avatarInput) {
+    // Clone to remove any stale listeners from previous SPA navigations
+    const fresh = avatarEl.cloneNode(true);
+    avatarEl.parentNode.replaceChild(fresh, avatarEl);
+    fresh.src = avatarSrc;
+    fresh.addEventListener("click", () => avatarInput.click());
     avatarInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = (ev) => {
-        avatar.src = ev.target.result;
+        const dataUrl = ev.target.result;
+        fresh.src = dataUrl;
         const users = getUsers();
         const idx = users.findIndex(u => u.id === user.id);
-        if (idx !== -1) {
-          users[idx].avatar = ev.target.result;
-          saveUsers(users);
-        }
+        if (idx !== -1) { users[idx].avatar = dataUrl; saveUsers(users); }
+        const navThumb = document.getElementById("nav-avatar-thumb");
+        if (navThumb) navThumb.src = dataUrl;
       };
       reader.readAsDataURL(file);
     });
   }
 
-  document.getElementById("profile-name").textContent = user.name || "Community Member";
-  document.getElementById("profile-email").textContent = user.email;
+  // ── Community passport card ───────────────────────
+  const communityIcons = {
+    "STEM Innovators": `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M9 3v7L5 17a2 2 0 0 0 1.72 3h10.56A2 2 0 0 0 19 17l-4-7V3"/><line x1="6.5" y1="14" x2="17.5" y2="14"/></svg>`,
+    "Creative Arts Collective": `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><circle cx="11" cy="11" r="2"/></svg>`,
+    "Community Service Leaders": `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+    "Neighborhood Connectors": `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
+  };
+  const communityIcon = communityIcons[user.community] || `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`;
 
-  const communityBox = document.getElementById("profile-community-box");
-  if (communityBox) {
-    if (user.community) {
-      const initial = (user.community || "C")[0].toUpperCase();
-      communityBox.innerHTML = `
-        <div class="passport-card">
-          <div class="passport-left">
-            <div class="passport-emblem">${initial}</div>
-            <span class="passport-left-label">Member</span>
+  if (user.community) {
+    const city     = (user.survey && user.survey.city) || "—";
+    communityBox.innerHTML = `
+      <div class="community-passport">
+        <div class="passport-shimmer"></div>
+        <div class="passport-top">
+          <div class="passport-status">
+            <span class="passport-status-dot"></span>
+            Active Member
           </div>
-          <div class="passport-right">
-            <span class="passport-eyebrow">Your Community Match</span>
-            <h3 class="passport-community-name">${user.community}</h3>
-            <p class="passport-desc">You're part of something meaningful. Welcome to your community.</p>
-            <span class="passport-status"><span class="passport-status-dot"></span> Active Member</span>
-            <div class="passport-deco" aria-hidden="true">
-              <svg viewBox="0 0 80 120" fill="none" stroke="currentColor" stroke-width="1.2">
-                <path d="M40 5 C18 18 5 52 22 88 C30 105 50 105 58 88 C75 52 62 18 40 5Z"/>
-                <path d="M40 5 L40 100"/>
-                <path d="M40 30 C30 37 18 52 22 68"/>
-                <path d="M40 30 C50 37 62 52 58 68"/>
-              </svg>
-            </div>
+          <span class="passport-brand">Conduit</span>
+        </div>
+        <div class="passport-middle">
+          <div class="passport-emblem">${communityIcon}</div>
+          <div>
+            <p class="passport-label">Your Community</p>
+            <h3 class="passport-name">${user.community}</h3>
           </div>
-        </div>`;
-    } else {
-      communityBox.innerHTML = `
-        <div class="no-community-card">
-          <div class="no-community-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-              <circle cx="12" cy="8" r="4"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
-            </svg>
+        </div>
+        <div class="passport-footer">
+          <div class="passport-field">
+            <span class="passport-field-label">City</span>
+            <span class="passport-field-value">${city}</span>
           </div>
-          <h3>No community yet</h3>
-          <p>Take the survey to get matched with your community.</p>
-          <a href="survey.html" class="profile-action-btn profile-action-btn--primary">Take the Survey →</a>
-        </div>`;
-    }
+          <div class="passport-field">
+            <span class="passport-field-label">Member Since</span>
+            <span class="passport-field-value">${memberSince}</span>
+          </div>
+          <div class="passport-field">
+            <span class="passport-field-label">Status</span>
+            <span class="passport-field-value is-active">Active</span>
+          </div>
+        </div>
+        <img src="assets/images/C_logo.svg" class="passport-botanical" alt="" aria-hidden="true">
+      </div>`;
+  } else {
+    communityBox.innerHTML = `
+      <div class="no-community-card">
+        <p>Take the survey to get matched with your community group.</p>
+        <a href="survey.html" class="btn btn-primary">Take the Survey →</a>
+      </div>`;
   }
 
+  // ── Survey section ────────────────────────────────
   const surveySection = document.getElementById("profile-survey");
-  const noSurvey = document.getElementById("profile-no-survey");
+  const noSurvey      = document.getElementById("profile-no-survey");
   if (user.survey) {
     if (surveySection) surveySection.style.display = "block";
-    if (noSurvey) noSurvey.style.display = "none";
-    const interest = document.getElementById("profile-interest");
-    const involvement = document.getElementById("profile-involvement");
-    const age = document.getElementById("profile-age");
-    const city = document.getElementById("profile-city");
-    if (interest) interest.textContent = user.survey.interest;
-    if (involvement) involvement.textContent = user.survey.involvement;
-    if (age) age.textContent = user.survey.age;
-    if (city) city.textContent = user.survey.city || "—";
-    // Populate stat city tile
-    const statCity = document.getElementById("stat-city-short");
-    if (statCity && user.survey.city) {
-      const cityMap = { "Springfield": "SPR", "Seattle": "SEA", "NYC": "NYC", "Los Angeles": "LA" };
-      statCity.textContent = cityMap[user.survey.city] || user.survey.city.substring(0, 3).toUpperCase();
-    }
+    if (noSurvey)      noSurvey.style.display      = "none";
+    const set = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val || "—";
+    };
+    set("profile-interest",    user.survey.interest);
+    set("profile-involvement", user.survey.involvement);
+    set("profile-age",         user.survey.age);
+    set("profile-city",        user.survey.city);
   } else {
     if (surveySection) surveySection.style.display = "none";
-    if (noSurvey) noSurvey.style.display = "block";
+    if (noSurvey)      noSurvey.style.display      = "block";
   }
 
-  // Load saved resources
-  if (user.savedResources && user.savedResources.length > 0) {
-    fetch("assets/data/resources.json")
-      .then(r => r.json())
-      .then(all => {
-        const saved = all.filter(r => user.savedResources.includes(r.id));
-        const box = document.getElementById("profile-saved-resources");
-        if (!box || saved.length === 0) return;
-        const catIcons = {
-          "Food Assistance": `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 2v7c0 1.7 1.3 3 3 3s3-1.3 3-3V2M6 12v10M18 2c0 0-3 3-3 7s3 7 3 7"/><path d="M18 22V9"/></svg>`,
-          "Healthcare":      `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>`,
-          "Mental Health":   `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
-          "Employment":      `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>`,
-          "Housing":         `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
-          "Education":       `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
-          "Legal Aid":       `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M4 21h16"/><path d="M7 6l-4 8h8L7 6zM17 6l-4 8h8l-4-8z"/></svg>`,
-          "Youth Services":  `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-          "Senior Services": `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`,
-          "Community":       `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
-        };
-        box.style.display = "block";
-        const grid = box.querySelector(".saved-resources-grid");
-        if (!grid) return;
-        grid.innerHTML = saved.map(r => `
-          <a href="resource.html?id=${r.id}" class="saved-resource-chip">
-            <span class="saved-resource-chip-icon">${catIcons[r.category] || `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h6"/></svg>`}</span>
-            <span class="saved-resource-chip-body">
-              <span class="saved-resource-chip-name">${r.name}</span>
-              <span class="saved-resource-chip-cat">${r.category}</span>
-            </span>
-          </a>`).join("");
-      });
+  // ── Saved resources ───────────────────────────────
+  const savedSection = document.getElementById("profile-saved-section");
+  const savedList    = document.getElementById("profile-saved-list");
+  if (savedSection && savedList) {
+    const savedIds = user.savedResources || [];
+    if (savedIds.length > 0) {
+      savedSection.style.display = "";
+      fetch("assets/data/resources.json")
+        .then(r => r.json())
+        .then(resources => {
+          const saved = resources.filter(r => savedIds.includes(r.id));
+          if (saved.length === 0) { savedSection.style.display = "none"; return; }
+          savedList.innerHTML = saved.map(r => `
+            <a href="resource.html?id=${r.id}" class="saved-resource-row">
+              <div class="srr-img" style="background-image:url('${r.image || ""}')"></div>
+              <div class="srr-info">
+                <span class="srr-name">${r.name}</span>
+                <span class="srr-cat">${r.category || ""}</span>
+              </div>
+              <span class="srr-arrow">→</span>
+            </a>`).join("");
+        })
+        .catch(() => { savedSection.style.display = "none"; });
+    }
+  }
+
+  // ── Dark mode toggle initial state ────────────────
+  const dmToggle = document.getElementById("dm-toggle");
+  if (dmToggle && user.darkMode) dmToggle.classList.add("is-on");
+
+  // ── Sign out button ───────────────────────────────
+  const logoutBtn = document.getElementById("profile-logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => logoutUser());
   }
 }
 
@@ -295,6 +395,7 @@ function initLoginForm() {
     }
 
     setCurrentUser(user.id);
+    applyTheme();
     msg.textContent = "Login successful! Redirecting…";
     msg.style.color = "#2E7D60";
 

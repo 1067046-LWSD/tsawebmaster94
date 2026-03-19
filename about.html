@@ -3,18 +3,205 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="assets/images/C_logo_clean_gold.svg">
   <meta name="description" content="Learn about Conduit and how we're helping communities connect with essential resources">
   <title>About — Conduit</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400;1,9..144,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <style data-page-style>
+    .about-sections-wrap {
+      background: var(--cream);
+      padding: 3rem 0 5rem;
+    }
+
+    .about-card-section {
+      margin-bottom: 2rem;
+    }
+
+    .about-section-card {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 24px;
+      padding: 2.5rem 2.75rem;
+      box-shadow: 0 4px 32px rgba(26,58,42,0.06);
+    }
+
+    .about-section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--forest);
+      background: rgba(26,58,42,0.06);
+      border: 1px solid rgba(26,58,42,0.1);
+      padding: 0.35rem 0.8rem;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .about-section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 0.6rem;
+    }
+
+    .about-section-lead {
+      color: var(--stone);
+      font-size: 0.97rem;
+      line-height: 1.65;
+      max-width: 640px;
+      margin-bottom: 2rem;
+    }
+
+    /* PDF embed */
+    .pdf-embed-wrap {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--sand);
+      background: var(--cream);
+    }
+
+    .pdf-embed {
+      display: block;
+      width: 100%;
+      height: 700px;
+      border: none;
+    }
+
+    /* Links grid */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 2rem;
+    }
+
+    .links-grid--3col {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+
+    .links-group-heading {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--stone);
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .links-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .links-list li a {
+      font-size: 0.875rem;
+      color: var(--forest);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+      display: flex;
+      align-items: baseline;
+      gap: 0.3rem;
+    }
+
+    .links-list li a::before {
+      content: '↗';
+      font-size: 0.7rem;
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    .links-list li a:hover {
+      color: var(--terracotta);
+    }
+
+    .links-list--mono li a {
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    .links-list--mono li a:hover {
+      color: var(--forest);
+    }
+
+    /* Code stack */
+    .stack-body {
+      margin-bottom: 2rem;
+    }
+
+    .stack-body p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--ink);
+      margin-bottom: 1.1rem;
+    }
+
+    .stack-body p:last-child { margin-bottom: 0; }
+
+    .stack-body strong { color: var(--forest); font-weight: 700; }
+
+    .stack-body code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.82em;
+      background: var(--cream);
+      border: 1px solid var(--sand);
+      padding: 0.1em 0.4em;
+      border-radius: 5px;
+      color: var(--terracotta);
+    }
+
+    .stack-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--sand);
+    }
+
+    .stack-tag {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--forest);
+      background: rgba(26,58,42,0.06);
+      border: 1px solid rgba(26,58,42,0.12);
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 640px) {
+      .about-section-card { padding: 1.5rem; }
+      .links-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .pdf-embed { height: 480px; }
+    }
+  </style>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin="" />
+<script>(function(){var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}());</script>
 </head>
 <body>
-<main>
+<a href="#main-content" class="skip-to-content">Skip to content</a>
+<main id="main-content">
 
   <!-- ===== NAV ===== -->
   <nav id="main-nav" class="nav--scrolled">
@@ -28,10 +215,10 @@
         <li><a href="directory.html">Directory</a></li>
         <li><a href="map.html">Map</a></li>
         <li><a href="donate.html">Donate</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="articles.html">Articles</a></li>
+          <li><a href="about.html">About</a></li>
         <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
       </ul>
-
       <div class="nav-auth">
         <a href="login.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
         <div class="nav-profile-corner" id="nav-profile-corner" style="display:none;">
@@ -49,134 +236,351 @@
   </nav>
 
   <!-- ===== PAGE HERO ===== -->
-  <section class="page-hero">
-    <div class="container">
-      <p class="page-hero-eyebrow">
+  <section class="fancy-hero fancy-hero--about">
+    <!-- Watermark: hands / connection rings -->
+    <svg class="fancy-hero-watermark" aria-hidden="true" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="70" cy="100" r="55" stroke="white" stroke-width="2.5"/>
+      <circle cx="130" cy="100" r="55" stroke="white" stroke-width="2.5"/>
+      <circle cx="100" cy="60" r="42" stroke="white" stroke-width="1.5"/>
+      <circle cx="100" cy="100" r="18" fill="white" opacity="0.15"/>
+    </svg>
+
+    <div class="fancy-hero-inner">
+      <p class="fancy-hero-breadcrumb">
         <a href="index.html">Home</a>
         <span>/</span>
         About
       </p>
-      <h1>About Conduit</h1>
-      <p class="hero-sub">Building stronger communities through accessible, centralized information about local resources and services.</p>
+      <p class="fancy-hero-eyebrow">Our Story</p>
+      <h1 class="fancy-hero-title">Built for<br><em>Community.</em></h1>
+      <p class="fancy-hero-sub">How we built Conduit to what it is today.</p>
+
+      <div class="fancy-hero-stats">
+        <div class="fancy-hero-stat">
+          <span class="fancy-hero-stat-num">2,400+</span>
+          <span class="fancy-hero-stat-label">Families Helped</span>
+        </div>
+        <div class="fancy-hero-stat">
+          <span class="fancy-hero-stat-num">4</span>
+          <span class="fancy-hero-stat-label">Cities Served</span>
+        </div>
+        <div class="fancy-hero-stat">
+          <span class="fancy-hero-stat-num">100%</span>
+          <span class="fancy-hero-stat-label">Free to Use</span>
+        </div>
+      </div>
     </div>
+
+    <svg class="fancy-hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wave-fill" d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60 Z"/>
+    </svg>
   </section>
 
   <!-- ===== ABOUT CONTENT ===== -->
-  <section class="about-section">
-    <div class="container">
-      <div class="about-content">
+  <div class="about-sections-wrap">
 
-        <h2>Our Purpose</h2>
-        <p>
-          Conduit was created to address a critical need in our communities: accessible,
-          centralized information about local resources and services. Many residents struggle to find
-          help when they need it most, simply because they don't know where to look.
-        </p>
-        <p>
-          Our mission is to bridge this information gap by providing a comprehensive, easy-to-use
-          platform where anyone can discover community resources including food assistance, healthcare,
-          education, employment services, housing support, and legal aid.
-        </p>
-
-        <h2>Research &amp; Development Process</h2>
-        <p>
-          The development of Conduit was guided by extensive research into community needs
-          and best practices for resource hubs:
-        </p>
-        <ul>
-          <li><strong>Community Surveys:</strong> We analyzed feedback from community members about
-          challenges in finding local resources</li>
-          <li><strong>Nonprofit Partnerships:</strong> Collaborated with local organizations to
-          understand the most critical services needed</li>
-          <li><strong>User Experience Research:</strong> Studied successful civic platforms to
-          identify key features and design patterns</li>
-          <li><strong>Accessibility Studies:</strong> Reviewed WCAG guidelines and inclusive design
-          principles to ensure our platform serves all users</li>
-          <li><strong>Geographic Analysis:</strong> Mapped resource distribution to identify
-          service gaps in the community</li>
-        </ul>
-
-        <h2>Web Technologies Used</h2>
-        <p>
-          Conduit is built using modern, accessible web technologies to ensure reliability,
-          performance, and ease of use:
-        </p>
-        <div class="tech-list">
-          <div class="tech-item">HTML5</div>
-          <div class="tech-item">CSS3</div>
-          <div class="tech-item">JavaScript (ES6+)</div>
-          <div class="tech-item">Leaflet.js</div>
-          <div class="tech-item">OpenStreetMap</div>
-          <div class="tech-item">LocalStorage API</div>
+    <!-- ── COPYRIGHT CHECKLIST ───────────────────────── -->
+    <section class="about-card-section reveal-section">
+      <div class="container">
+        <div class="about-section-card">
+          <div class="about-section-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Copyright Checklist
+          </div>
+          <h2 class="about-section-title">Copyright &amp; Compliance</h2>
+          <p class="about-section-lead">Signed copyright checklist submitted as required for the TSA Webmaster competition.</p>
+          <div class="pdf-embed-wrap">
+            <iframe
+              src="Copyright-Checklist-Signed.pdf"
+              class="pdf-embed"
+              title="Copyright Checklist — Signed"
+              aria-label="Scrollable PDF: Copyright Checklist"
+            ></iframe>
+          </div>
         </div>
-        <p style="margin-top: 1.5rem;">
-          <strong>Why Vanilla JavaScript?</strong> We chose to build without frameworks to ensure
-          maximum performance, minimal load times, and a lightweight footprint. This approach makes
-          the platform accessible even on slower internet connections.
-        </p>
-
-        <h2>Key Features</h2>
-        <ul>
-          <li><strong>Searchable Directory:</strong> Live search and filtering to quickly find
-          relevant resources</li>
-          <li><strong>Interactive Map:</strong> Visual representation of resource locations using
-          OpenStreetMap integration</li>
-          <li><strong>Category Filtering:</strong> Browse resources by type including food,
-          healthcare, education, and more</li>
-          <li><strong>Community Submissions:</strong> Allow residents to contribute new resources
-          through a validated form</li>
-          <li><strong>Responsive Design:</strong> Optimized for all devices from mobile phones to
-          desktop computers</li>
-          <li><strong>Client-Side Storage:</strong> Submissions stored locally for immediate
-          confirmation and future review</li>
-        </ul>
-
-        <h2>Accessibility Features</h2>
-        <p>
-          We believe everyone deserves equal access to community information. Our platform includes:
-        </p>
-        <ul>
-          <li><strong>Semantic HTML:</strong> Proper heading hierarchy and ARIA labels for screen readers</li>
-          <li><strong>Keyboard Navigation:</strong> Full functionality without requiring a mouse</li>
-          <li><strong>Color Contrast:</strong> WCAG AA compliant color combinations for readability</li>
-          <li><strong>Responsive Typography:</strong> Text scales appropriately across all device sizes</li>
-          <li><strong>Focus Indicators:</strong> Clear visual feedback for interactive elements</li>
-          <li><strong>Alt Text:</strong> Descriptive text for all images and icons</li>
-          <li><strong>Mobile-First Design:</strong> Optimized for the devices most commonly used by community members</li>
-        </ul>
-
-        <h2>Future Enhancements</h2>
-        <p>As Conduit grows, we plan to add:</p>
-        <ul>
-          <li>Multilingual support for non-English speakers</li>
-          <li>User accounts for saving favorite resources</li>
-          <li>Real-time hours and availability updates</li>
-          <li>Resource reviews and ratings from community members</li>
-          <li>Integration with local transportation for directions</li>
-          <li>SMS and email notifications for new resources</li>
-        </ul>
-
-        <h2>TSA Webmaster Competition</h2>
-        <p>
-          This project was developed for the Technology Student Association (TSA) Webmaster
-          competition, which challenges students to create websites that address real-world
-          community needs. Conduit represents our commitment to using technology
-          as a force for social good.
-        </p>
-
-        <!-- CTA Box -->
-        <div class="about-cta-box">
-          <h3>Get Involved</h3>
-          <p>Help us improve Conduit by submitting resources or providing feedback.</p>
-          <a href="submit.html" class="btn-cta btn-cta--primary">
-            <span>Submit a Resource</span>
-            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12H19M13 6L19 12L13 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- ── RESEARCH LINKS ─────────────────────────────── -->
+    <section class="about-card-section reveal-section">
+      <div class="container">
+        <div class="about-section-card">
+          <div class="about-section-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Research Links
+          </div>
+          <h2 class="about-section-title">Sources &amp; References</h2>
+          <p class="about-section-lead">Websites consulted for resource information, program details, and regional data across all four cities served by Conduit.</p>
+
+          <div class="links-grid">
+
+            <div class="links-group">
+              <h3 class="links-group-heading">Springfield, IL</h3>
+              <ul class="links-list">
+                <li><a href="https://www.springfield.il.us" target="_blank" rel="noopener">City of Springfield — springfield.il.us</a></li>
+                <li><a href="https://www.centralilfoodbank.org" target="_blank" rel="noopener">Central Illinois Foodbank — centralilfoodbank.org</a></li>
+                <li><a href="https://www.springfieldmro.org" target="_blank" rel="noopener">Springfield Metropolitan Realty — springfieldmro.org</a></li>
+                <li><a href="https://www.capitalareacareservices.org" target="_blank" rel="noopener">Capital Area Care Services — capitalareacareservices.org</a></li>
+                <li><a href="https://www.illinoislegalaid.org" target="_blank" rel="noopener">Illinois Legal Aid Online — illinoislegalaid.org</a></li>
+                <li><a href="https://www.illinoisworknet.com" target="_blank" rel="noopener">Illinois WorkNet Employment — illinoisworknet.com</a></li>
+              </ul>
+            </div>
+
+            <div class="links-group">
+              <h3 class="links-group-heading">Seattle, WA</h3>
+              <ul class="links-list">
+                <li><a href="https://www.seattle.gov/human-services" target="_blank" rel="noopener">Seattle Human Services — seattle.gov</a></li>
+                <li><a href="https://kingcounty.gov/en/dept/dph" target="_blank" rel="noopener">King County Public Health — kingcounty.gov</a></li>
+                <li><a href="https://www.unitedwayofkingcounty.org" target="_blank" rel="noopener">United Way of King County — unitedwayofkingcounty.org</a></li>
+                <li><a href="https://www.desc.org" target="_blank" rel="noopener">Downtown Emergency Service Center — desc.org</a></li>
+                <li><a href="https://www.neighborcare.org" target="_blank" rel="noopener">Neighborcare Health — neighborcare.org</a></li>
+                <li><a href="https://www.workforceseattle.org" target="_blank" rel="noopener">Workforce Seattle — workforceseattle.org</a></li>
+              </ul>
+            </div>
+
+            <div class="links-group">
+              <h3 class="links-group-heading">New York City, NY</h3>
+              <ul class="links-list">
+                <li><a href="https://www.nyc.gov/site/hra/index.page" target="_blank" rel="noopener">NYC Human Resources Administration — nyc.gov</a></li>
+                <li><a href="https://www.foodbanknyc.org" target="_blank" rel="noopener">Food Bank For New York City — foodbanknyc.org</a></li>
+                <li><a href="https://www.nychealthandhospitals.org" target="_blank" rel="noopener">NYC Health + Hospitals — nychealthandhospitals.org</a></li>
+                <li><a href="https://www.hpd.nyc.gov" target="_blank" rel="noopener">NYC Housing Preservation — hpd.nyc.gov</a></li>
+                <li><a href="https://www.legalaidnyc.org" target="_blank" rel="noopener">Legal Aid Society — legalaidnyc.org</a></li>
+                <li><a href="https://www.nyc.gov/site/dycd/index.page" target="_blank" rel="noopener">NYC Youth &amp; Community Development — nyc.gov</a></li>
+              </ul>
+            </div>
+
+            <div class="links-group">
+              <h3 class="links-group-heading">Los Angeles, CA</h3>
+              <ul class="links-list">
+                <li><a href="https://lacounty.gov/residents/social-services" target="_blank" rel="noopener">LA County Social Services — lacounty.gov</a></li>
+                <li><a href="https://www.lafoodbank.org" target="_blank" rel="noopener">Los Angeles Regional Food Bank — lafoodbank.org</a></li>
+                <li><a href="https://www.lahsa.org" target="_blank" rel="noopener">LA Homeless Services Authority — lahsa.org</a></li>
+                <li><a href="https://dhs.lacounty.gov" target="_blank" rel="noopener">LA County Dept. of Health Services — dhs.lacounty.gov</a></li>
+                <li><a href="https://www.unitedwaygreaterla.org" target="_blank" rel="noopener">United Way of Greater LA — unitedwaygreaterla.org</a></li>
+                <li><a href="https://www.publiccounsel.org" target="_blank" rel="noopener">Public Counsel Legal Aid — publiccounsel.org</a></li>
+              </ul>
+            </div>
+
+            <div class="links-group">
+              <h3 class="links-group-heading">National / General</h3>
+              <ul class="links-list">
+                <li><a href="https://www.feedingamerica.org" target="_blank" rel="noopener">Feeding America — feedingamerica.org</a></li>
+                <li><a href="https://www.benefits.gov" target="_blank" rel="noopener">Benefits.gov — Federal Benefit Finder</a></li>
+                <li><a href="https://www.hud.gov" target="_blank" rel="noopener">U.S. Dept. of Housing &amp; Urban Dev. — hud.gov</a></li>
+                <li><a href="https://www.samhsa.gov" target="_blank" rel="noopener">SAMHSA Mental Health Resources — samhsa.gov</a></li>
+                <li><a href="https://www.lsc.gov" target="_blank" rel="noopener">Legal Services Corporation — lsc.gov</a></li>
+                <li><a href="https://www.211.org" target="_blank" rel="noopener">211.org — National Resource Helpline</a></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── IMAGE LINKS ────────────────────────────────── -->
+    <section class="about-card-section reveal-section">
+      <div class="container">
+        <div class="about-section-card">
+          <div class="about-section-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Image Links
+          </div>
+          <h2 class="about-section-title">Photography Sources</h2>
+          <p class="about-section-lead">All photographs used throughout Conduit are sourced from Unsplash, Pexels, and iStockphoto under their respective free-use licenses.</p>
+
+          <div class="links-grid links-grid--3col">
+
+            <div class="links-group">
+              <h3 class="links-group-heading">Unsplash — Testimonial Portraits</h3>
+              <ul class="links-list links-list--mono">
+                <li><a href="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">Sarah K.</a></li>
+                <li><a href="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">Carlos R.</a></li>
+                <li><a href="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">Emily J.</a></li>
+                <li><a href="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">Marcus T.</a></li>
+                <li><a href="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">Rachel T.</a></li>
+                <li><a href="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">Tyler B.</a></li>
+                <li><a href="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">James L.</a></li>
+                <li><a href="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">Amara W.</a></li>
+                <li><a href="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">Linda H.</a></li>
+                <li><a href="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">Nathan K.</a></li>
+                <li><a href="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">Maya P.</a></li>
+                <li><a href="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face" target="_blank" rel="noopener">Angela C.</a></li>
+              </ul>
+            </div>
+
+            <div class="links-group">
+              <h3 class="links-group-heading">Unsplash — Resources</h3>
+              <ul class="links-list links-list--mono">
+                <li><a href="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=800&h=600&fit=crop" target="_blank" rel="noopener">Community Food Bank</a></li>
+                <li><a href="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800&h=600&fit=crop" target="_blank" rel="noopener">Community Soup Kitchen</a></li>
+                <li><a href="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&h=600&fit=crop" target="_blank" rel="noopener">Food &amp; Nutrition</a></li>
+                <li><a href="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&h=600&fit=crop" target="_blank" rel="noopener">Public Library</a></li>
+                <li><a href="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" target="_blank" rel="noopener">Youth Education</a></li>
+                <li><a href="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=600&fit=crop" target="_blank" rel="noopener">Adult Education</a></li>
+                <li><a href="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop" target="_blank" rel="noopener">Tutoring / Study</a></li>
+                <li><a href="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&h=600&fit=crop" target="_blank" rel="noopener">Healthcare / Clinic</a></li>
+                <li><a href="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&h=600&fit=crop" target="_blank" rel="noopener">Medical Services</a></li>
+                <li><a href="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=600&fit=crop" target="_blank" rel="noopener">Housing / Real Estate</a></li>
+                <li><a href="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800&h=600&fit=crop" target="_blank" rel="noopener">Affordable Housing</a></li>
+                <li><a href="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&h=600&fit=crop" target="_blank" rel="noopener">Legal Aid</a></li>
+                <li><a href="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop" target="_blank" rel="noopener">Employment / Career</a></li>
+                <li><a href="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&h=600&fit=crop" target="_blank" rel="noopener">Job Training</a></li>
+                <li><a href="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop" target="_blank" rel="noopener">Community Support</a></li>
+                <li><a href="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&h=600&fit=crop" target="_blank" rel="noopener">Mental Health</a></li>
+                <li><a href="https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=800&h=600&fit=crop" target="_blank" rel="noopener">Senior Services</a></li>
+                <li><a href="https://images.unsplash.com/photo-1736618534647-9fe70cf9989c?w=800&h=600&fit=crop" target="_blank" rel="noopener">Wellness Program</a></li>
+                <li><a href="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&h=600&fit=crop" target="_blank" rel="noopener">Community Center</a></li>
+                <li><a href="https://images.unsplash.com/photo-1529400971008-f566de0e6dfc?w=800&h=600&fit=crop" target="_blank" rel="noopener">Youth Programs</a></li>
+                <li><a href="https://images.unsplash.com/photo-1516397281156-ca07cf9746fc?w=800&h=600&fit=crop" target="_blank" rel="noopener">Social Services</a></li>
+                <li><a href="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=600&fit=crop" target="_blank" rel="noopener">Contract / Legal</a></li>
+                <li><a href="https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=800&h=600&fit=crop" target="_blank" rel="noopener">Legal Documents</a></li>
+                <li><a href="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&h=600&fit=crop" target="_blank" rel="noopener">Arts &amp; Culture</a></li>
+                <li><a href="https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?w=800&h=600&fit=crop" target="_blank" rel="noopener">Recreation</a></li>
+                <li><a href="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=600&fit=crop" target="_blank" rel="noopener">Workforce Training</a></li>
+                <li><a href="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=600&fit=crop" target="_blank" rel="noopener">Community Outreach</a></li>
+                <li><a href="https://images.unsplash.com/photo-1602941525421-8f8b81d3edbb?w=800&h=600&fit=crop" target="_blank" rel="noopener">Healthcare Access</a></li>
+                <li><a href="https://images.unsplash.com/photo-1634951401794-6c84f593db82?w=800&h=600&fit=crop" target="_blank" rel="noopener">Shelter Services</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1661317236301-a68cbbc645de?w=600&auto=format&fit=crop&q=60" target="_blank" rel="noopener">Legal Aid (Premium)</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1661407340608-284208945170?w=600&auto=format&fit=crop&q=60" target="_blank" rel="noopener">Mental Health Facility</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1661575530192-3cf9f45925d4?w=600&auto=format&fit=crop&q=60" target="_blank" rel="noopener">Senior Support</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1661782480332-b13e3172660d?w=600&auto=format&fit=crop&q=60" target="_blank" rel="noopener">Employment Services</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1681505195930-388c317b7a76?w=600&auto=format&fit=crop&q=60" target="_blank" rel="noopener">Community</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1682097176170-fff87a3b5c1e?w=600&auto=format&fit=crop&q=60" target="_blank" rel="noopener">Homeless Support</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1683141173692-aba4763bce41?w=600&auto=format&fit=crop&q=60" target="_blank" rel="noopener">Food Donation</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1663047829774-ce6c084f3200?w=600&auto=format&fit=crop&q=60" target="_blank" rel="noopener">Immigrant Services</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1664474875684-e9b7f3a1e090?w=600&auto=format&fit=crop&q=60" target="_blank" rel="noopener">Mental Health Clinic</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1699291936089-a6812b018a4b?w=600&auto=format&fit=crop&q=60" target="_blank" rel="noopener">Bread &amp; Pantry</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1661757194630-b83ff50070f1?q=80&w=1632&auto=format&fit=crop" target="_blank" rel="noopener">Housing Aid</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1663040178972-ee1d45d33899?q=80&w=2070&auto=format&fit=crop" target="_blank" rel="noopener">Resource Access</a></li>
+                <li><a href="https://plus.unsplash.com/premium_photo-1663047040472-5c1fddc960f5?w=600&auto=format&fit=crop&q=60" target="_blank" rel="noopener">Youth Shelter</a></li>
+              </ul>
+            </div>
+
+            <div class="links-group">
+              <h3 class="links-group-heading">Pexels</h3>
+              <ul class="links-list links-list--mono">
+                <li><a href="https://images.pexels.com/photos/34092/pexels-photo.jpg?w=800&h=600&fit=crop" target="_blank" rel="noopener">General Community</a></li>
+                <li><a href="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Residential Housing</a></li>
+                <li><a href="https://images.pexels.com/photos/159775/library-la-trobe-study-students-159775.jpeg" target="_blank" rel="noopener">Library Study</a></li>
+                <li><a href="https://images.pexels.com/photos/236380/pexels-photo-236380.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Healthcare</a></li>
+                <li><a href="https://images.pexels.com/photos/264537/pexels-photo-264537.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Food Pantry</a></li>
+                <li><a href="https://images.pexels.com/photos/296301/pexels-photo-296301.jpeg" target="_blank" rel="noopener">Education</a></li>
+                <li><a href="https://images.pexels.com/photos/716276/pexels-photo-716276.jpeg" target="_blank" rel="noopener">Legal Services</a></li>
+                <li><a href="https://images.pexels.com/photos/974316/pexels-photo-974316.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Job Services</a></li>
+                <li><a href="https://images.pexels.com/photos/1181329/pexels-photo-1181329.jpeg" target="_blank" rel="noopener">Technology Training</a></li>
+                <li><a href="https://images.pexels.com/photos/1181357/pexels-photo-1181357.jpeg" target="_blank" rel="noopener">Workplace</a></li>
+                <li><a href="https://images.pexels.com/photos/1692693/pexels-photo-1692693.jpeg" target="_blank" rel="noopener">Housing</a></li>
+                <li><a href="https://images.pexels.com/photos/3183183/pexels-photo-3183183.jpeg" target="_blank" rel="noopener">Team / Collaboration</a></li>
+                <li><a href="https://images.pexels.com/photos/3184396/pexels-photo-3184396.jpeg" target="_blank" rel="noopener">Workforce</a></li>
+                <li><a href="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Job Training</a></li>
+                <li><a href="https://images.pexels.com/photos/3279209/pexels-photo-3279209.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Healthcare Worker</a></li>
+                <li><a href="https://images.pexels.com/photos/3646172/pexels-photo-3646172.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Mental Health</a></li>
+                <li><a href="https://images.pexels.com/photos/3823540/pexels-photo-3823540.jpeg" target="_blank" rel="noopener">Community Service</a></li>
+                <li><a href="https://images.pexels.com/photos/3846262/pexels-photo-3846262.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Nonprofit Work</a></li>
+                <li><a href="https://images.pexels.com/photos/4386475/pexels-photo-4386475.jpeg" target="_blank" rel="noopener">Food Aid</a></li>
+                <li><a href="https://images.pexels.com/photos/5029919/pexels-photo-5029919.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Shelter</a></li>
+                <li><a href="https://images.pexels.com/photos/5306416/pexels-photo-5306416.jpeg" target="_blank" rel="noopener">Senior Care</a></li>
+                <li><a href="https://images.pexels.com/photos/5311406/pexels-photo-5311406.jpeg" target="_blank" rel="noopener">Child Services</a></li>
+                <li><a href="https://images.pexels.com/photos/5439375/pexels-photo-5439375.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Housing Support</a></li>
+                <li><a href="https://images.pexels.com/photos/5637734/pexels-photo-5637734.jpeg" target="_blank" rel="noopener">Community Aid</a></li>
+                <li><a href="https://images.pexels.com/photos/5668473/pexels-photo-5668473.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Childcare</a></li>
+                <li><a href="https://images.pexels.com/photos/5669619/pexels-photo-5669619.jpeg" target="_blank" rel="noopener">Youth Education</a></li>
+                <li><a href="https://images.pexels.com/photos/5773957/pexels-photo-5773957.jpeg" target="_blank" rel="noopener">Food Distribution</a></li>
+                <li><a href="https://images.pexels.com/photos/6077326/pexels-photo-6077326.jpeg" target="_blank" rel="noopener">Legal Consultation</a></li>
+                <li><a href="https://images.pexels.com/photos/6077447/pexels-photo-6077447.jpeg" target="_blank" rel="noopener">Law Services</a></li>
+                <li><a href="https://images.pexels.com/photos/6519867/pexels-photo-6519867.jpeg" target="_blank" rel="noopener">Housing Resources</a></li>
+                <li><a href="https://images.pexels.com/photos/6647024/pexels-photo-6647024.jpeg" target="_blank" rel="noopener">Community Programs</a></li>
+                <li><a href="https://images.pexels.com/photos/7089619/pexels-photo-7089619.jpeg" target="_blank" rel="noopener">Social Work</a></li>
+                <li><a href="https://images.pexels.com/photos/7114/laptop-mobile.jpg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Digital Access</a></li>
+                <li><a href="https://images.pexels.com/photos/7176305/pexels-photo-7176305.jpeg" target="_blank" rel="noopener">Food Security</a></li>
+                <li><a href="https://images.pexels.com/photos/7195739/pexels-photo-7195739.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Crisis Support</a></li>
+                <li><a href="https://images.pexels.com/photos/7345465/pexels-photo-7345465.jpeg" target="_blank" rel="noopener">Advocacy</a></li>
+                <li><a href="https://images.pexels.com/photos/7640780/pexels-photo-7640780.jpeg" target="_blank" rel="noopener">Volunteer Work</a></li>
+                <li><a href="https://images.pexels.com/photos/7693033/pexels-photo-7693033.jpeg" target="_blank" rel="noopener">Food Assistance</a></li>
+                <li><a href="https://images.pexels.com/photos/7699530/pexels-photo-7699530.jpeg" target="_blank" rel="noopener">Outreach</a></li>
+                <li><a href="https://images.pexels.com/photos/7709134/pexels-photo-7709134.jpeg" target="_blank" rel="noopener">Social Services</a></li>
+                <li><a href="https://images.pexels.com/photos/7772200/pexels-photo-7772200.jpeg" target="_blank" rel="noopener">Healthcare Program</a></li>
+                <li><a href="https://images.pexels.com/photos/7876088/pexels-photo-7876088.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Housing Stability</a></li>
+                <li><a href="https://images.pexels.com/photos/8441770/pexels-photo-8441770.jpeg" target="_blank" rel="noopener">Community Meal</a></li>
+                <li><a href="https://images.pexels.com/photos/933964/pexels-photo-933964.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Medical Care</a></li>
+                <li><a href="https://images.pexels.com/photos/10646410/pexels-photo-10646410.jpeg?w=800&h=600&fit=crop" target="_blank" rel="noopener">Family Services</a></li>
+              </ul>
+            </div>
+
+            <div class="links-group">
+              <h3 class="links-group-heading">iStockphoto</h3>
+              <ul class="links-list links-list--mono">
+                <li><a href="https://media.istockphoto.com/id/1165063882/photo/restaurant-healthy-food-delivery-in-take-away-boxes.jpg" target="_blank" rel="noopener">Meals on Wheels</a></li>
+                <li><a href="https://media.istockphoto.com/id/1700728948/photo/poor-wheelchair-user-receiving-free-food.jpg" target="_blank" rel="noopener">Accessible Food Aid</a></li>
+                <li><a href="https://media.istockphoto.com/id/1055442684/photo/searching-the-river-for-wildlife.jpg" target="_blank" rel="noopener">Environmental Program</a></li>
+                <li><a href="https://media.istockphoto.com/id/1126663667/photo/teenage-girl-at-psychotherapy.webp" target="_blank" rel="noopener">Youth Mental Health</a></li>
+                <li><a href="https://media.istockphoto.com/id/1448547403/photo/donations-from-a-generous-community.jpg" target="_blank" rel="noopener">Community Donations</a></li>
+                <li><a href="https://media.istockphoto.com/id/1498170916/photo/a-couple-is-taking-a-bag-of-food-at-the-food-and-clothes-bank.jpg" target="_blank" rel="noopener">Food &amp; Clothes Bank</a></li>
+                <li><a href="https://media.istockphoto.com/id/1719538017/photo/home-care-healthcare-professional-hugging-senior-patient.jpg" target="_blank" rel="noopener">Home Healthcare</a></li>
+                <li><a href="https://media.istockphoto.com/id/2030273730/photo/happy-post-graduate-student-smiling-at-the-library.webp" target="_blank" rel="noopener">Higher Education</a></li>
+                <li><a href="https://media.istockphoto.com/id/2193688586/photo/a-group-of-teenagers-sit-in-a-circle-with-a-teacher.webp" target="_blank" rel="noopener">Teen Group Program</a></li>
+                <li><a href="https://media.istockphoto.com/id/2226813060/photo/students-searching-for-a-book-at-the-library.webp" target="_blank" rel="noopener">Library Resources</a></li>
+                <li><a href="https://media.istockphoto.com/id/2228920197/photo/corner-view-of-green-and-white-summer-house-on-lake-michigan.webp" target="_blank" rel="noopener">Affordable Housing</a></li>
+                <li><a href="https://media.istockphoto.com/id/2232288705/photo/healthcare-professional-listening-to-elderly-womans-heart-with-stethoscope-at-home-home.webp" target="_blank" rel="noopener">In-Home Medical</a></li>
+                <li><a href="https://media.istockphoto.com/id/469951129/photo/group-of-multi-ethnic-students-in-chemistry-lab.webp" target="_blank" rel="noopener">STEM Education</a></li>
+                <li><a href="https://media.istockphoto.com/id/875669096/photo/design-students-working-in-cad-3d-printing-lab-together.jpg" target="_blank" rel="noopener">Tech &amp; Design Lab</a></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CODE STACK ──────────────────────────────────── -->
+    <section class="about-card-section reveal-section">
+      <div class="container">
+        <div class="about-section-card">
+          <div class="about-section-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Code Stack
+          </div>
+          <h2 class="about-section-title">How We Built This</h2>
+          <p class="about-section-lead">Conduit is built entirely with vanilla HTML5, CSS3, and JavaScript (ES6+), without reliance on any external UI framework.</p>
+
+          <div class="stack-body">
+            <p>We chose this approach to maximize performance, minimize load times, and ensure the site works reliably across all modern browsers without requiring a build pipeline or Node.js toolchain. Every line of markup, style, and logic was written directly by our team.</p>
+
+            <p>Pages are connected through a custom-built single-page application (SPA) architecture using the browser-native <strong>Navigation API</strong> (<code>window.navigation.addEventListener('navigate', ...)</code>), which intercepts internal page transitions, fetches destination HTML, and surgically swaps only the <code>&lt;main&gt;</code> content — delivering a fast, app-like experience with smooth <strong>View Transition API</strong> animations between pages.</p>
+
+            <p>Typography is handled through <strong>Google Fonts</strong>, pairing <strong>Fraunces</strong> — an optical-size variable serif with strong editorial character — as the display font with <strong>DM Sans</strong> for clean, readable body copy. The design system is built entirely on <strong>CSS custom properties</strong> for consistent theming, spacing, and color across every page.</p>
+
+            <p>Interactive maps are powered by <strong>Leaflet.js</strong> (v1.9.4) with <strong>OpenStreetMap</strong> tiles via the open tile CDN — no paid map API required. Resource pins are dynamically rendered from a local <code>resources.json</code> data file, color-coded by category, and clickable with custom popups.</p>
+
+            <p>Donation processing is integrated with <strong>Stripe</strong> for secure, PCI-compliant payment handling. User authentication, profile data, community matching results, and saved resources are managed entirely client-side using the <strong>localStorage API</strong> — no backend server or database is required, keeping the site fully static and free to host.</p>
+
+            <p>The site follows <strong>WCAG 2.1 accessibility guidelines</strong>: semantic HTML5 landmarks, descriptive ARIA labels, full keyboard navigability, and color contrast meeting at minimum AA standards for all text content. A skip-to-content link is present on every page for screen reader users.</p>
+          </div>
+
+          <div class="stack-tags">
+            <span class="stack-tag">HTML5</span>
+            <span class="stack-tag">CSS3</span>
+            <span class="stack-tag">JavaScript ES6+</span>
+            <span class="stack-tag">Navigation API</span>
+            <span class="stack-tag">View Transitions API</span>
+            <span class="stack-tag">Leaflet.js v1.9.4</span>
+            <span class="stack-tag">OpenStreetMap</span>
+            <span class="stack-tag">Stripe</span>
+            <span class="stack-tag">Google Fonts</span>
+            <span class="stack-tag">Fraunces</span>
+            <span class="stack-tag">DM Sans</span>
+            <span class="stack-tag">localStorage API</span>
+            <span class="stack-tag">CSS Custom Properties</span>
+            <span class="stack-tag">WCAG 2.1</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
 
   <!-- ===== FOOTER ===== -->
   <footer class="site-footer">
@@ -214,7 +618,18 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Conduit. Built with care for communities around the US.</p>
+        <p>© 2026 Conduit. All Rights Reserved.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Facebook">
+            <img src="assets/images/fb.svg" alt="Facebook">
+          </a>
+          <a href="https://instagram.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="assets/images/ig.svg" alt="Instagram">
+          </a>
+          <a href="https://x.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="X">
+            <img src="assets/images/x.svg" alt="X">
+          </a>
+        </div>
       </div>
     </div>
   </footer>

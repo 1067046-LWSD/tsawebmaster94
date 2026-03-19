@@ -3,428 +3,532 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="assets/images/C_logo_clean_gold.svg">
   <title>My Profile — Conduit</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
-  <style>
-    /* ── Profile page root ── */
-    .profile-root {
-      background: var(--cream);
-      min-height: 100vh;
-    }
+  <style data-page-style>
+    /* ─── Layout ─────────────────────────────────── */
+    .profile-page { background: var(--cream); }
 
-    /* ── Banner ── */
-    .profile-banner {
-      background: linear-gradient(160deg, var(--forest) 0%, #1d4a34 60%, #2e6348 100%);
-      padding: 5rem 0 7rem;
+    /* ─── Hero Banner ─────────────────────────────── */
+    .profile-hero {
+      background: var(--forest);
       position: relative;
       overflow: hidden;
+      padding: 7rem 0 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .profile-banner::before {
+    /* Grain overlay */
+    .profile-hero::after {
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(212,168,83,0.08) 0%, transparent 60%),
-        url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M40 0 C40 0 20 15 20 40 C20 58 29 72 40 72 C51 72 60 58 60 40 C60 15 40 0 40 0Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
       pointer-events: none;
+      opacity: 0.18;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
     }
 
-    .profile-banner-inner {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 2rem;
+    /* Floating orbs */
+    .ph-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .ph-orb--1 {
+      width: 480px; height: 480px;
+      background: radial-gradient(circle, rgba(212,168,83,0.18), transparent 70%);
+      top: -120px; right: -100px;
+      animation: orb-drift 9s ease-in-out infinite alternate;
+    }
+    .ph-orb--2 {
+      width: 360px; height: 360px;
+      background: radial-gradient(circle, rgba(196,98,45,0.14), transparent 70%);
+      bottom: -80px; left: -60px;
+      animation: orb-drift 11s ease-in-out infinite alternate-reverse;
+    }
+    .ph-orb--3 {
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(58,112,85,0.35), transparent 70%);
+      top: 40%; left: 20%;
+      animation: orb-drift 7s ease-in-out infinite alternate;
+    }
+    @keyframes orb-drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(24px, -18px) scale(1.06); }
+    }
+
+    .profile-hero-inner {
       position: relative;
       z-index: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
+      gap: 0;
+      padding: 0 var(--container-pad);
     }
 
-    /* Avatar ring system */
-    .avatar-ring-wrap {
+    /* Avatar */
+    .ph-avatar-zone {
+      margin-bottom: 1.5rem;
+      animation: ph-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+    }
+
+    .ph-avatar-ring {
       position: relative;
-      width: 136px;
-      height: 136px;
-      margin-bottom: 1.75rem;
+      width: 128px;
+      height: 128px;
+      margin: 0 auto;
     }
 
-    .avatar-ring {
+    /* Spinning conic ring */
+    .ph-avatar-ring::before {
+      content: '';
       position: absolute;
+      inset: -5px;
       border-radius: 50%;
-      border: 1px solid rgba(212, 168, 83, 0.25);
-      animation: ringPulse 3s ease-in-out infinite;
+      background: conic-gradient(
+        from 0deg,
+        var(--gold) 0deg,
+        var(--terracotta-lt) 100deg,
+        rgba(255,255,255,0.2) 160deg,
+        var(--gold-light) 220deg,
+        var(--terracotta) 280deg,
+        var(--gold) 360deg
+      );
+      animation: ring-spin 8s linear infinite;
+      z-index: 0;
     }
 
-    .avatar-ring:nth-child(1) { inset: -12px; animation-delay: 0s; }
-    .avatar-ring:nth-child(2) { inset: -22px; animation-delay: 0.6s; border-color: rgba(212,168,83,0.14); }
-    .avatar-ring:nth-child(3) { inset: -34px; animation-delay: 1.2s; border-color: rgba(212,168,83,0.07); }
+    /* Mask the center so only a ring shows */
+    .ph-avatar-ring::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 50%;
+      background: var(--forest);
+      z-index: 1;
+    }
 
-    @keyframes ringPulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(1.02); }
+    @keyframes ring-spin {
+      to { transform: rotate(360deg); }
     }
 
     #profile-avatar {
-      width: 136px;
-      height: 136px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--gold);
-      display: block;
-      cursor: pointer;
       position: relative;
       z-index: 2;
-      transition: transform 0.25s, box-shadow 0.25s;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      width: 128px;
+      height: 128px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+      transition: transform 0.3s ease, filter 0.3s ease;
     }
 
-    #profile-avatar:hover {
+    .ph-avatar-ring:hover #profile-avatar {
       transform: scale(1.04);
-      box-shadow: 0 12px 50px rgba(0,0,0,0.5);
+      filter: brightness(0.82);
     }
 
-    .avatar-edit-badge {
+    .ph-avatar-edit {
       position: absolute;
-      bottom: 4px;
-      right: 4px;
-      width: 30px;
-      height: 30px;
-      background: var(--gold);
-      color: var(--forest);
+      inset: 0;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 700;
-      pointer-events: none;
-      border: 2.5px solid var(--forest);
       z-index: 3;
-    }
-
-    #avatar-input { display: none; }
-
-    .profile-banner-name {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 6vw, 3.2rem);
-      font-weight: 700;
-      color: var(--white);
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-      animation: bannerIn 0.6s ease both;
-    }
-
-    .profile-banner-email {
-      color: rgba(255,255,255,0.55);
-      font-size: 0.95rem;
-      font-family: var(--font-body);
-      animation: bannerIn 0.6s 0.1s ease both;
-    }
-
-    .profile-banner-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: rgba(212,168,83,0.15);
-      border: 1px solid rgba(212,168,83,0.35);
-      color: var(--gold);
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      padding: 0.35rem 0.9rem;
-      border-radius: 100px;
-      margin-top: 1rem;
-      animation: bannerIn 0.6s 0.2s ease both;
-    }
-
-    .profile-banner-badge::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      background: var(--gold);
-      border-radius: 50%;
-    }
-
-    @keyframes bannerIn {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── Content area ── */
-    .profile-content {
-      max-width: 800px;
-      margin: -3.5rem auto 0;
-      padding: 0 1.5rem 6rem;
-      position: relative;
-      z-index: 10;
-    }
-
-    /* ── Passport (community) card ── */
-    .passport-card {
-      background: var(--forest);
-      border-radius: 24px;
-      overflow: hidden;
-      display: flex;
-      align-items: stretch;
-      box-shadow: 0 20px 60px rgba(26,58,42,0.35);
-      margin-bottom: 1.25rem;
-      animation: cardIn 0.55s 0.15s ease both;
-      position: relative;
-    }
-
-    .passport-card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--gold), var(--terracotta), var(--gold));
-    }
-
-    .passport-left {
-      background: rgba(0,0,0,0.22);
-      width: 110px;
-      flex-shrink: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem 1rem;
-      border-right: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .passport-emblem {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--gold), #e8c46a);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--forest);
-      margin-bottom: 0.75rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-
-    .passport-left-label {
-      font-size: 0.62rem;
+      gap: 4px;
+      color: white;
+      font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: rgba(255,255,255,0.35);
-      text-align: center;
+      letter-spacing: 0.08em;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
     }
 
-    .passport-right {
-      flex: 1;
-      padding: 2rem 2rem 2rem 2.25rem;
-      position: relative;
-    }
+    .ph-avatar-ring:hover .ph-avatar-edit { opacity: 1; }
+    #avatar-input { display: none; }
 
-    .passport-eyebrow {
-      display: block;
+    /* Hero text */
+    .ph-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(212,168,83,0.15);
+      border: 1px solid rgba(212,168,83,0.35);
+      color: var(--gold-light);
+      font-family: var(--font-body);
       font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.14em;
-      color: var(--gold);
-      margin-bottom: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 100px;
+      margin-bottom: 0.75rem;
+      animation: ph-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
     }
 
-    .passport-community-name {
+    .ph-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px rgba(74,222,128,0.8);
+      animation: badge-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes badge-pulse {
+      0%, 100% { box-shadow: 0 0 8px rgba(74,222,128,0.8); }
+      50% { box-shadow: 0 0 16px rgba(74,222,128,0.5); }
+    }
+
+    #profile-name {
       font-family: var(--font-display);
-      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 700;
       color: var(--white);
-      line-height: 1.15;
-      margin-bottom: 0.6rem;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 0.4rem;
+      animation: ph-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
     }
 
-    .passport-desc {
-      color: rgba(255,255,255,0.6);
-      font-size: 0.88rem;
+    #profile-email {
       font-family: var(--font-body);
-      margin-bottom: 1.25rem;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 1.5rem;
+      animation: ph-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
     }
 
-    .passport-status {
+    .ph-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: ph-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
+    }
+
+    .ph-pill {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
       background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
       border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.8);
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      padding: 0.3rem 0.8rem;
+      color: rgba(255,255,255,0.75);
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.4rem 0.9rem;
       border-radius: 100px;
+      transition: background 0.2s, border-color 0.2s;
     }
 
-    .passport-status-dot {
-      width: 6px;
-      height: 6px;
-      background: #5de89b;
-      border-radius: 50%;
+    .ph-pill:hover {
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(255,255,255,0.22);
     }
 
-    .passport-deco {
-      position: absolute;
-      right: 1.5rem;
-      bottom: 1rem;
-      opacity: 0.06;
-      width: 90px;
+    .ph-pill svg { opacity: 0.6; flex-shrink: 0; }
+
+    @keyframes ph-rise {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .passport-deco svg { width: 90px; height: auto; }
+    /* ─── Content Section ─────────────────────────── */
+    .profile-content {
+      padding: 3rem var(--container-pad) 6rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
 
-    .no-community-card {
+    /* ─── Cards ───────────────────────────────────── */
+    .profile-pcard {
       background: var(--white);
-      border-radius: 20px;
-      padding: 3rem 2rem;
-      text-align: center;
-      box-shadow: 0 4px 24px rgba(26,58,42,0.07);
+      border: 1px solid var(--sand);
+      border-radius: 24px;
+      padding: 2rem 2rem;
       margin-bottom: 1.25rem;
-      animation: cardIn 0.55s 0.15s ease both;
+      box-shadow: 0 4px 24px rgba(26,58,42,0.06);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      animation: pcard-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s) both;
+      will-change: transform;
     }
 
-    .no-community-icon {
-      width: 60px;
-      height: 60px;
-      background: var(--cream);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.25rem;
-      color: var(--stone);
+    .profile-pcard:hover {
+      box-shadow: 0 12px 48px rgba(26,58,42,0.11);
+      transform: translateY(-2px);
     }
 
-    .no-community-card h3 {
-      font-family: var(--font-display);
-      color: var(--forest);
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
+    @keyframes pcard-reveal {
+      from { opacity: 0; transform: translateY(32px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    .no-community-card p {
-      color: var(--stone);
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-    }
-
-    /* ── Stat row ── */
-    .stat-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-      animation: cardIn 0.55s 0.25s ease both;
-    }
-
-    .stat-tile {
-      background: var(--white);
-      border-radius: 18px;
-      padding: 1.5rem 1.25rem;
-      text-align: center;
-      box-shadow: 0 2px 16px rgba(26,58,42,0.06);
-    }
-
-    .stat-tile-icon {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-
-    .stat-tile-value {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--forest);
-      display: block;
-      line-height: 1;
-      margin-bottom: 0.25rem;
-    }
-
-    .stat-tile-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--stone);
-    }
-
-    /* ── Survey answers ── */
-    .survey-answers-card {
-      background: var(--white);
-      border-radius: 20px;
-      padding: 2rem 2rem 1.75rem;
-      box-shadow: 0 2px 20px rgba(26,58,42,0.06);
-      margin-bottom: 1.25rem;
-      animation: cardIn 0.55s 0.35s ease both;
-    }
-
-    .section-eyebrow {
+    .pcard-eyebrow {
+      font-family: var(--font-body);
       font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       color: var(--stone);
+      margin-bottom: 1.25rem;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 1.5rem;
+      gap: 0.5rem;
     }
 
-    .section-eyebrow::after {
+    .pcard-eyebrow::after {
       content: '';
       flex: 1;
       height: 1px;
       background: var(--sand);
     }
 
-    .answer-tiles {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.9rem;
+    /* ─── Community Passport Card ─────────────────── */
+    .community-passport {
+      background: linear-gradient(135deg, #0e2419 0%, #1a3a2a 45%, #152e22 100%);
+      border-radius: 18px;
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(212,168,83,0.28);
+      color: white;
     }
 
-    .answer-tile {
-      background: var(--cream);
-      border-radius: 14px;
-      padding: 1.1rem 1.25rem;
+    /* Shimmer sweep */
+    .passport-shimmer {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        transparent 30%,
+        rgba(212,168,83,0.07) 45%,
+        rgba(212,168,83,0.12) 50%,
+        rgba(212,168,83,0.07) 55%,
+        transparent 70%
+      );
+      background-size: 300% 100%;
+      animation: passport-shimmer 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes passport-shimmer {
+      0%   { background-position: 150% center; }
+      100% { background-position: -50% center; }
+    }
+
+    /* Subtle noise on passport */
+    .community-passport::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+    }
+
+    .passport-top {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      transition: transform 0.2s;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
     }
 
-    .answer-tile:hover { transform: translateY(-2px); }
+    .passport-status {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.55);
+    }
 
-    .answer-tile-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: var(--forest);
+    .passport-status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px rgba(74,222,128,0.9);
+      animation: badge-pulse 2s ease-in-out infinite;
+    }
+
+    .passport-brand {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+
+    .passport-middle {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .passport-emblem {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--terracotta) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(212,168,83,0.4);
+    }
+
+    .passport-label {
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.3rem;
+    }
+
+    .passport-name {
+      font-family: var(--font-display);
+      font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+      font-weight: 700;
       color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 0;
+    }
+
+    .passport-footer {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .passport-field {
+      flex: 1;
+      padding-right: 1rem;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .passport-field:last-child {
+      border-right: none;
+      padding-right: 0;
+      padding-left: 1rem;
+    }
+
+    .passport-field:not(:first-child):not(:last-child) {
+      padding-left: 1rem;
+    }
+
+    .passport-field-label {
+      font-family: var(--font-body);
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.35);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .passport-field-value {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .passport-field-value.is-active {
+      color: #4ade80;
+    }
+
+    .passport-botanical {
+      position: absolute;
+      right: -20px;
+      bottom: -24px;
+      width: 130px;
+      opacity: 0.07;
+      color: var(--gold-light);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* No community card */
+    .no-community-card {
+      text-align: center;
+      padding: 1rem 0 0.5rem;
+    }
+
+    .no-community-card p {
+      color: var(--stone);
+      margin-bottom: 1.25rem;
+      font-size: 0.95rem;
+    }
+
+    /* ─── Survey Card ─────────────────────────────── */
+    .svy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .svy-item {
+      background: var(--cream);
+      border-radius: 14px;
+      padding: 1rem 1rem 0.85rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      transition: background 0.2s ease;
+    }
+
+    .svy-item:hover { background: var(--cream-mid); }
+
+    .svy-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--white);
+      border: 1px solid var(--sand);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: 1.1rem;
+      color: var(--forest);
     }
 
-    .answer-tile-body {}
-
-    .answer-tile-label {
+    .svy-label {
+      font-family: var(--font-body);
       font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -434,179 +538,178 @@
       margin-bottom: 0.2rem;
     }
 
-    .answer-tile-value {
-      font-family: var(--font-display);
-      font-size: 1rem;
+    .svy-value {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
       font-weight: 600;
       color: var(--forest);
     }
 
-    /* ── No survey yet ── */
-    .no-survey-card {
-      background: var(--white);
-      border-radius: 20px;
-      padding: 3rem 2rem;
-      text-align: center;
-      box-shadow: 0 2px 20px rgba(26,58,42,0.06);
-      margin-bottom: 1.25rem;
-      animation: cardIn 0.55s 0.35s ease both;
+    /* ─── Account Actions ─────────────────────────── */
+    .profile-actions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
 
-    .no-survey-card p {
-      color: var(--stone);
-      font-family: var(--font-body);
-      margin-bottom: 1.5rem;
-    }
-
-    /* ── Saved resources ── */
-    .saved-resources-card {
-      background: var(--white);
-      border-radius: 20px;
-      padding: 2rem 2rem 1.75rem;
-      box-shadow: 0 2px 20px rgba(26,58,42,0.06);
-      margin-bottom: 1.25rem;
-      animation: cardIn 0.55s 0.45s ease both;
-    }
-
-    .saved-resources-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-    }
-
-    .saved-resource-chip {
+    .profile-action-row {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      background: var(--cream);
-      border-radius: 14px;
-      padding: 0.85rem 1rem;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--mist);
       text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-      border: 1.5px solid transparent;
+      background: none;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      width: 100%;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--ink);
+      font-family: var(--font-body);
     }
 
-    .saved-resource-chip:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(26,58,42,0.1);
-      border-color: rgba(26,58,42,0.15);
-    }
+    .profile-action-row:last-child { border-bottom: none; }
 
-    .saved-resource-chip-icon {
-      font-size: 1.25rem;
+    .profile-action-row:hover { padding-left: 4px; }
+
+    .par-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--cream);
+      border: 1px solid var(--sand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
+      color: var(--forest);
+      transition: background 0.2s;
     }
 
-    .saved-resource-chip-name {
-      font-family: var(--font-display);
+    .profile-action-row:hover .par-icon { background: var(--cream-mid); }
+
+    .par-text { flex: 1; text-align: left; }
+
+    .par-label {
       font-size: 0.88rem;
       font-weight: 600;
-      color: var(--forest);
+      color: var(--ink);
       display: block;
       line-height: 1.3;
     }
 
-    .saved-resource-chip-cat {
-      font-size: 0.68rem;
+    .par-sub {
+      font-size: 0.75rem;
       color: var(--stone);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .saved-resources-browse {
       display: block;
-      text-align: center;
-      margin-top: 1.25rem;
-      color: var(--forest);
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-decoration: underline;
-      text-underline-offset: 2px;
     }
 
-    @media (max-width: 540px) {
-      .saved-resources-grid { grid-template-columns: 1fr; }
+    .par-arrow {
+      font-size: 1rem;
+      color: var(--sand);
+      transition: color 0.2s, transform 0.2s;
     }
 
-    /* ── Actions ── */
-    .profile-actions {
+    .profile-action-row:hover .par-arrow {
+      color: var(--stone);
+      transform: translateX(3px);
+    }
+
+    /* Danger row */
+    .profile-action-row--danger .par-label { color: var(--terracotta); }
+
+    .profile-action-row--danger .par-icon {
+      background: rgba(196,98,45,0.06);
+      border-color: rgba(196,98,45,0.2);
+      color: var(--terracotta);
+    }
+
+    .profile-action-row--danger:hover .par-icon {
+      background: rgba(196,98,45,0.12);
+    }
+
+    /* ─── Saved Resources ────────────────────────── */
+    .saved-resource-row {
       display: flex;
-      gap: 0.9rem;
-      flex-wrap: wrap;
-      animation: cardIn 0.55s 0.45s ease both;
-    }
-
-    .profile-action-btn {
-      display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.8rem 1.6rem;
-      border-radius: 100px;
-      font-family: var(--font-body);
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--mist);
+      text-decoration: none;
+      color: var(--ink);
+      transition: all 0.2s ease;
+    }
+    .saved-resource-row:last-child { border-bottom: none; }
+    .saved-resource-row:hover { padding-left: 4px; }
+    .srr-img {
+      width: 52px; height: 52px;
+      border-radius: 10px;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--sand);
+      flex-shrink: 0;
+    }
+    .srr-info { flex: 1; }
+    .srr-name {
       font-size: 0.88rem;
       font-weight: 600;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+      color: var(--ink);
+      display: block;
+      line-height: 1.3;
+    }
+    .srr-cat {
+      font-size: 0.72rem;
+      color: var(--stone);
+      display: block;
+      margin-top: 0.15rem;
+    }
+    .srr-arrow {
+      font-size: 1rem;
+      color: var(--sand);
+      transition: color 0.2s, transform 0.2s;
+    }
+    .saved-resource-row:hover .srr-arrow {
+      color: var(--stone);
+      transform: translateX(3px);
     }
 
-    .profile-action-btn--primary {
-      background: var(--forest);
-      color: var(--white);
-      box-shadow: 0 4px 16px rgba(26,58,42,0.22);
+    /* ─── Divider text ────────────────────────────── */
+    .no-survey-cta {
+      text-align: center;
+      padding: 0.5rem 0 0;
     }
 
-    .profile-action-btn--primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(26,58,42,0.3);
-      color: var(--white);
+    .no-survey-cta p {
+      color: var(--stone);
+      font-size: 0.9rem;
+      margin-bottom: 1.1rem;
     }
 
-    .profile-action-btn--ghost {
-      background: transparent;
-      color: var(--forest);
-      border: 1.5px solid rgba(26,58,42,0.35);
-    }
-
-    .profile-action-btn--ghost:hover {
-      background: var(--forest);
-      color: var(--white);
-      border-color: var(--forest);
-      transform: translateY(-2px);
-    }
-
-    .profile-action-btn--danger {
-      background: transparent;
-      color: #c0392b;
-      border: 1.5px solid rgba(192,57,43,0.3);
-    }
-
-    .profile-action-btn--danger:hover {
-      background: #c0392b;
-      color: var(--white);
-      border-color: #c0392b;
-      transform: translateY(-2px);
-    }
-
-    @keyframes cardIn {
-      from { opacity: 0; transform: translateY(22px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 600px) {
-      .passport-card { flex-direction: column; }
-      .passport-left { width: auto; flex-direction: row; padding: 1.25rem 1.5rem; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
-      .passport-emblem { width: 48px; height: 48px; font-size: 1.3rem; margin-bottom: 0; margin-right: 0.75rem; }
-      .answer-tiles { grid-template-columns: 1fr; }
-      .stat-row { grid-template-columns: 1fr; }
-      .passport-deco { display: none; }
+    /* ─── Responsive ──────────────────────────────── */
+    @media (max-width: 640px) {
+      .profile-hero { padding: 6rem 0 3rem; }
+      .ph-avatar-ring { width: 108px; height: 108px; }
+      #profile-avatar { width: 108px; height: 108px; }
+      .svy-grid { grid-template-columns: 1fr; }
+      .profile-pcard { padding: 1.5rem; }
+      .passport-footer { flex-wrap: wrap; gap: 0.75rem; }
+      .passport-field {
+        flex: none;
+        width: calc(50% - 0.375rem);
+        border-right: none;
+        padding: 0;
+      }
     }
   </style>
+<script>(function(){var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}());</script>
 </head>
-<body>
-<main>
+<body class="profile-page">
+<a href="#main-content" class="skip-to-content">Skip to content</a>
+<main id="main-content">
 
-  <!-- ===== NAV ===== -->
+  <!-- ── Navigation ──────────────────────────────── -->
   <nav id="main-nav" class="nav--scrolled">
     <div class="nav-inner">
       <a href="index.html" class="logo">
@@ -617,7 +720,8 @@
         <li><a href="directory.html">Directory</a></li>
         <li><a href="map.html">Map</a></li>
         <li><a href="donate.html">Donate</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="articles.html">Articles</a></li>
+          <li><a href="about.html">About</a></li>
         <li><a href="submit.html" class="nav-cta">Submit Resource</a></li>
       </ul>
       <div class="nav-auth">
@@ -635,127 +739,194 @@
     </div>
   </nav>
 
-  <!-- ===== PROFILE BANNER ===== -->
-  <section class="profile-banner">
-    <div class="profile-banner-inner">
-      <div class="avatar-ring-wrap">
-        <div class="avatar-ring"></div>
-        <div class="avatar-ring"></div>
-        <div class="avatar-ring"></div>
-        <img id="profile-avatar"
-          src="https://ui-avatars.com/api/?name=User&background=2E7D60&color=fff&size=136"
-          alt="Profile picture">
-        <div class="avatar-edit-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+  <!-- ── Profile Hero ─────────────────────────────── -->
+  <section class="profile-hero">
+    <!-- Floating orbs -->
+    <div class="ph-orb ph-orb--1"></div>
+    <div class="ph-orb ph-orb--2"></div>
+    <div class="ph-orb ph-orb--3"></div>
+
+    <div class="profile-hero-inner">
+      <!-- Avatar -->
+      <div class="ph-avatar-zone">
+        <div class="ph-avatar-ring">
+          <img id="profile-avatar"
+            src="https://ui-avatars.com/api/?name=User&background=1a3a2a&color=fff&size=256"
+            alt="Profile picture">
+          <div class="ph-avatar-edit" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+            Change photo
+          </div>
+        </div>
         <input type="file" id="avatar-input" accept="image/*">
       </div>
-      <h1 class="profile-banner-name" id="profile-name">Loading…</h1>
-      <p class="profile-banner-email" id="profile-email"></p>
-      <div class="profile-banner-badge">Community Member</div>
+
+      <!-- Badge -->
+      <div class="ph-badge">
+        <span class="ph-badge-dot"></span>
+        Active Member
+      </div>
+
+      <!-- Name -->
+      <h1 id="profile-name">Loading…</h1>
+
+      <!-- Email -->
+      <p id="profile-email">—</p>
+
+      <!-- Meta pills -->
+      <div class="ph-meta">
+        <span class="ph-pill" id="profile-since">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span id="profile-since-text">—</span>
+        </span>
+        <span class="ph-pill" id="profile-community-pill">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span id="profile-community-pill-text">—</span>
+        </span>
+        <span class="ph-pill" id="profile-city-pill" style="display:none;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span id="profile-city-pill-text">—</span>
+        </span>
+      </div>
     </div>
+
   </section>
 
-  <!-- ===== PROFILE CONTENT ===== -->
+  <!-- ── Profile Content ──────────────────────────── -->
   <div class="profile-content">
 
-    <!-- Community passport card — populated by auth.js -->
-    <div id="profile-community-box"></div>
-
-    <!-- Stat row -->
-    <div class="stat-row" id="profile-stat-row" style="display:none;">
-      <div class="stat-tile">
-        <span class="stat-tile-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-        <span class="stat-tile-value">1</span>
-        <span class="stat-tile-label">Community</span>
-      </div>
-      <div class="stat-tile">
-        <span class="stat-tile-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h6"/></svg></span>
-        <span class="stat-tile-value" id="stat-answers">4</span>
-        <span class="stat-tile-label">Answers Given</span>
-      </div>
-      <div class="stat-tile">
-        <span class="stat-tile-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span>
-        <span class="stat-tile-value" id="stat-city-short">—</span>
-        <span class="stat-tile-label">Your City</span>
+    <!-- Community Card -->
+    <div class="profile-pcard" style="--delay: 0.05s">
+      <div class="pcard-eyebrow">Community Match</div>
+      <div id="profile-community-box">
+        <!-- Populated by initProfilePage() -->
       </div>
     </div>
 
-    <!-- Survey answers card -->
-    <div class="survey-answers-card" id="profile-survey" style="display:none;">
-      <div class="section-eyebrow">Survey Answers</div>
-      <div class="answer-tiles">
-        <div class="answer-tile">
-          <div class="answer-tile-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-              <path d="M12 2L8 7H4l3 3-1.5 5L12 13l6.5 2L17 10l3-3h-4L12 2z"/>
-            </svg>
+    <!-- Survey Responses (shown if survey taken) -->
+    <div class="profile-pcard" id="profile-survey" style="--delay: 0.15s; display:none;">
+      <div class="pcard-eyebrow">Survey Profile</div>
+      <div class="svy-grid">
+        <div class="svy-item">
+          <div class="svy-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
           </div>
-          <div class="answer-tile-body">
-            <span class="answer-tile-label">Interest</span>
-            <span class="answer-tile-value" id="profile-interest"></span>
+          <div>
+            <span class="svy-label">Interest</span>
+            <span class="svy-value" id="profile-interest">—</span>
           </div>
         </div>
-        <div class="answer-tile">
-          <div class="answer-tile-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-              <circle cx="12" cy="8" r="4"/>
-              <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
-            </svg>
+        <div class="svy-item">
+          <div class="svy-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
-          <div class="answer-tile-body">
-            <span class="answer-tile-label">Involvement</span>
-            <span class="answer-tile-value" id="profile-involvement"></span>
+          <div>
+            <span class="svy-label">Involvement</span>
+            <span class="svy-value" id="profile-involvement">—</span>
           </div>
         </div>
-        <div class="answer-tile">
-          <div class="answer-tile-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-              <rect x="3" y="4" width="18" height="16" rx="2"/>
-              <path d="M8 2v4M16 2v4M3 10h18"/>
-            </svg>
+        <div class="svy-item">
+          <div class="svy-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           </div>
-          <div class="answer-tile-body">
-            <span class="answer-tile-label">Age Range</span>
-            <span class="answer-tile-value" id="profile-age"></span>
+          <div>
+            <span class="svy-label">Age Range</span>
+            <span class="svy-value" id="profile-age">—</span>
           </div>
         </div>
-        <div class="answer-tile">
-          <div class="answer-tile-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-              <path d="M12 2C8.7 2 6 4.7 6 8c0 5 6 13 6 13s6-8 6-13c0-3.3-2.7-6-6-6z"/>
-              <circle cx="12" cy="8" r="2"/>
-            </svg>
+        <div class="svy-item">
+          <div class="svy-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
-          <div class="answer-tile-body">
-            <span class="answer-tile-label">City</span>
-            <span class="answer-tile-value" id="profile-city"></span>
+          <div>
+            <span class="svy-label">City</span>
+            <span class="svy-value" id="profile-city">—</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Saved resources -->
-    <div class="saved-resources-card" id="profile-saved-resources" style="display:none;">
-      <div class="section-eyebrow">My Resources</div>
-      <div class="saved-resources-grid"></div>
-      <a href="directory.html" class="saved-resources-browse">Browse all resources →</a>
+    <!-- No Survey Prompt -->
+    <div id="profile-no-survey" class="profile-pcard" style="--delay: 0.15s;">
+      <div class="pcard-eyebrow">Survey Profile</div>
+      <div class="no-survey-cta">
+        <p>Take our 2-minute survey to get matched with your ideal community and see personalized resources.</p>
+        <a href="survey.html" class="btn btn-primary">Take the Survey →</a>
+      </div>
     </div>
 
-    <!-- No survey yet -->
-    <div id="profile-no-survey" class="no-survey-card" style="display:none;">
-      <p>Complete the survey to get matched with your community.</p>
-      <a href="survey.html" class="profile-action-btn profile-action-btn--primary">Take the Survey →</a>
+    <!-- Saved Resources -->
+    <div class="profile-pcard" id="profile-saved-section" style="--delay: 0.22s; display:none;">
+      <div class="pcard-eyebrow">Saved Resources</div>
+      <div id="profile-saved-list"></div>
     </div>
 
-    <!-- Actions -->
-    <div class="profile-actions" id="profile-survey-actions" style="display:none;">
-      <a href="directory.html" class="profile-action-btn profile-action-btn--primary">Browse Resources</a>
-      <a href="survey.html" class="profile-action-btn profile-action-btn--ghost">Retake Survey</a>
-      <a href="#" class="profile-action-btn profile-action-btn--danger" id="profile-logout-btn">Sign Out</a>
+    <!-- Account Actions -->
+    <div class="profile-pcard" style="--delay: 0.25s;">
+      <div class="pcard-eyebrow">Account</div>
+      <div class="profile-actions-list">
+
+        <a href="survey.html" class="profile-action-row">
+          <span class="par-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.44"/></svg>
+          </span>
+          <span class="par-text">
+            <span class="par-label">Retake Survey</span>
+            <span class="par-sub">Update your community match</span>
+          </span>
+          <span class="par-arrow">→</span>
+        </a>
+
+        <label for="avatar-input" class="profile-action-row" style="cursor:pointer;">
+          <span class="par-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </span>
+          <span class="par-text">
+            <span class="par-label">Change Photo</span>
+            <span class="par-sub">Upload a new profile picture</span>
+          </span>
+          <span class="par-arrow">→</span>
+        </label>
+
+        <a href="directory.html" class="profile-action-row">
+          <span class="par-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <span class="par-text">
+            <span class="par-label">Browse Resources</span>
+            <span class="par-sub">Explore the full directory</span>
+          </span>
+          <span class="par-arrow">→</span>
+        </a>
+
+        <button class="profile-action-row" id="dark-mode-row" onclick="toggleDarkMode()">
+          <span class="par-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </span>
+          <span class="par-text">
+            <span class="par-label">Dark Mode</span>
+            <span class="par-sub">Switch to dark theme</span>
+          </span>
+          <span class="dm-toggle" id="dm-toggle"></span>
+        </button>
+
+        <button class="profile-action-row profile-action-row--danger" id="profile-logout-btn">
+          <span class="par-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </span>
+          <span class="par-text">
+            <span class="par-label">Sign Out</span>
+            <span class="par-sub">Log out of your account</span>
+          </span>
+          <span class="par-arrow">→</span>
+        </button>
+
+      </div>
     </div>
 
   </div>
 
-  <!-- ===== FOOTER ===== -->
+  <!-- ── Footer ───────────────────────────────────── -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
@@ -778,6 +949,7 @@
             <li><a href="submit.html">Submit a Resource</a></li>
             <li><a href="donate.html">Donate</a></li>
             <li><a href="signup.html">Create Account</a></li>
+            <li><a href="login.html">Sign In</a></li>
           </ul>
         </div>
         <div class="footer-nav-group">
@@ -787,11 +959,24 @@
             <li><a href="directory.html?category=Healthcare">Healthcare</a></li>
             <li><a href="directory.html?category=Education">Education</a></li>
             <li><a href="directory.html?category=Housing">Housing</a></li>
+            <li><a href="directory.html?category=Employment">Employment</a></li>
+            <li><a href="directory.html?category=Legal">Legal Aid</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Conduit. Built with care for communities around the US.</p>
+        <p>© 2026 Conduit. All Rights Reserved.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Facebook">
+            <img src="assets/images/fb.svg" alt="Facebook">
+          </a>
+          <a href="https://instagram.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="assets/images/ig.svg" alt="Instagram">
+          </a>
+          <a href="https://x.com" class="footer-social-link" target="_blank" rel="noopener" aria-label="X">
+            <img src="assets/images/x.svg" alt="X">
+          </a>
+        </div>
       </div>
     </div>
   </footer>
@@ -799,32 +984,6 @@
 </main>
 
 <script src="assets/js/auth.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Show stat row + actions when survey section is visible
-    const surveySection = document.getElementById('profile-survey');
-    const statRow = document.getElementById('profile-stat-row');
-    const actions = document.getElementById('profile-survey-actions');
-
-    if (surveySection) {
-      const observer = new MutationObserver(() => {
-        if (surveySection.style.display !== 'none') {
-          if (statRow) statRow.style.display = 'grid';
-          if (actions) actions.style.display = 'flex';
-        }
-      });
-      observer.observe(surveySection, { attributes: true, attributeFilter: ['style'] });
-    }
-
-    // Profile logout btn
-    const logoutBtn = document.getElementById('profile-logout-btn');
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        logoutUser();
-      });
-    }
-  });
-</script>
+<script src="assets/js/app.js"></script>
 </body>
 </html>
