@@ -143,7 +143,10 @@ function initSurveyPage() {
         </div>
         <h2>Finding your matches…</h2>
         <p>Picking resources just for you.</p>
-        <div class="survey-spinner"></div>
+        <div class="loader-inner" style="margin: 0 auto;">
+          <svg class="loader-ring" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="33"/></svg>
+          <span class="loader-c"></span>
+        </div>
       </div>`;
 
     let resources = [];

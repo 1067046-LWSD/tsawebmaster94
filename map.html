@@ -183,13 +183,10 @@
       <!-- Map + legend overlay -->
       <div class="map-wrap">
         <div id="map"></div>
-        <div class="map-legend" id="map-legend">
+        <div class="map-legend" id="map-legend" role="button" aria-label="Toggle legend" style="cursor:pointer;">
           <p class="map-legend-title">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 8v5M12 16.5v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             Key
-            <button class="map-legend-toggle" id="legend-toggle" aria-label="Hide legend" title="Hide legend">
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 2L8 8M8 2L2 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </button>
           </p>
           <div class="map-legend-body" id="legend-body">
             <div class="map-legend-item"><span class="map-legend-dot" style="background:#156b3a;"></span>Food</div>
@@ -319,16 +316,11 @@
     link.addEventListener('click', () => document.querySelector('.nav-links')?.classList.remove('active'));
   });
 
-  const toggleBtn = document.getElementById('legend-toggle');
+  const mapLegend = document.getElementById('map-legend');
   const legendBody = document.getElementById('legend-body');
-  if (toggleBtn && legendBody) {
-    toggleBtn.addEventListener('click', () => {
-      const hidden = legendBody.classList.toggle('is-hidden');
-      toggleBtn.setAttribute('aria-label', hidden ? 'Show legend' : 'Hide legend');
-      toggleBtn.title = hidden ? 'Show legend' : 'Hide legend';
-      toggleBtn.innerHTML = hidden
-        ? '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v6M2 5h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
-        : '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 2L8 8M8 2L2 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+  if (mapLegend && legendBody) {
+    mapLegend.addEventListener('click', () => {
+      legendBody.classList.toggle('is-hidden');
     });
   }
 })();
