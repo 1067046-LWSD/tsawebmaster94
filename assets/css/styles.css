@@ -5384,6 +5384,10 @@ footer a { color: var(--gold); }
 [data-theme="dark"] .map-howto-card h3 { color: #c8e6d4; }
 [data-theme="dark"] .map-howto-card p  { color: var(--stone); }
 /* ── Form card links (login / signup) ── */
+/* ── Hamburger lines ── */
+[data-theme="dark"] .mobile-menu-toggle span { background: #ffffff; }
+[data-theme="dark"] .nav--scrolled .mobile-menu-toggle span { background: #c8e6d4; }
+
 /* ── Conduit logo loader ── */
 [data-theme="dark"] .loader-ring circle { stroke: #7dd3a8; }
 [data-theme="dark"] .loader-c { background-color: #7dd3a8; }

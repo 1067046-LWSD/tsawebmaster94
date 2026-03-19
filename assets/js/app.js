@@ -238,7 +238,14 @@ function setupMobileMenu() {
     if (navAvatar && barAvatar) barAvatar.src = navAvatar.src;
   }
 
+  const mainNav = document.getElementById('main-nav');
+
   function openMenu() {
+    // Remove backdrop-filter so the fixed overlay isn't trapped inside the nav
+    if (mainNav) {
+      mainNav.style.backdropFilter = 'none';
+      mainNav.style.webkitBackdropFilter = 'none';
+    }
     navLinks.classList.add('active');
     menuToggle.classList.add('is-open');
     authBar.classList.add('active');
@@ -251,6 +258,13 @@ function setupMobileMenu() {
     menuToggle.classList.remove('is-open');
     authBar.classList.remove('active');
     document.body.style.overflow = '';
+    // Restore backdrop-filter after overlay transition ends
+    if (mainNav) {
+      setTimeout(() => {
+        mainNav.style.backdropFilter = '';
+        mainNav.style.webkitBackdropFilter = '';
+      }, 320);
+    }
   }
 
   menuToggle.addEventListener('click', () => {
