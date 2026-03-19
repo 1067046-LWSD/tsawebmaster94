@@ -14,6 +14,60 @@
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin="" />
 <script>(function(){var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}());</script>
+<style data-page-style>
+  .submit-success-icon {
+    width: 80px; height: 80px;
+    background: var(--forest);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+  }
+  .submit-success-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--forest);
+    margin: 0 0 0.75rem;
+  }
+  .submit-success-msg {
+    color: var(--stone);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-width: 420px;
+    margin: 0 auto 2rem;
+  }
+  .submit-success-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .submit-another-btn {
+    padding: 0.85rem 2rem;
+    font-size: 0.95rem;
+  }
+  .submit-success-link {
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--forest);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .submit-success-link:hover { color: var(--terracotta); }
+
+  /* Dark mode */
+  [data-theme="dark"] .submit-success-icon { background: var(--forest-light); }
+  [data-theme="dark"] .submit-success-title { color: #c8e6d4; }
+  [data-theme="dark"] .submit-success-msg   { color: var(--stone); }
+  [data-theme="dark"] .submit-success-link  { color: #7dd3a8; }
+  [data-theme="dark"] .submit-success-link:hover { color: var(--gold); }
+
+  /* Submit page inline heading dark mode */
+  [data-theme="dark"] #submit-form h2,
+  [data-theme="dark"] .form-container > div h2 { color: #c8e6d4 !important; }
+</style>
 </head>
 <body>
 <a href="#main-content" class="skip-to-content">Skip to content</a>
@@ -92,6 +146,22 @@
           </p>
         </div>
 
+        <!-- Thank-you state (hidden until submission) -->
+        <div id="submit-success" style="display:none; text-align:center; padding:3rem 1rem;">
+          <div class="submit-success-icon">
+            <svg viewBox="0 0 48 48" fill="none" width="48" height="48">
+              <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M14 24L21 31L34 17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h2 class="submit-success-title">Thank You!</h2>
+          <p class="submit-success-msg">Your resource has been submitted and is pending review. We'll add it to the directory within 24 hours once verified.</p>
+          <div class="submit-success-actions">
+            <button id="submit-another-btn" class="btn btn-primary submit-another-btn">Submit Another Resource</button>
+            <a href="directory.html" class="submit-success-link">Browse the Directory →</a>
+          </div>
+        </div>
+
         <form id="submit-form">
           <div class="form-group">
             <label for="name">Resource Name <span class="required">*</span></label>
@@ -137,7 +207,7 @@
 
           <div class="form-group">
             <label for="website">Website</label>
-            <input type="url" id="website" name="website" placeholder="https://example.com">
+            <input type="text" id="website" name="website" placeholder="e.g. google.com or https://example.com">
           </div>
 
           <!-- Submission guidelines -->

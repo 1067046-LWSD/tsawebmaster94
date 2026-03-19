@@ -5384,6 +5384,18 @@ footer a { color: var(--gold); }
 [data-theme="dark"] .map-howto-card h3 { color: #c8e6d4; }
 [data-theme="dark"] .map-howto-card p  { color: var(--stone); }
 /* ── Form card links (login / signup) ── */
+/* ── Alert messages ── */
+[data-theme="dark"] .alert-success {
+  background: rgba(58,112,85,0.18);
+  color: #7dd3a8;
+  border-color: rgba(125,211,168,0.25);
+}
+[data-theme="dark"] .alert-error {
+  background: rgba(196,98,45,0.18);
+  color: #fda46a;
+  border-color: rgba(196,98,45,0.3);
+}
+
 /* ── Hamburger lines ── */
 [data-theme="dark"] .mobile-menu-toggle span { background: #ffffff; }
 [data-theme="dark"] .nav--scrolled .mobile-menu-toggle span { background: #c8e6d4; }

@@ -1031,7 +1031,7 @@ function setupFormSubmission() {
         category: document.getElementById('category').value,
         description: document.getElementById('description').value.trim(),
         address: document.getElementById('address').value.trim(),
-        website: document.getElementById('website').value.trim(),
+        website: (() => { let w = document.getElementById('website').value.trim(); if (w && !/^https?:\/\//i.test(w)) w = 'https://' + w; return w; })(),
         phone: document.getElementById('phone')?.value.trim() || '',
         featured: false,
         image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop',
@@ -1048,15 +1048,37 @@ function setupFormSubmission() {
       
       // Save to localStorage
       saveResourceToLocalStorage(formData);
-      
-      // Show success message
-      showAlert('Thank you! Your resource has been submitted successfully and is pending review.', 'success');
-      
-      // Reset form
-      form.reset();
-      
-      // Scroll to top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Hide form, show thank-you card
+      const successCard = document.getElementById('submit-success');
+      if (successCard) {
+        // The real header is the sibling before the success card
+        const formHeader = successCard.previousElementSibling;
+        form.style.display = 'none';
+        if (formHeader) formHeader.style.display = 'none';
+        document.querySelectorAll('.alert').forEach(el => el.remove());
+        successCard.style.display = 'block';
+        successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        const anotherBtn = document.getElementById('submit-another-btn');
+        if (anotherBtn) {
+          // Replace with clone to avoid stacking duplicate listeners
+          const freshBtn = anotherBtn.cloneNode(true);
+          anotherBtn.replaceWith(freshBtn);
+          freshBtn.addEventListener('click', () => {
+            successCard.style.display = 'none';
+            if (formHeader) formHeader.style.display = '';
+            form.style.display = '';
+            form.reset();
+            formHeader
+              ? formHeader.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              : form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        }
+      } else {
+        showAlert('Thank you! Your resource has been submitted and is pending review.', 'success');
+        form.reset();
+      }
     });
   }
 }
