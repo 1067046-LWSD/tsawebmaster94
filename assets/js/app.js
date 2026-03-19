@@ -186,21 +186,87 @@ function setActiveNavLink() {
 
 function setupMobileMenu() {
   const menuToggle = document.querySelector('.mobile-menu-toggle');
-  const navLinks = document.querySelector('.nav-links');
+  const navLinks   = document.querySelector('.nav-links');
+  const navAuth    = document.querySelector('.nav-auth');
 
-  if (menuToggle && navLinks) {
-    menuToggle.addEventListener('click', function() {
-      navLinks.classList.toggle('active');
-      menuToggle.classList.toggle('is-open');
-    });
-    // Close menu when a nav link is clicked
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        menuToggle.classList.remove('is-open');
-      });
-    });
+  if (!menuToggle || !navLinks) return;
+
+  // Build a pinned auth bar at the bottom of the overlay (no duplicate IDs)
+  let authBar = document.getElementById('mobile-menu-auth');
+  if (!authBar) {
+    authBar = document.createElement('div');
+    authBar.id = 'mobile-menu-auth';
+    authBar.className = 'mobile-menu-auth';
+
+    // Mirror auth state from nav-auth
+    if (navAuth) {
+      const signinEl  = navAuth.querySelector('.nav-signin-btn');
+      const profileEl = navAuth.querySelector('.nav-profile-corner');
+
+      if (signinEl) {
+        const a = document.createElement('a');
+        a.href = signinEl.href || 'login.html';
+        a.className = 'nav-signin-btn';
+        a.textContent = 'Sign In';
+        authBar.appendChild(a);
+      }
+      if (profileEl) {
+        const cloned = profileEl.cloneNode(true);
+        // Remove IDs from clone to avoid duplicates
+        cloned.removeAttribute('id');
+        cloned.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+        authBar.appendChild(cloned);
+      }
+    }
+    document.body.appendChild(authBar);
   }
+
+  // Sync visibility of signin vs profile in authBar with navAuth
+  function syncAuthBar() {
+    if (!navAuth) return;
+    const navSignin  = navAuth.querySelector('.nav-signin-btn');
+    const navProfile = navAuth.querySelector('.nav-profile-corner');
+    const barSignin  = authBar.querySelector('.nav-signin-btn');
+    const barProfile = authBar.querySelector('.nav-profile-corner');
+
+    if (barSignin)  barSignin.style.display  = navSignin  && navSignin.style.display  !== 'none' ? '' : 'none';
+    if (barProfile) barProfile.style.display = navProfile && navProfile.style.display !== 'none' ? '' : 'none';
+
+    // Mirror avatar src
+    const navAvatar = navAuth.querySelector('.nav-avatar-thumb');
+    const barAvatar = authBar.querySelector('img');
+    if (navAvatar && barAvatar) barAvatar.src = navAvatar.src;
+  }
+
+  function openMenu() {
+    navLinks.classList.add('active');
+    menuToggle.classList.add('is-open');
+    authBar.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    syncAuthBar();
+  }
+
+  function closeMenu() {
+    navLinks.classList.remove('active');
+    menuToggle.classList.remove('is-open');
+    authBar.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.contains('active') ? closeMenu() : openMenu();
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+  authBar.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+  });
 }
 
 window.navigation.addEventListener('navigate', (navigateEvent) => {
