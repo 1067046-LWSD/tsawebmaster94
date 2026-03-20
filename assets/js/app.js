@@ -1343,6 +1343,14 @@ window.selectTier = function(tier, amount) {
   if (donateForm) donateForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
+// Donate page — amount picker
+window.pickAmt = function(btn, url, amount) {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('summary-amount').textContent = '$' + amount;
+  document.getElementById('checkout-btn').href = url;
+};
+
 // Donation form submission
 document.addEventListener('DOMContentLoaded', function() {
   const donationForm = document.getElementById('donation-form');

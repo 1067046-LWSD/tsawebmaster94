@@ -823,13 +823,5 @@
 <script src="assets/js/auth.js"></script>
 <script src="assets/js/app.js"></script>
 
-<script>
-function pickAmt(btn, url, amount) {
-  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('summary-amount').textContent = '$' + amount;
-  document.getElementById('checkout-btn').href = url;
-}
-</script>
 </body>
 </html>
