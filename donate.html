@@ -824,7 +824,7 @@
 <script src="assets/js/app.js"></script>
 
 <script>
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
   const STRIPE_LINKS = {
     10:  'https://buy.stripe.com/test_4gM6oAeYvfKb9IH1M53ks00',
     25:  'https://buy.stripe.com/test_7sY8wIaIf0Ph6wv3Ud3ks01',
@@ -848,9 +848,17 @@
 
   document.getElementById('checkout-btn').addEventListener('click', () => {
     const url = STRIPE_LINKS[selectedAmount];
-    if (url) window.open(url, '_blank', 'noopener');
+    if (url) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
   });
-})();
+});
 </script>
 </body>
 </html>
